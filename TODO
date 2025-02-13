@@ -1,5 +1,33 @@
 
-=> Prompt aufbauen
-=> AST verstehen
-=> Tokenizer erstellen
+something to decide
+	use persistent history, eg. save it to file
 
+Parsing
+	=> input handling and history 
+	=> parsing & tokenizing
+	=> Handling quotes + braces
+	=> Variable expansion
+
+Execution
+	=> Builtins X
+	=> Redirecting
+	=> Heredoc  is a builtin
+	=> Pipes
+	=> execve
+	=> Variables
+
+
+[program] >> [FILENAME]	append to filename
+<< [EOF char]	wait for [EOF char] and the pipe as input
+< [fileename] 	content of files as stdin
+>	put output into file
+|	pipe output of on to stdin of other
+"
+'
+
+
+Programm call 
+"cat -e"						">" 			"text.txt"
+|								
+v
+"Progname cat" "Args:['-e']"
