@@ -8,6 +8,8 @@ NAME = minishell
 SRC_DIR = src
 #   CORE
 FILES=minishell.c
+FILES += enviroment.c appstate.c
+FILES += builtin/pwd/pwd.c
 F_INC = -Iinclude
 CC = cc
 # CC = gcc
@@ -21,7 +23,7 @@ all: $(OBJ_DIR) $(NAME)
 
 # Create object directory if it doesn't exist
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)/src
+	mkdir -p $(OBJ_DIR)/builtin/pwd
 
 $(NAME): $(OBJ_FILES) libft
 	$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline
