@@ -1,0 +1,2 @@
+cc export.c -o out -Wall -Wextra -Werror -g -I../../../include ../../../objects/appstate.o ../../../objects/enviroment.o -fsanitize=address ../../../libft/libft.a
+./out "test  =something" "sometest=" "123=asdjla"
