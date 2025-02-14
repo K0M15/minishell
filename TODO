@@ -3,33 +3,43 @@ something to decide
 	- use persistent history, eg. save it to file
 	- how much work is it, to add input of heredoc to history?
 	- could we handle readline leak if we fork the process for each input?
-
+	
 Parsing
-	=> input handling and history
-		READLINE/ READLINE HISTORY
+	=> input handling and history 
 	=> parsing & tokenizing
 	=> Handling quotes + braces
 	=> Variable expansion
 
 Execution
-	=> Builtins
+	=> Builtins X
 		cd
-		echo
-		env
-		exit
-		unset
-		pwd		done
-	=> Redirecting
-	=> Pipes
-	=> Heredoc
-	=> execve
+		pwd					done		afelger
+		export	need env variables
+		unset	need env variables
+		env		need env variables
+		exit	just handle word!
+		echo	with -n
+	
+	=> Redirecting		
+	=> Pipes			
+	=> execve			
+
+	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
+				(there could be multiple)
 
 Runtime
-	=> Variables (ENV)
-	=> malloc and free of memory for command
-	=> free
+	=> Variables
+		get in main
+		put to variable
+		linked list
+	=> abstraction for malloc
+		2 Areas => duration of minishell, duration of single line entry or heredoc
 	=> Signalhandling (Sigabort does not close shell)
-
+		SIGING (STRG C)
+		SIGQUIT (STRG \) not needed, ignored
+		EXIT (STRG D)
+			enter "exit", then quit
+		SIGTSTP (STRG Z) ?? check if handling is need
 
 [program] >> [FILENAME]	append to filename
 << [EOF char]	wait for [EOF char] and the pipe as input
@@ -45,6 +55,3 @@ Programm call
 |								
 v
 "Progname cat" "Args:['-e']"
-
-Recources:
-https://cboard.cprogramming.com/c-programming/136521-memory-leak-readline.html
