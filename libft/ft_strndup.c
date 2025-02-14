@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/14 15:47:29 by ckrasniq         ###   ########.fr       */
+/*   Created: 2025/02/14 15:31:17 by ckrasniq          #+#    #+#             */
+/*   Updated: 2025/02/14 15:35:14 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
 #include "libft.h"
-#include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
+char	*ft_strndup(const char *s1, int n)
+{
+	char	*copy;
+	int	i;
 
-#endif // MINISHELL_H
+	copy = malloc(n + 1);
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		copy[i] = s1[i];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
+}

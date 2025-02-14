@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:30:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/06 18:10:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/14 15:47:21 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int				ft_toupper(int c);
 int				ft_tolower(int c);
 
 unsigned long	ft_strlen(const char *c);
+char			*ft_strndup(const char *s1, int n);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 int				ft_strncmp(const char *s1, const char *s2, unsigned long n);
