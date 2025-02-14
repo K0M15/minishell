@@ -1,7 +1,9 @@
 
 something to decide
-	use persistent history, eg. save it to file
-
+	- use persistent history, eg. save it to file
+	- how much work is it, to add input of heredoc to history?
+	- could we handle readline leak if we fork the process for each input?
+	
 Parsing
 	=> input handling and history 
 	=> parsing & tokenizing
@@ -10,7 +12,7 @@ Parsing
 
 Execution
 	=> Builtins X
-		cd								afelger
+		cd
 		pwd					done		afelger
 		export	need env variables
 		unset	need env variables
@@ -18,9 +20,9 @@ Execution
 		exit	just handle word!
 		echo	with -n
 	
-	=> Redirecting
-	=> Pipes	
-	=> execve
+	=> Redirecting		
+	=> Pipes			
+	=> execve			
 
 	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
 				(there could be multiple)
