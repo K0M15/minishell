@@ -14,7 +14,10 @@ Execution
 	=> Heredoc  is a builtin
 	=> Pipes
 	=> execve
+
+Runtime
 	=> Variables
+	=> Signalhandling (Sigabort does not close shell)
 
 
 [program] >> [FILENAME]	append to filename

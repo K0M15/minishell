@@ -64,7 +64,7 @@ CFLAGS=-Wall -Wextra -Werror
 CC=cc
 
 
-all: $(NAME)
+all: bonus
 
 $(NAME): $(FILES) $(PRINTF_FILES)
 	ar -crs $(NAME) $(FILES) $(PRINTF_FILES)

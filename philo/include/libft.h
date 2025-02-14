@@ -6,14 +6,13 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 17:30:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/06 18:10:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:50:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include "libft.h"
 
 typedef struct s_list
 {

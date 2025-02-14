@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/06 18:11:23 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/14 10:43:43 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <sys/param.h>
+#include <stdlib.h>
+#include "ft_printf.h"
 
-void main(int argc, char **argv)
+int pwd(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-	startup();
-	(void)argc;
+	char *buffer;
+	
+	buffer = getenv("PWD");
+	if(buffer == NULL)
+		return (-1);
+	ft_printf("%s\n", buffer);
 }
