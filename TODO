@@ -10,15 +10,34 @@ Parsing
 
 Execution
 	=> Builtins X
+		cd								afelger
+		pwd					done		afelger
+		export	need env variables
+		unset	need env variables
+		env		need env variables
+		exit	just handle word!
+		echo	with -n
+	
 	=> Redirecting
-	=> Heredoc  is a builtin
-	=> Pipes
+	=> Pipes	
 	=> execve
+
+	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
+				(there could be multiple)
 
 Runtime
 	=> Variables
+		get in main
+		put to variable
+		linked list
+	=> abstraction for malloc
+		2 Areas => duration of minishell, duration of single line entry or heredoc
 	=> Signalhandling (Sigabort does not close shell)
-
+		SIGING (STRG C)
+		SIGQUIT (STRG \) not needed, ignored
+		EXIT (STRG D)
+			enter "exit", then quit
+		SIGTSTP (STRG Z) ?? check if handling is need
 
 [program] >> [FILENAME]	append to filename
 << [EOF char]	wait for [EOF char] and the pipe as input
