@@ -1,20 +1,34 @@
 
 something to decide
-	use persistent history, eg. save it to file
+	- use persistent history, eg. save it to file
+	- how much work is it, to add input of heredoc to history?
+	- could we handle readline leak if we fork the process for each input?
 
 Parsing
-	=> input handling and history 
+	=> input handling and history
+		READLINE/ READLINE HISTORY
 	=> parsing & tokenizing
 	=> Handling quotes + braces
 	=> Variable expansion
 
 Execution
-	=> Builtins X
+	=> Builtins
+		cd
+		echo
+		env
+		exit
+		unset
+		pwd		done
 	=> Redirecting
-	=> Heredoc  is a builtin
 	=> Pipes
+	=> Heredoc
 	=> execve
-	=> Variables
+
+Runtime
+	=> Variables (ENV)
+	=> malloc and free of memory for command
+	=> free
+	=> Signalhandling (Sigabort does not close shell)
 
 
 [program] >> [FILENAME]	append to filename
@@ -31,3 +45,6 @@ Programm call
 |								
 v
 "Progname cat" "Args:['-e']"
+
+Recources:
+https://cboard.cprogramming.com/c-programming/136521-memory-leak-readline.html
