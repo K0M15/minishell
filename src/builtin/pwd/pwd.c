@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/13 17:46:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:43:43 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 #include <stdlib.h>
 #include "ft_printf.h"
 
-
-//this does not use the evn variable 
-int main(int argc, char **argv)
+int pwd(int argc, char **argv)
 {
 	char *buffer;
 	
