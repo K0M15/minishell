@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/14 12:21:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/14 16:21:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,26 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "stdlib.h"
+
+typedef struct s_appstate
+{
+	t_list	*env;
+	char	last_return;
+}	t_appstate;
+
+typedef struct s_keyvalue
+{
+	char *key;
+	char *value;
+}	t_keyvalue;
+
+size_t	count_elements(char **arr);
+int add_env(char *key, char *value);
+int import_env(char **envp);
+int unset_env(char *key);
+char *get_env(char *key);
+t_appstate *get_appstate();
+
+int	pwd();
 
 #endif // MINISHELL_H
