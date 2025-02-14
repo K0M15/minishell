@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/14 16:21:30 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/14 17:30:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int unset_env(char *key);
 char *get_env(char *key);
 t_appstate *get_appstate();
 
-int	pwd();
+int	pwd(void);
+int env(void);
 
 #endif // MINISHELL_H
