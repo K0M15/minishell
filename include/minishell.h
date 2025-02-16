@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 13:31:50 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/16 14:02:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_appstate
 	size_t	env_alloc;
 	size_t	env_filled;
 	char	last_return;
+	char	*working_dirctory;
 }	t_appstate;
 
 t_appstate *get_appstate();
@@ -37,11 +38,12 @@ int			pwd(int argc, char **argv);
 int			env(int argc, char **argv);
 
 int			ms_delete_value(char *key);
-char		*ms_set_value(char *key, char *value);
+char		*ms_setvalue(char *key, char *value);
 char		*ms_getvalue(char *key);
 char		*ms_getindex(char *key);
 char		*ms_getvalue(char *str);
 int			ms_is_key(char *str, char *key);
+char		*ms_getkey(char *str);
 
 char		**ms_env_enhance();
 int			ms_env_append(char *str);
