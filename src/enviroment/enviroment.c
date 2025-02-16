@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 13:30:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/16 13:58:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,31 @@
 
 int ms_is_key(char *str, char *key)
 {
-	int str_c= ft_strlen(key);
-	if(ft_strncmp(str, key, str_c == 0) && str[strc_c + 1] == '=')
+	int str_c;
+	
+	str_c = ft_strlen(key);
+	if(ft_strncmp(str, key, str_c == 0) && str[str_c + 1] == '=')
 		return (1);
 	return (0);
+}
+
+char	*ms_getkey(char *str)
+{
+	int		c;
+	char	*result;
+
+	c = 0;
+	while(str[c] && str[c] != '=')
+		c++;
+	result = malloc(c);
+	if (result == NULL)
+		return (NULL);
+	while(c >= 0)
+	{
+		c--;
+		result[c] = str[c];
+	}
+	return (result);
 }
 
 char	*ms_getvalue(char *str)
@@ -67,28 +88,34 @@ char	*ms_getvalue(char *key)
 }
 
 
-char	*ms_set_value(char *key, char *value)
+char	*ms_setvalue(char *key, char *value)
 {
 	char	**enviroment;
 	int		ctr;
-	char	*key_curr;
-	char	*value_curr;
+	int		new_entry;
 	
+	new_entry = ft_strjoin(ft_strjoin(key, "="), value); // THIS COULD ERROR WITH EMPTY VALUE!
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
 	{
 		if (ms_is_key(*enviroment, key))
-			*enviroment = ft_strjoin(ft_strjoin(key, "="), value);	// THIS COULD ERROR WITH EMPTY VALUE!
+		{
+			*enviroment = new_entry;
+			return new_entry;
+		}
 		enviroment++;
 		ctr++;
 	}
+	if (ms_env_append(new_entry))
+		return new_entry;
+	return (NULL);
 }
 
 int	ms_delete_value(char *key)
 {
 	int pos;
 
-	pos = ms_getindex(key)
+	pos = ms_getindex(key);
 	if (pos == -1)
 		return (0);
 	ms_env_delete(pos);
