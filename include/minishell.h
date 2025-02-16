@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/14 17:30:07 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/16 13:31:50 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,30 @@
 # include "ft_printf.h"
 # include "stdlib.h"
 
+# define ENV_ALLOC_SIZE 1024;
+
 typedef struct s_appstate
 {
-	t_list	*env;
+	char	**enviroment;
+	size_t	env_alloc;
+	size_t	env_filled;
 	char	last_return;
 }	t_appstate;
 
-typedef struct s_keyvalue
-{
-	char *key;
-	char *value;
-}	t_keyvalue;
-
-size_t	count_elements(char **arr);
-int add_env(char *key, char *value);
-int import_env(char **envp);
-int unset_env(char *key);
-char *get_env(char *key);
 t_appstate *get_appstate();
 
-int	pwd(void);
-int env(void);
+int			pwd(int argc, char **argv);
+int			env(int argc, char **argv);
+
+int			ms_delete_value(char *key);
+char		*ms_set_value(char *key, char *value);
+char		*ms_getvalue(char *key);
+char		*ms_getindex(char *key);
+char		*ms_getvalue(char *str);
+int			ms_is_key(char *str, char *key);
+
+char		**ms_env_enhance();
+int			ms_env_append(char *str);
+void		ms_env_delete(int id);
 
 #endif // MINISHELL_H
