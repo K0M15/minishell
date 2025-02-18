@@ -6,14 +6,16 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 14:02:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/18 13:47:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int pwd(int argc, char **argv)
+int builtin_pwd(int argc, char **argv)
 {
-	ft_printf("%s\n", get_appstate()->working_dirctory);
+	(void) argc;
+	(void) argv;
+	ft_printf("%s\n", get_appstate()->working_directory);
 	return (0);
 }

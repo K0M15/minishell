@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 13:58:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/18 14:01:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ms_getvalue(char *str)
 	return (&str[c]);
 }
 
-char	*ms_getindex(char *key)
+int	ms_getindex(char *key)
 {
 	char	**enviroment;
 	int		ctr;
@@ -71,10 +71,9 @@ char	*ms_getindex(char *key)
 	return (-1);
 }
 
-char	*ms_getvalue(char *key)
+char	*ms_get_env(char *key)
 {
 	char	**enviroment;
-	char	*value_curr;
 	
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
@@ -87,12 +86,10 @@ char	*ms_getvalue(char *key)
 	return NULL;
 }
 
-
 char	*ms_setvalue(char *key, char *value)
 {
 	char	**enviroment;
-	int		ctr;
-	int		new_entry;
+	char	*new_entry;
 	
 	new_entry = ft_strjoin(ft_strjoin(key, "="), value); // THIS COULD ERROR WITH EMPTY VALUE!
 	enviroment = get_appstate()->enviroment;
@@ -104,7 +101,6 @@ char	*ms_setvalue(char *key, char *value)
 			return new_entry;
 		}
 		enviroment++;
-		ctr++;
 	}
 	if (ms_env_append(new_entry))
 		return new_entry;
@@ -158,10 +154,34 @@ int	ms_env_append(char *str)
 void	ms_env_delete(int id)
 {
 	t_appstate	*state;
+	size_t		ctr;
 
 	state = get_appstate();
-	while(++id < state->env_filled)
-		state->enviroment[id - 1] == state->enviroment[id];
-	state->enviroment[id - 1] = NULL;
+	if (id < 0)
+		return ;
+	ctr = (unsigned long) id;
+	while(++ctr < state->env_filled)
+		state->enviroment[ctr - 1] = state->enviroment[ctr];
+	state->enviroment[ctr - 1] = NULL;
 	state->env_filled--;
+}
+
+int	ms_env_init(void)
+{
+	int c;
+	t_appstate *state;
+
+	c = 0;
+	state = get_appstate();
+	state->enviroment = malloc(ENV_ALLOC_SIZE);
+	if (state->enviroment == NULL)
+		return (0);
+	state->env_alloc = ENV_ALLOC_SIZE;
+	state->env_filled = 0;
+	while (environ[c])
+	{
+		ms_env_append(environ[c]);
+		c++;
+	}
+	return (1);
 }

@@ -6,25 +6,25 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:24:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/14 17:30:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/16 16:37:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int env(void)
+int builtin_env(int argc, char **argv)
 {
-	t_list *enviroment;
-	t_keyvalue *kvpair;
+	char **enviroment;
 
-	enviroment = get_appstate()->env;
-	while(enviroment != NULL)
+	(void) argc;
+	(void) argv;
+	enviroment = get_appstate()->enviroment;
+	while (*enviroment)
 	{
-		kvpair = (t_keyvalue *)enviroment->content;
-		ft_printf("%s=%s\n", kvpair->key, kvpair->value);
-		enviroment = enviroment->next;
+		ft_printf("%s\n", *enviroment);
+		enviroment++;
 	}
-	return (1);
+	return (0);
 }
 
 // int main(int argc, char **argv, char **penv)

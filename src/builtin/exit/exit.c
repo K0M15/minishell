@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 10:58:18 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 13:58:49 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/16 16:32:30 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/18 13:59:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_unset(int argc, char **argv)
+int builtin_exit(int argc, char **argv)
 {
-	int c;
-
-	if (argc == 1)
-	{
-		printf("unset: not enough arguments\n");
-		return (1);
-	}
-	c = 1;
-	while (c < argc)
-		ms_delete_value(argv[c]);
+	(void) argc;
+	(void) argv;
+	printf("++++++++++++++++++\nEXIT NOT IMPLEMENTED\n++++++++++++++");
 	return (0);
 }
