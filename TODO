@@ -3,9 +3,9 @@ something to decide
 	- use persistent history, eg. save it to file
 	- how much work is it, to add input of heredoc to history?
 	- could we handle readline leak if we fork the process for each input?
-	
+
 Parsing
-	=> input handling and history 
+	=> input handling and history
 	=> parsing & tokenizing
 	=> Handling quotes + braces
 	=> Variable expansion
@@ -19,10 +19,10 @@ Execution
 		env		need env variables
 		exit	just handle word!
 		echo	with -n
-	
-	=> Redirecting		
-	=> Pipes			
-	=> execve			
+
+	=> Redirecting
+	=> Pipes
+	=> execve
 
 	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
 				(there could be multiple)
@@ -50,8 +50,14 @@ Runtime
 '
 
 
-Programm call 
+Programm call
 "cat -e"						">" 			"text.txt"
-|								
+|
 v
 "Progname cat" "Args:['-e']"
+
+new git commands:
+	=>git branch display branches
+	=> git branch [name] creates branch name
+	=> git checkout [name] switches to branch
+	=> git merge [name] merge branch name to current branch

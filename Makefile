@@ -1,8 +1,21 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/02/16 16:33:15 by ckrasniq          #+#    #+#              #
+#    Updated: 2025/02/19 19:51:53 by ckrasniq         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 .PHONY = clean fclean re
 
 PATH_LIBFT = libft/libft.a
 FLAGS = -Wall -Wextra -Werror
 FLAGS += -g -fsanitize=address
+
 # FLAGS += -lreadline
 NAME = minishell
 SRC_DIR = src
