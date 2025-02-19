@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 15:27:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/19 15:25:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 # include <stddef.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+# include <stdlib.h>
+
 # include "libft.h"
 # include "ft_printf.h"
-# include "stdlib.h"
-# include <signal.h>
+# include "ft_malloc.h"
 
 # define ENV_ALLOC_SIZE 1024
 
@@ -36,6 +38,7 @@ typedef struct s_command
 	void			*tokens;
 	void			*ast;
 	unsigned int	pid;
+	unsigned int	ret_value;
 }	t_command;
 
 typedef struct s_appstate
@@ -44,8 +47,8 @@ typedef struct s_appstate
 	char	**enviroment;
 	size_t	env_alloc;
 	size_t	env_filled;
-	char	last_return;
 	char	*working_directory;
+	t_list	*children;
 }	t_appstate;
 
 t_appstate *get_appstate();
@@ -87,5 +90,17 @@ int			ms_env_init(void);
 void		ms_display_welcome(void);
 //	get prompt string
 char		*ms_get_prompt(void);
+
+
+
+// =================   STILL TODO   ================= //
+//	Initializes the signalhandling
+void	ms_sig_init(void);
+/**
+ * Three different modes to check:					Behaviour
+ * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history
+ * 	-	heredoc mode								cancle heredoc and command. Command stays in history
+ *  -	process running inside of shell				send SIGINT to process, display output, should stay in history. Maybe display "^C\n"
+ */
 
 #endif // MINISHELL_H
