@@ -21,10 +21,9 @@ Execution
 		exit	not implemented yet
 		echo	with -n					test needed		afelger
 	
-	=> Redirecting		
-	=> Pipes			
-	=> execve			
-
+	=> Redirecting
+	=> Pipes
+	=> execve
 	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
 				(there could be multiple)
 
@@ -35,7 +34,7 @@ Runtime
 	=> abstraction for malloc
 		2 Areas => duration of minishell, duration of single line entry or heredoc
 	=> Signalhandling (Sigabort does not close shell)
-		SIGING (STRG C)
+		SIGINT (STRG C)
 		SIGQUIT (STRG \) not needed, ignored
 		EXIT (STRG D)
 			enter "exit", then quit => not a signal but closing stdin
@@ -72,4 +71,4 @@ word word operator word word
 		
 
 
-https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Filth&t=MINISHELL
+Generator for ASCII ART https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Filth&t=MINISHELL
