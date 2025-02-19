@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 13:47:32 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/16 10:58:18 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/18 13:58:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int builtin_pwd(int argc, char **argv)
+int	builtin_unset(int argc, char **argv)
 {
-	(void) argc;
-	(void) argv;
-	ft_printf("%s\n", get_appstate()->working_directory);
+	int c;
+
+	if (argc == 1)
+	{
+		printf("unset: not enough arguments\n");
+		return (1);
+	}
+	c = 1;
+	while (c < argc)
+		ms_delete_value(argv[c]);
 	return (0);
 }

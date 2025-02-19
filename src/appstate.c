@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   appstate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 13:47:32 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/14 16:05:49 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/14 16:06:03 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int builtin_pwd(int argc, char **argv)
+t_appstate *get_appstate()
 {
-	(void) argc;
-	(void) argv;
-	ft_printf("%s\n", get_appstate()->working_directory);
-	return (0);
-}
+	static t_appstate	state;
+
+	return (&state);
+} 

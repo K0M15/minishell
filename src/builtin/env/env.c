@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 13:47:32 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/14 17:24:59 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/16 16:37:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int builtin_pwd(int argc, char **argv)
+int builtin_env(int argc, char **argv)
 {
+	char **enviroment;
+
 	(void) argc;
 	(void) argv;
-	ft_printf("%s\n", get_appstate()->working_directory);
+	enviroment = get_appstate()->enviroment;
+	while (*enviroment)
+	{
+		ft_printf("%s\n", *enviroment);
+		enviroment++;
+	}
 	return (0);
 }
+
+// int main(int argc, char **argv, char **penv)
+// {
+// 	(void)argc;
+// 	(void)argv;
+// 	import_env(penv);
+// 	env();
+// }

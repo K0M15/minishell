@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 13:47:32 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/16 16:32:30 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/18 13:59:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int builtin_pwd(int argc, char **argv)
+int builtin_exit(int argc, char **argv)
 {
 	(void) argc;
 	(void) argv;
-	ft_printf("%s\n", get_appstate()->working_directory);
+	printf("++++++++++++++++++\nEXIT NOT IMPLEMENTED\n++++++++++++++");
 	return (0);
 }

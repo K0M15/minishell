@@ -8,6 +8,14 @@ NAME = minishell
 SRC_DIR = src
 #   CORE
 FILES=minishell.c
+#	RUNTIME
+FILES += enviroment/enviroment.c appstate.c
+FILES += signals/signals.c
+#	BUILTINS
+FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
+FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
+#	PROMPT
+FILES += prompt/prompt.c
 F_INC = -Iinclude
 CC = cc
 # CC = gcc
@@ -21,7 +29,16 @@ all: $(OBJ_DIR) $(NAME)
 
 # Create object directory if it doesn't exist
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)/src
+	mkdir -p $(OBJ_DIR)/builtin/pwd
+	mkdir -p $(OBJ_DIR)/builtin/export
+	mkdir -p $(OBJ_DIR)/builtin/unset
+	mkdir -p $(OBJ_DIR)/builtin/cd
+	mkdir -p $(OBJ_DIR)/builtin/echo
+	mkdir -p $(OBJ_DIR)/builtin/exit
+	mkdir -p $(OBJ_DIR)/builtin/env
+	mkdir -p $(OBJ_DIR)/enviroment
+	mkdir -p $(OBJ_DIR)/signals
+	mkdir -p $(OBJ_DIR)/prompt
 
 $(NAME): $(OBJ_FILES) libft
 	$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline

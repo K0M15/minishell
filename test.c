@@ -3,10 +3,10 @@
 #include <readline/history.h>
 #include <stdlib.h>
 
-void keep_me(void *ptr)
-{
-	static 
-}
+// void keep_me(void *ptr)
+// {
+// 	static 
+// }
 
 int main()
 {

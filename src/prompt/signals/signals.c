@@ -1,46 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 16:37:21 by afelger          ###   ########.fr       */
+/*   Created: 2025/02/18 14:03:16 by afelger           #+#    #+#             */
+/*   Updated: 2025/02/18 14:59:56 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static void export_displayX()
+struct sigaction	*get_sig_action(void)
 {
-	char **env;
+	static struct sigaction	sa;
 
-	env = get_appstate()->enviroment;
-	while (*env)
-	{
-		printf("declare -x %s\n", *env);
-		env++;
-	}
+	return (&sa);
 }
 
-int	builtin_export(int argc, char **argv)
+void	ms_sig_handler(int signal, siginfo_t *info, void *ctx)
 {
-	char	*key;
-	char	*value;
-	int		c;
+	(void) info;
+	(void) ctx;
+	g_ms_signal = signal;
+}
 
-	if (argc == 1)
-		return (export_displayX(), 0);
-	c = 1;
-	while (c < argc)
-	{
-		key = ms_getkey(argv[c]);
-		value = ms_getvalue(argv[c]);
-		ms_setvalue(key, value);
-		free(key);
-		c++;
-	}
-	return (0);
+void	ms_sig_init(void)
+{
+	struct sigaction	*sa;
+
+	sa = get_sig_action();
+	sa->sa_sigaction = &ms_sig_handler;
+	sa->sa_flags = 0;					//read this again.. are there usefull flags?
+	sigemptyset(&sa->sa_mask);
+	sigaction(SIGINT, sa, NULL);
 }

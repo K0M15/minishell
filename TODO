@@ -3,6 +3,7 @@ something to decide
 	- use persistent history, eg. save it to file
 	- how much work is it, to add input of heredoc to history?
 	- could we handle readline leak if we fork the process for each input?
+	- cd: should we use the non directory path?
 	
 Parsing
 	=> input handling and history 
@@ -12,34 +13,32 @@ Parsing
 
 Execution
 	=> Builtins X
-		cd
-		pwd					done		afelger
-		export	need env variables
-		unset	need env variables
-		env		need env variables
-		exit	just handle word!
-		echo	with -n
+		cd								test needed		afelger
+		pwd								test needed		afelger
+		export	need env variables		test needed		afelger
+		unset	need env variables		test needed		afelger
+		env		need env variables		test needed		afelger
+		exit	not implemented yet
+		echo	with -n					test needed		afelger
 	
-	=> Redirecting		
-	=> Pipes			
-	=> execve			
-
+	=> Redirecting
+	=> Pipes
+	=> execve
 	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
 				(there could be multiple)
 
 Runtime
 	=> Variables
-		get in main
-		put to variable
-		linked list
+		get in main						not needed due to global environ like in description of POSIX.1
+		put to variable					test needed		afelger
 	=> abstraction for malloc
 		2 Areas => duration of minishell, duration of single line entry or heredoc
 	=> Signalhandling (Sigabort does not close shell)
-		SIGING (STRG C)
+		SIGINT (STRG C)
 		SIGQUIT (STRG \) not needed, ignored
 		EXIT (STRG D)
-			enter "exit", then quit
-		SIGTSTP (STRG Z) ?? check if handling is need
+			enter "exit", then quit => not a signal but closing stdin
+		SIGTSTP (STRG Z) ?? check if handling is need				NO HANDLING NEEDED, WORKS OUT OF THE BOX 😁
 
 [program] >> [FILENAME]	append to filename
 << [EOF char]	wait for [EOF char] and the pipe as input
@@ -55,3 +54,21 @@ Programm call
 |								
 v
 "Progname cat" "Args:['-e']"
+
+echo ""$?"" | cat -e
+word word operator word word
+
+			operator (pipe)
+			/				\
+		command				command
+		args:{word}			args{word}
+
+			operator (pipe)
+			/				\
+		command				command
+		args:{0}	args{word}
+
+		
+
+
+Generator for ASCII ART https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Filth&t=MINISHELL
