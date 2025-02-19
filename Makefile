@@ -16,7 +16,9 @@ FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/e
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
 #	PROMPT
 FILES += prompt/prompt.c
-F_INC = -Iinclude
+#	MEMORY
+FILES += mem_manager/ft_malloc.c
+F_INC = -I ./include
 CC = cc
 # CC = gcc
 
@@ -39,6 +41,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/enviroment
 	mkdir -p $(OBJ_DIR)/signals
 	mkdir -p $(OBJ_DIR)/prompt
+	mkdir -p $(OBJ_DIR)/mem_manager
 
 $(NAME): $(OBJ_FILES) libft
 	$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline
