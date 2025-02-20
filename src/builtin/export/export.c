@@ -6,16 +6,15 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 16:37:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:23:06 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static void export_displayX()
+static void	export_displayX(void)
 {
-	char **env;
+	char	**env;
 
 	env = get_appstate()->enviroment;
 	while (*env)

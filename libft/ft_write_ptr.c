@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:30:36 by afelger           #+#    #+#             */
-/*   Updated: 2024/10/21 09:35:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 07:58:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	writeout_pointer(va_list ap, const char *hex_string)
 	shift[0] = 0xf;
 	shift[1] = 0;
 	number = (unsigned long long) va_arg(ap, void *);
-	if (write(1, "0x", 2) == -1)
+	if (write(ft_printf_get_fd(), "0x", 2) == -1)
 		return (-1);
 	while (shift[0] + 1)
 	{
@@ -31,7 +31,7 @@ int	writeout_pointer(va_list ap, const char *hex_string)
 		if (buff != 0 || (shift[0] == 0 && buff == 0) || shift[1] > 0)
 		{
 			shift[1] += (buff != 0);
-			if (write(1, &hex_string[buff], 1) == -1)
+			if (write(ft_printf_get_fd(), &hex_string[buff], 1) == -1)
 				return (-1);
 			count++;
 		}

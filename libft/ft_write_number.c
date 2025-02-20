@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:32:31 by afelger           #+#    #+#             */
-/*   Updated: 2024/10/21 09:36:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 07:58:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	writeout_uint(va_list ap)
 	count = 0;
 	divisor = get_divisor(number);
 	if (divisor == 0)
-		if (write(1, "0", 1) == -1)
+		if (write(ft_printf_get_fd(), "0", 1) == -1)
 			return (-1);
 	if (divisor == 0)
 		return (1);
 	while (divisor != 0)
 	{
 		result = number / divisor + '0';
-		if (write(1, &result, 1) == -1)
+		if (write(ft_printf_get_fd(), &result, 1) == -1)
 			return (-1);
 		number = number - number / divisor * divisor;
 		divisor /= 10;
@@ -55,7 +55,7 @@ int	writeout_int(va_list ap)
 		return (-1);
 	divisor = get_divisor(data);
 	if (divisor == 0)
-		if (write(1, "0", 1) == -1)
+		if (write(ft_printf_get_fd(), "0", 1) == -1)
 			return (-1);
 	if (divisor == 0)
 		return (1);
@@ -63,7 +63,7 @@ int	writeout_int(va_list ap)
 	{
 		result = data / divisor + '0';
 		data = data - data / divisor * divisor;
-		if (write(1, &result, 1) == -1)
+		if (write(ft_printf_get_fd(), &result, 1) == -1)
 			return (-1);
 		divisor /= 10;
 		count++;
@@ -89,7 +89,7 @@ static int	handle_negative(long long *data, int *count)
 	{
 		(*data) *= -1;
 		(*count)++;
-		if (write(1, "-", 1) == -1)
+		if (write(ft_printf_get_fd(), "-", 1) == -1)
 			return (-1);
 	}
 	return (1);

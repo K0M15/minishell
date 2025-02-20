@@ -6,18 +6,18 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 14:01:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:26:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ms_is_key(char *str, char *key)
+int	ms_is_key(char *str, char *key)
 {
-	int str_c;
-	
+	int	str_c;
+
 	str_c = ft_strlen(key);
-	if(ft_strncmp(str, key, str_c == 0) && str[str_c + 1] == '=')
+	if (ft_strncmp(str, key, str_c == 0) && str[str_c + 1] == '=')
 		return (1);
 	return (0);
 }
@@ -28,12 +28,12 @@ char	*ms_getkey(char *str)
 	char	*result;
 
 	c = 0;
-	while(str[c] && str[c] != '=')
+	while (str[c] && str[c] != '=')
 		c++;
 	result = malloc(c);
 	if (result == NULL)
 		return (NULL);
-	while(c >= 0)
+	while (c >= 0)
 	{
 		c--;
 		result[c] = str[c];
@@ -43,10 +43,10 @@ char	*ms_getkey(char *str)
 
 char	*ms_getvalue(char *str)
 {
-	int c;
+	int	c;
 
 	c = 0;
-	while(str[c] != '=' && str[c])
+	while (str[c] != '=' && str[c])
 		c++;
 	c++;
 	if (str[c] == 0)
@@ -58,7 +58,7 @@ int	ms_getindex(char *key)
 {
 	char	**enviroment;
 	int		ctr;
-	
+
 	enviroment = get_appstate()->enviroment;
 	ctr = 0;
 	while (*enviroment)
@@ -74,23 +74,22 @@ int	ms_getindex(char *key)
 char	*ms_get_env(char *key)
 {
 	char	**enviroment;
-	
+
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
 	{
-		
 		if (ms_is_key(*enviroment, key))
-			return ms_getvalue(*enviroment);
+			return (ms_getvalue(*enviroment));
 		enviroment++;
 	}
-	return NULL;
+	return (NULL);
 }
 
 char	*ms_setvalue(char *key, char *value)
 {
 	char	**enviroment;
 	char	*new_entry;
-	
+
 	new_entry = ft_strjoin(ft_strjoin(key, "="), value); // THIS COULD ERROR WITH EMPTY VALUE!
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
@@ -98,7 +97,7 @@ char	*ms_setvalue(char *key, char *value)
 		if (ms_is_key(*enviroment, key))
 		{
 			*enviroment = new_entry;
-			return new_entry;
+			return (new_entry);
 		}
 		enviroment++;
 	}
@@ -109,7 +108,7 @@ char	*ms_setvalue(char *key, char *value)
 
 int	ms_delete_value(char *key)
 {
-	int pos;
+	int	pos;
 
 	pos = ms_getindex(key);
 	if (pos == -1)
@@ -118,14 +117,13 @@ int	ms_delete_value(char *key)
 	return (1);
 }
 
-
 // env data structure
 
-char **ms_env_enhance()
+char	**ms_env_enhance()
 {
-	t_appstate *state;
-	char **new_env;
-	size_t i;
+	t_appstate	*state;
+	char		**new_env;
+	size_t		i;
 
 	state = get_appstate();
 	new_env = malloc(state->env_alloc * 2);
@@ -139,7 +137,7 @@ char **ms_env_enhance()
 
 int	ms_env_append(char *str)
 {
-	t_appstate *state;
+	t_appstate	*state;
 
 	state = get_appstate();
 	if (state->env_alloc == state->env_filled + 2)

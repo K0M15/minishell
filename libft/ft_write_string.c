@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:30:04 by afelger           #+#    #+#             */
-/*   Updated: 2024/10/21 09:35:45 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 07:57:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	writeout_string(va_list ap)
 	strl = 0;
 	if (str == NULL)
 	{
-		if (write(1, "(null)", 6) == -1)
+		if (write(ft_printf_get_fd(), "(null)", 6) == -1)
 			return (-1);
 		return (6);
 	}
 	while (str[strl])
 		strl++;
-	if (write(1, str, strl) == -1)
+	if (write(ft_printf_get_fd(), str, strl) == -1)
 		return (-1);
 	return (strl);
 }

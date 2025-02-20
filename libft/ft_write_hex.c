@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:31:40 by afelger           #+#    #+#             */
-/*   Updated: 2024/10/21 09:36:26 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 07:58:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	writeout_hex(va_list ap, const char *hex_string)
 		if (buff != 0 || (shift[0] == 0 && buff == 0) || shift[1] > 0)
 		{
 			shift[1] += (buff != 0);
-			if (write(1, &hex_string[buff], 1) == -1)
+			if (write(ft_printf_get_fd(), &hex_string[buff], 1) == -1)
 				return (-1);
 			count++;
 		}
