@@ -6,33 +6,83 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:03:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:28:16 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 11:23:29 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-struct sigaction	*get_sig_action(void)
+t_sigaction	*ms_get_sig_action(void)
 {
-	static struct sigaction	sa;
+	static t_sigaction	sa;
 
 	return (&sa);
 }
 
-void	ms_sig_handler(int signal, siginfo_t *info, void *ctx)
+void	ms_sig_handler_interactive(int signal, siginfo_t *info, void *ctx)
+{
+	if (signal == SIGQUIT)
+		return ;
+	(void) info;
+	(void) ctx;
+	g_ms_signal = signal;
+	write(STDERR_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	ms_sig_handler_heredoc(int signal, siginfo_t *info, void *ctx)
 {
 	(void) info;
 	(void) ctx;
 	g_ms_signal = signal;
+	//add entys to history
+	ms_set_state_mode(INTERACTIVE);
 }
+
+int	ms_sig_kill(t_command *process, int signal)
+{
+	return (kill(process->pid, signal));
+}
+
+int	ms_sig_kill_all(t_list *processes, int signal)
+{
+	int	buffer;
+	
+	buffer = 0;
+	while(processes != NULL)
+	{
+		buffer = buffer & ms_sig_kill((t_command *)processes->content, signal);
+	}
+	return (buffer);
+}
+
+void	ms_sig_handler_running(int signal, siginfo_t *info, void *ctx)
+{
+	t_appstate	*state;
+	
+	(void) info;
+	(void) ctx;
+	g_ms_signal = signal;
+	state = get_appstate();
+	ft_putstr_fd("^C\n", 1);
+	rl_on_new_line();
+	ms_sig_kill_all(state->children, signal);
+	ms_set_state_mode(INTERACTIVE);
+}
+
 
 void	ms_sig_init(void)
 {
-	struct sigaction	*sa;
+	t_sigaction	*sa;
 
-	sa = get_sig_action();
-	sa->sa_sigaction = &ms_sig_handler;
-	sa->sa_flags = 0;					//read this again.. are there usefull flags?
+	sa = ms_get_sig_action();
+	sa->sa_sigaction = &ms_sig_handler_interactive;
+	sa->sa_flags = SA_SIGINFO;
 	sigemptyset(&sa->sa_mask);
-	sigaction(SIGINT, sa, NULL);
+	if (sigaction(SIGINT, sa, NULL) == -1 || sigaction(SIGQUIT, sa, NULL))
+	{
+		ft_putstr_fd("Problem while setting up signals", 2);
+	}
 }
