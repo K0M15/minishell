@@ -6,15 +6,15 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:24:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/16 16:37:12 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:20:13 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int builtin_env(int argc, char **argv)
+int	builtin_env(int argc, char **argv)
 {
-	char **enviroment;
+	char	**enviroment;
 
 	(void) argc;
 	(void) argv;

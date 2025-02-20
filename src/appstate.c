@@ -6,15 +6,15 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/14 16:06:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:18:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_appstate *get_appstate()
+t_appstate	*get_appstate(void)
 {
 	static t_appstate	state;
 
 	return (&state);
-} 
+}

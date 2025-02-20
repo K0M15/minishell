@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 10:58:18 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/18 13:58:49 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:23:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	builtin_unset(int argc, char **argv)
 {
-	int c;
+	int	c;
 
 	if (argc == 1)
 	{

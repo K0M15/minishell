@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:11:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:16:19 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 extern char						**environ;
 
-extern volatile sig_atomic_t	g_ms_signal;
+volatile sig_atomic_t	g_ms_signal;
 
 typedef struct s_command
 {
@@ -58,7 +58,7 @@ typedef struct s_appstate
 	t_appmode	active_mode;
 }	t_appstate;
 
-t_appstate	*get_appstate();
+t_appstate	*get_appstate(void);
 
 int			builtin_pwd(int argc, char **argv);
 int			builtin_env(int argc, char **argv);

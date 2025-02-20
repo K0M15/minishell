@@ -6,15 +6,13 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:12:43 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:16:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 #define	HISTORY_FILENAME "hist_dump"
-
-volatile sig_atomic_t g_ms_signal;
 
 int main(int argc, char **argv, char **envp)
 {
