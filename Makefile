@@ -15,7 +15,7 @@ FILES += signals/signals.c
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
 #	PROMPT
-FILES += prompt/prompt.c prompt/history.c
+FILES += prompt/prompt.c prompt/history.c prompt/terminal.c
 #	MEMORY
 FILES += mem_manager/ft_malloc.c
 F_INC = -I ./include

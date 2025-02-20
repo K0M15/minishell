@@ -34,8 +34,8 @@ Runtime
 	=> abstraction for malloc
 		2 Areas => duration of minishell, duration of single line entry or heredoc
 	=> Signalhandling (Sigabort does not close shell)
-		SIGINT (STRG C)
-		SIGQUIT (STRG \) not needed, ignored
+		SIGINT (STRG C)					test needed		afelger
+		SIGQUIT (STRG \) not needed, ignored		TODO: avoid funny empty string display...
 		EXIT (STRG D)
 			enter "exit", then quit => not a signal but closing stdin
 		SIGTSTP (STRG Z) ?? check if handling is need				NO HANDLING NEEDED, WORKS OUT OF THE BOX 😁
