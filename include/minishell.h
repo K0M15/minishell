@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 08:53:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:11:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,22 @@ typedef struct s_command
 	unsigned int	ret_value;
 }	t_command;
 
+typedef enum e_appmode
+{
+	INTERACTIVE = 0,
+	HEREDOC,
+	RUNNING
+}	t_appmode;
+
 typedef struct s_appstate
 {
-	void	*alloc;
-	char	**enviroment;
-	size_t	env_alloc;
-	size_t	env_filled;
-	char	*working_directory;
-	t_list	*children;
+	void		*alloc;
+	char		**enviroment;
+	size_t		env_alloc;
+	size_t		env_filled;
+	char		*working_directory;
+	t_list		*children;
+	t_appmode	active_mode;
 }	t_appstate;
 
 t_appstate	*get_appstate();
@@ -96,6 +104,25 @@ int			ms_env_init(void);
 void		ms_display_welcome(void);
 //	get prompt string
 char		*ms_get_prompt(void);
+
+//	Writes out history entry to fd
+int			write_hist_entry(int fd, HIST_ENTRY *entry);
+/*
+	Replaces "search" inside of "content" with "replace"
+	If Truncate is not 0, all occurences from the right
+	of "search" will be replaced with 0 until the first
+	char that is not "search". Then they will be replaced
+	with "replace"
+*/
+void 		ft_replace(char *content, char search, char replace, int truncate);
+/* Will load filecontent into rl_history */
+void		load_history(char *filename);
+/*
+	Will dump rl_history into file. If file not
+	exists, create new.
+	If an error occurs, it will return -1
+*/
+int			dump_history(char *filname);
 
 // =================   STILL TODO   ================= //
 //	Initializes the signalhandling

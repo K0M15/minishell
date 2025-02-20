@@ -6,34 +6,15 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/19 15:55:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 09:12:43 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
+#define	HISTORY_FILENAME "hist_dump"
 
 volatile sig_atomic_t g_ms_signal;
-
-void write_hist_entry(int fd, HIST_ENTRY	*entry)
-{
-	if (entry == NULL)
-		return;
-	if (write(fd, ) == -1)
-		printf("ERR: FD closed");
-}
-
-void dump_history()
-{
-	HISTORY_STATE *state;
-	int i;
-
-	state = history_get_history_state();
-	i = -1;
-	printf("\n");
-	while (++i <= state->offset)
-		printf("%d: < %ld > %s\n", i, (long) state->entries[i]->timestamp, state->entries[i]->line);
-}
 
 int main(int argc, char **argv, char **envp)
 {
@@ -44,6 +25,7 @@ int main(int argc, char **argv, char **envp)
 	ms_env_init();
 	ms_display_welcome();
 	using_history();
+	load_history(HISTORY_FILENAME);
 	char *str;
 	while (1)
 	{
@@ -53,6 +35,6 @@ int main(int argc, char **argv, char **envp)
 		if (ft_strncmp("exit", str, 4) == 0)
 			break;
 	}
-	dump_history();
+	dump_history(HISTORY_FILENAME);
 	cleanup(0);
 }

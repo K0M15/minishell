@@ -56,9 +56,13 @@ PRINTF_FILES=	ft_printf.o\
 				ft_write_ptr.o \
 				ft_write_string.o
 
+GNL_FILES = get_next_line_utils.o \
+			get_next_line.o
+
 SOURCE=$(FILES:.o=.c)
 BONUS_SOURCE=$(BONUS_FILES:.o=.c)
 PRINTF_SOURCE=$(PRINTF_FILES:.o=.c)
+GNL_SOURCE=$(GNL_FILES:.o=.c)
 
 CFLAGS=-Wall -Wextra -Werror
 CC=cc
@@ -66,13 +70,14 @@ CC=cc
 
 all: bonus
 
-$(NAME): $(FILES) $(PRINTF_FILES)
-	ar -crs $(NAME) $(FILES) $(PRINTF_FILES)
+$(NAME): $(FILES) $(PRINTF_FILES) $(GNL_FILES)
+	ar -crs $(NAME) $(FILES) $(PRINTF_FILES) $(GNL_FILES)
 
 clean:
 	rm -f $(FILES)
 	rm -f $(PRINTF_FILES)
 	rm -f $(BONUS_FILES)
+	rm -f $(GNL_FILES)
 
 fclean: clean
 	rm -f libft.a
@@ -82,8 +87,8 @@ re: fclean all
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-bonus: $(FILES) $(BONUS_FILES) $(NAME) $(PRINTF_FILES)
-	ar -crs $(NAME) $(FILES) $(BONUS_FILES) $(PRINTF_FILES)
+bonus: $(FILES) $(BONUS_FILES) $(NAME) $(PRINTF_FILES) $(GNL_FILES)
+	ar -crs $(NAME) $(FILES) $(BONUS_FILES) $(PRINTF_FILES) $(GNL_FILES)
 
 norm:
-	norminette $(SOURCE) $(BONUS_SOURCE) $(PRINTF_SOURCE)
+	norminette $(SOURCE) $(BONUS_SOURCE) $(PRINTF_SOURCE) $(GNL_FILES)
