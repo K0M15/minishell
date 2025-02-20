@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 11:28:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 11:59:21 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "ft_malloc.h"
 
 # define ENV_ALLOC_SIZE 1024
+# define ARG_MAX 262144				//256kb == "$>getconf ARG_MAX"... with 10 calls = 2mb
 # define HISTORY_FILENAME "hist_dump"
 
 typedef struct sigaction t_sigaction;
@@ -35,10 +36,11 @@ volatile sig_atomic_t	g_ms_signal;
 
 typedef struct s_command
 {
-	void			*alloc;
-	char			*input;
-	void			*tokens;
-	void			*ast;
+	char			*prg_name;
+	//	CURRENTLY i think the underlieing struct argv should be a string... it contains all the entered data.
+	//	**argv points then at zero-terminated parts of this string.
+	//	
+	char			**argv;			// must be null terminated, alloc ARG_MAX + 1
 	unsigned int	pid;
 	unsigned int	ret_value;
 }	t_command;
@@ -52,7 +54,6 @@ typedef enum e_appmode
 
 typedef struct s_appstate
 {
-	void			*alloc;
 	char			**enviroment;
 	size_t			env_alloc;
 	size_t			env_filled;

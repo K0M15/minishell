@@ -1,12 +1,12 @@
 
 something to decide
-	- use persistent history, eg. save it to file
+	- use persistent history, eg. save it to file							done
 	- how much work is it, to add input of heredoc to history?
 	- could we handle readline leak if we fork the process for each input?
 	- cd: should we use the non directory path?
 	
 Parsing
-	=> input handling and history 
+	=> input handling and history
 	=> parsing & tokenizing
 	=> Handling quotes + braces
 	=> Variable expansion
