@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:16:19 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 11:28:20 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # include "ft_malloc.h"
 
 # define ENV_ALLOC_SIZE 1024
+# define HISTORY_FILENAME "hist_dump"
+
+typedef struct sigaction t_sigaction;
 
 extern char						**environ;
 
@@ -49,16 +52,21 @@ typedef enum e_appmode
 
 typedef struct s_appstate
 {
-	void		*alloc;
-	char		**enviroment;
-	size_t		env_alloc;
-	size_t		env_filled;
-	char		*working_directory;
-	t_list		*children;
-	t_appmode	active_mode;
+	void			*alloc;
+	char			**enviroment;
+	size_t			env_alloc;
+	size_t			env_filled;
+	char			*working_directory;
+	t_list			*children;
+	t_appmode		active_mode;
 }	t_appstate;
 
 t_appstate	*get_appstate(void);
+/*
+	Sets the mode of get_appstate
+	Changes interrupts appropriate
+*/	
+void		ms_set_state_mode(t_appmode mode);
 
 int			builtin_pwd(int argc, char **argv);
 int			builtin_env(int argc, char **argv);
@@ -124,9 +132,18 @@ void		load_history(char *filename);
 */
 int			dump_history(char *filname);
 
+void		init_terminal(void);
+
 // =================   STILL TODO   ================= //
 //	Initializes the signalhandling
 void		ms_sig_init(void);
+t_sigaction	*ms_get_sig_action(void);
+void		ms_sig_handler_interactive(int signal, siginfo_t *info, void *ctx);
+void		ms_sig_handler_heredoc(int signal, siginfo_t *info, void *ctx);
+void		ms_sig_handler_running(int signal, siginfo_t *info, void *ctx);
+int			ms_sig_kill_all(t_list *processes, int signal);
+int			ms_sig_kill(t_command *process, int signal);
+
 /**
  * Three different modes to check:					Behaviour
  * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history
