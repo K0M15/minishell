@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:13:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 07:54:12 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 08:53:45 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 int		ft_printf_set_fd(int fd);
-int		ft_printf_get_fd();
+int		ft_printf_get_fd(void);
 
 int		ft_printf(const char *str, ...)__attribute__((format(printf, 1, 2)));
 int		writeout_char(va_list ap);

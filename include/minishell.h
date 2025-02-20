@@ -6,10 +6,9 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/19 15:25:00 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 08:53:20 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -27,9 +26,9 @@
 
 # define ENV_ALLOC_SIZE 1024
 
-extern char **environ;
+extern char						**environ;
 
-extern volatile sig_atomic_t g_ms_signal;
+extern volatile sig_atomic_t	g_ms_signal;
 
 typedef struct s_command
 {
@@ -51,7 +50,7 @@ typedef struct s_appstate
 	t_list	*children;
 }	t_appstate;
 
-t_appstate *get_appstate();
+t_appstate	*get_appstate();
 
 int			builtin_pwd(int argc, char **argv);
 int			builtin_env(int argc, char **argv);
@@ -77,11 +76,18 @@ int			ms_is_key(char *str, char *key);
 //	Extracts the key of key=value in str. Needs to be freed
 char		*ms_getkey(char *str);
 
-//	Enhances the enviroment array by allocating a new, double the size, and copying the values, then freeing the old and replacing the value in get_appstate()
-char		**ms_env_enhance();
+/**
+ * 	Enhances the enviroment array by allocating a new, double the size,
+ * 	and copying the values,
+ * 	then freeing the old and replacing the value in get_appstate()
+ */
+char		**ms_env_enhance(void);
 //	Appends a key to get_appstate()->enviroment
 int			ms_env_append(char *str);
-//	Deletes a position inside of get_appstate()->enviroment by shifting all elements after it one place forward
+/*	
+	Deletes a position inside of get_appstate()->enviroment
+	by shifting all elements after it one place forward
+*/
 void		ms_env_delete(int id);
 //	Initializes the appstate enviroment with variables from existing enviroment
 int			ms_env_init(void);
@@ -91,11 +97,9 @@ void		ms_display_welcome(void);
 //	get prompt string
 char		*ms_get_prompt(void);
 
-
-
 // =================   STILL TODO   ================= //
 //	Initializes the signalhandling
-void	ms_sig_init(void);
+void		ms_sig_init(void);
 /**
  * Three different modes to check:					Behaviour
  * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history

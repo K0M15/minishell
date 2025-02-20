@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:28:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 07:57:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 08:54:16 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int	writeout_char(va_list ap)
 	return (1);
 }
 
-int		ft_printf_set_fd(int fd)
+int	ft_printf_set_fd(int fd)
 {
-	static current_fd;
+	static int	current_fd;
 
-	if (current_fd = 0)
+	if (current_fd == 0)
 		current_fd = 1;
 	if (fd < 0)
 		return (current_fd);
@@ -34,7 +34,7 @@ int		ft_printf_set_fd(int fd)
 	return (fd);
 }
 
-int		ft_printf_get_fd()
+int	ft_printf_get_fd(void)
 {
 	return (ft_printf_set_fd(-1));
 }
