@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 09:28:49 by afelger           #+#    #+#             */
-/*   Updated: 2024/10/21 09:35:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/20 07:57:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,24 @@ int	writeout_char(va_list ap)
 	char	c;
 
 	c = va_arg(ap, int);
-	if (write(1, &c, 1) == -1)
+	if (write(ft_printf_get_fd(), &c, 1) == -1)
 		return (-1);
 	return (1);
+}
+
+int		ft_printf_set_fd(int fd)
+{
+	static current_fd;
+
+	if (current_fd = 0)
+		current_fd = 1;
+	if (fd < 0)
+		return (current_fd);
+	current_fd = fd;
+	return (fd);
+}
+
+int		ft_printf_get_fd()
+{
+	return (ft_printf_set_fd(-1));
 }
