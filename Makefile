@@ -15,7 +15,7 @@ FILES += signals/signals.c
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
 #	PROMPT
-FILES += prompt/prompt.c prompt/history.c prompt/terminal.c
+FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c
 #	MEMORY
 FILES += mem_manager/ft_malloc.c
 #	EXECUTION
@@ -36,6 +36,10 @@ all: $(OBJ_DIR) $(NAME)
 texe: $(OBJ_DIR) $(OBJ_FILES)
 	cc tests/test_run_command.c $(filter-out objects/minishell.o, $(OBJ_FILES)) $(F_INC) -o tests/test_run_command $(FLAGS) $(PATH_LIBFT) -lreadline
 	time tests/test_run_command
+
+theredoc: $(OBJ_DIR) $(OBJ_FILES)
+	cc tests/test_run_heredoc.c $(filter-out objects/minishell.o, $(OBJ_FILES)) $(F_INC) -o tests/test_run_heredoc $(FLAGS) $(PATH_LIBFT) -lreadline
+	time tests/test_run_heredoc
 
 # Create object directory if it doesn't exist
 $(OBJ_DIR):

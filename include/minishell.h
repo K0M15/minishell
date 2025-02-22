@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/22 17:28:58 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/22 18:15:22 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,16 @@ int			ms_sig_kill(t_command *process, int signal);
 
 int			run_command(t_command	*cmd);
 int			run_single_pipe(t_command *cmdone, t_command *cmdtwo);
+
+
+struct s_doc
+{
+	struct s_doc	*next;
+	char			*content;
+	int				length;
+};
+
+int			ms_heredoc(char *dellimter, int fd, struct s_doc *document, int exit);
 /**
  * Three different modes to check:					Behaviour
  * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history
