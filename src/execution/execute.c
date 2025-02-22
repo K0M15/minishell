@@ -6,34 +6,92 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:38:54 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 11:59:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:38:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-char	*find_prg_path(char *prg_name);
-int	add_prg_to_argc(char *prg_name, char **args)
+// char	*get_prg_from_var(char *prg_name, char **env)
+// {
+// 	//need to read string splited by :
+// 	//search 
+// }
+
+char	*find_prg_path(char *prg_name)
 {
-	int c;
+	if (prg_name[0] == '.' && prg_name[0] == '/')
+		return (prg_name);
+	else
+		ft_printf("PATH not implemented");
+		return (prg_name);
+		// return (get_prg_from_var(prg_name), ms_get_env("PATH"))
+}
 
-	c = 0;
-	while(argc[c] != NULL && c < ARG_MAX)
+int run_single_pipe(t_command *cmdone, t_command *cmdtwo)
+{
+	int pipefd[2];
+	int stat_loc[2];
+
+	if (pipe(pipefd) != 0)
+		return (-1);
+	cmdone->pid = fork();
+	if (cmdone->pid == -1)
+		return (-1);
+	else if (cmdone->pid != 0)
 	{
-
-		c++;
+		cmdtwo->pid = fork();
+		if (cmdtwo->pid == -1)
+			return (-1); // kill first fork? YES
+		else if (cmdtwo->pid != 0)
+		{
+			waitpid(cmdone->pid, &stat_loc[0], 0);
+			waitpid(cmdone->pid, &stat_loc[1], 0);
+			cmdone->ret_value = WEXITSTATUS(stat_loc[0]);
+			cmdtwo->ret_value = WEXITSTATUS(stat_loc[1]);
+			return 1;
+		}
+		// cmdtwoprocess
+		dup2(pipefd[0], 0);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		if (execve(cmdtwo->prg_name, cmdtwo->argv, get_appstate()->enviroment) == -1)
+			exit(-1);
 	}
+	dup2(pipefd[1], 1);
+	close(pipefd[0]);
+	close(pipefd[1]);
+	if (execve(cmdone->prg_name, cmdone->argv, get_appstate()->enviroment) == -1)
+		exit(-1);
+	printf("NOT IMPLEMENTED"); // not implemented
+	return (1);
+}
+
+int run_piped(t_command *cmds, int amount)
+{
+	(void) cmds;
+	(void) amount;
+	printf("NOT IMPLEMENTED"); // not implemented
+	return (1);
 }
 
 int run_command(t_command	*cmd)
 {
-	char	*prg_path;
-	// find program in path?
-	prg_path = find_prg_path(cmd->prg_name)
-	if (prg_path == -1)
+	// char	*prg_path;
+	int stat_loc;
+	cmd->pid = fork();
+	if (cmd->pid == -1)
 		return (-1);
-	if(add_prg_to_argc(cmd->prg_name, cmd->args) != 1)
-		return (-1);
-	cmd->pid = execve(prg_path, cmd->args, get_appstate()->enviroment)
+	else if (cmd->pid == 0)
+	{
+		if (execve(cmd->prg_name, cmd->argv, get_appstate()->enviroment) == -1)
+			exit(-1);
+	}
+	waitpid(cmd->pid, &stat_loc, 0);
+	if (WIFEXITED(stat_loc))
+		cmd->ret_value = WEXITSTATUS(stat_loc);
+	else
+		cmd->ret_value = -1;
+	return (0);
 }
