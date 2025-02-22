@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 11:59:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:28:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ volatile sig_atomic_t	g_ms_signal;
 
 typedef struct s_command
 {
+	//	Progname should be contained in argv, but has to be found in PATH
 	char			*prg_name;
 	//	CURRENTLY i think the underlieing struct argv should be a string... it contains all the entered data.
-	//	**argv points then at zero-terminated parts of this string.
+	//	**argv points then at zero-terminated parts of this string. We just exchange ' ' (spaces) with /0 (zeroterm)
 	//	
 	char			**argv;			// must be null terminated, alloc ARG_MAX + 1
-	unsigned int	pid;
+	int				pid;
 	unsigned int	ret_value;
 }	t_command;
 
@@ -60,6 +61,7 @@ typedef struct s_appstate
 	char			*working_directory;
 	t_list			*children;
 	t_appmode		active_mode;
+	int				rainbow;
 }	t_appstate;
 
 t_appstate	*get_appstate(void);
@@ -145,6 +147,9 @@ void		ms_sig_handler_running(int signal, siginfo_t *info, void *ctx);
 int			ms_sig_kill_all(t_list *processes, int signal);
 int			ms_sig_kill(t_command *process, int signal);
 
+
+int			run_command(t_command	*cmd);
+int			run_single_pipe(t_command *cmdone, t_command *cmdtwo);
 /**
  * Three different modes to check:					Behaviour
  * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history
