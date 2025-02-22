@@ -18,6 +18,9 @@ FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
 FILES += prompt/prompt.c prompt/history.c prompt/terminal.c
 #	MEMORY
 FILES += mem_manager/ft_malloc.c
+#	EXECUTION
+FILES += execution/execute.c
+
 F_INC = -I ./include
 CC = cc
 # CC = gcc
@@ -29,6 +32,11 @@ OBJ_FILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(FILES))
 
 all: $(OBJ_DIR) $(NAME)
 
+#Test execution
+texe: $(OBJ_DIR) $(OBJ_FILES)
+	cc tests/test_run_command.c $(filter-out objects/minishell.o, $(OBJ_FILES)) $(F_INC) -o tests/test_run_command $(FLAGS) $(PATH_LIBFT) -lreadline
+	time tests/test_run_command
+
 # Create object directory if it doesn't exist
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/builtin/pwd
@@ -39,6 +47,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/builtin/exit
 	mkdir -p $(OBJ_DIR)/builtin/env
 	mkdir -p $(OBJ_DIR)/enviroment
+	mkdir -p $(OBJ_DIR)/execution
 	mkdir -p $(OBJ_DIR)/signals
 	mkdir -p $(OBJ_DIR)/prompt
 	mkdir -p $(OBJ_DIR)/mem_manager
