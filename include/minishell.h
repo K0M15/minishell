@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/24 15:16:39 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:24:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_command
 	char			**argv;			// must be null terminated, alloc ARG_MAX + 1
 	int				pid;
 	unsigned int	ret_value;
+	int				pipe_in;
+	int				pipe_out;
 }	t_command;
 
 typedef enum e_appmode
