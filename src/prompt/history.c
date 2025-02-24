@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:00:55 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:27:53 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/24 15:54:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,11 @@ int	dump_history(char * filename)
 		return (-1);
 	i = 0;
 	while (++i <= state->offset)
+	{
 		if(write_hist_entry(fd, state->entries[i]) == -1)
 			return (-1);
+		free(state->entries[i]);
+	}
 	if(close(fd) == -1)
 		return (-1);
 	return (0);
