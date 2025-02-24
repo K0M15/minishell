@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/24 15:17:01 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/24 15:33:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int ms_heredoc(char *dellimter, int fd, t_doc *document)
 	t_doc	*last;
 	int				iseof;
 
-	str = readline("heredoc> ");
+	str = readline("> ");
 	iseof = (ft_strncmp(str, dellimter, ft_strlen(dellimter)) == 0);
 	if (iseof && document == NULL)
 	{
