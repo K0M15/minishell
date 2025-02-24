@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/22 18:15:22 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/24 15:16:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,14 +152,21 @@ int			run_command(t_command	*cmd);
 int			run_single_pipe(t_command *cmdone, t_command *cmdtwo);
 
 
-struct s_doc
+typedef struct s_doc
 {
 	struct s_doc	*next;
 	char			*content;
 	int				length;
-};
+}	t_doc;
 
-int			ms_heredoc(char *dellimter, int fd, struct s_doc *document, int exit);
+//	executes heredoc. dellimter = EOF, fd -> output pipe, document = NULL (is called recursive)
+int			ms_heredoc(char *dellimter, int fd, t_doc *document);
+t_doc		*ms_doc_app_or_new(struct s_doc **document);
+int			ms_doc_display_free(struct s_doc *document, int fd);
+char		*ms_doc_construct(struct s_doc *document);
+int			ms_doc_get_length(struct s_doc *document);
+int			ms_doc_append(struct s_doc *document, struct s_doc **last);
+
 /**
  * Three different modes to check:					Behaviour
  * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history
