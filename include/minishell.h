@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 16:58:04 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 16:59:50 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include "ft_malloc.h"
 
 # define ENV_ALLOC_SIZE 1024
+# define ARG_MAX 262144				//256kb == "$>getconf ARG_MAX"... with 10 calls = 2mb
 # define HISTORY_FILENAME "hist_dump"
 
 typedef struct sigaction t_sigaction;
@@ -41,12 +42,16 @@ volatile sig_atomic_t	g_ms_signal;
 
 typedef struct s_command
 {
-	void			*alloc;
-	char			*input;
-	void			*tokens;
-	void			*ast;
-	unsigned int	pid;
+	//	Progname should be contained in argv, but has to be found in PATH
+	char			*prg_name;
+	//	CURRENTLY i think the underlieing struct argv should be a string... it contains all the entered data.
+	//	**argv points then at zero-terminated parts of this string. We just exchange ' ' (spaces) with /0 (zeroterm)
+	//	
+	char			**argv;			// must be null terminated, alloc ARG_MAX + 1
+	int				pid;
 	unsigned int	ret_value;
+	int				pipe_in;
+	int				pipe_out;
 }	t_command;
 
 typedef enum e_appmode
@@ -58,13 +63,13 @@ typedef enum e_appmode
 
 typedef struct s_appstate
 {
-	void			*alloc;
 	char			**enviroment;
 	size_t			env_alloc;
 	size_t			env_filled;
 	char			*working_directory;
 	t_list			*children;
 	t_appmode		active_mode;
+	int				rainbow;
 }	t_appstate;
 
 t_appstate	*get_appstate(void);
@@ -149,6 +154,26 @@ void		ms_sig_handler_heredoc(int signal, siginfo_t *info, void *ctx);
 void		ms_sig_handler_running(int signal, siginfo_t *info, void *ctx);
 int			ms_sig_kill_all(t_list *processes, int signal);
 int			ms_sig_kill(t_command *process, int signal);
+
+
+int			run_command(t_command	*cmd);
+int			run_single_pipe(t_command *cmdone, t_command *cmdtwo);
+
+
+typedef struct s_doc
+{
+	struct s_doc	*next;
+	char			*content;
+	int				length;
+}	t_doc;
+
+//	executes heredoc. dellimter = EOF, fd -> output pipe, document = NULL (is called recursive)
+int			ms_heredoc(char *dellimter, int fd, t_doc *document);
+t_doc		*ms_doc_app_or_new(struct s_doc **document);
+int			ms_doc_display_free(struct s_doc *document, int fd);
+char		*ms_doc_construct(struct s_doc *document);
+int			ms_doc_get_length(struct s_doc *document);
+int			ms_doc_append(struct s_doc *document, struct s_doc **last);
 
 /**
  * Three different modes to check:					Behaviour

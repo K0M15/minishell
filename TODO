@@ -1,6 +1,6 @@
 
 something to decide
-	- use persistent history, eg. save it to file
+	- use persistent history, eg. save it to file							done
 	- how much work is it, to add input of heredoc to history?
 	- could we handle readline leak if we fork the process for each input?
 	- cd: should we use the non directory path?
@@ -24,13 +24,18 @@ Execution
 	=> Redirecting
 	=> Pipes
 	=> execve
-	=> Heredoc	(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
+	=> Heredoc	
+				(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
 				(there could be multiple)
+				prompt and write to fd done				afelger
+				test needed
+				double heredoc: only the last heredoc is redirected to the fd. So maybe we should pack this into a single string and overwrite it with the next heredoc
 
 Runtime
 	=> Variables
 		get in main						not needed due to global environ like in description of POSIX.1
 		put to variable					test needed		afelger
+		READ Pid and output on $$ 	//$$			- not posible, needs to be handled? NOOOO
 	=> abstraction for malloc
 		2 Areas => duration of minishell, duration of single line entry or heredoc
 	=> Signalhandling (Sigabort does not close shell)
@@ -39,6 +44,9 @@ Runtime
 		EXIT (STRG D)
 			enter "exit", then quit => not a signal but closing stdin
 		SIGTSTP (STRG Z) ?? check if handling is need				NO HANDLING NEEDED, WORKS OUT OF THE BOX 😁
+
+FUN:
+	- implement Rainbowmode
 
 [program] >> [FILENAME]	append to filename
 << [EOF char]	wait for [EOF char] and the pipe as input
@@ -77,3 +85,6 @@ new git commands:
 	=> git branch [name] creates branch name
 	=> git checkout [name] switches to branch
 	=> git merge [name] merge branch name to current branch
+
+Somthing about Here-Doc and some realy advanced shell
+https://stackoverflow.com/questions/72652796/how-does-this-redirection-after-a-here-document-work
