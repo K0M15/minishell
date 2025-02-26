@@ -20,5 +20,5 @@ int main()
 	cmdtwo.pid = 0;
 	cmdtwo.ret_value = 0xFFFF;
 	
-	printf(" CMD Result: %d => Return Value is %d\n", run_single_pipe(&cmdone, &cmdtwo), cmdone.ret_value);
+	printf(" CMD Result: %d => Return Value is %d, second is %d\n", run_single_pipe(&cmdone, &cmdtwo), cmdone.ret_value, cmdtwo.ret_value);
 }

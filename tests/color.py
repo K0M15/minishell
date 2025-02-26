@@ -15,3 +15,5 @@ for line in stdin:
 	stdout.write(f"\033[38;5;{color.__next__()}m")
 	stdout.write(line)
 	stdout.write("\033[0m")
+
+exit(0)

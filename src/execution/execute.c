@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:38:54 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/24 17:39:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 16:43:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,61 +54,60 @@ int run_single_pipe(t_command *cmdone, t_command *cmdtwo)
 			return (1);
 		}
 		// cmdtwo process
-		dup2(pipefd[0], 0);
+		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		if (execve(cmdtwo->prg_name, cmdtwo->argv, get_appstate()->enviroment) == -1)
 			exit(-1);
 	}
 	// cmdone process
-	dup2(pipefd[1], 1);
+	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	if (execve(cmdone->prg_name, cmdone->argv, get_appstate()->enviroment) == -1)
-		exit(-1);
-	return (1);
+	execve(cmdone->prg_name, cmdone->argv, get_appstate()->enviroment);
+	exit(-1);
 }
 
-int run_piped(t_command *cmds, int amount)
-{
-	int pipefd[3];
-	int *stat_loc;
-	int	counter;
+// int run_piped(t_command *cmds, int amount)
+// {
+// 	int pipefd[3];
+// 	int *stat_loc;
+// 	int	counter;
 
-	counter = 0;
-	stat_loc = malloc(amount);
-	while(counter < amount)
-	{
-		if (pipe(pipefd) != 0)	// [0] == read, [1] == write
-			return (-1);
-		if (counter != (amount - 1)){
-			cmds[counter + 1].pipe_in = pipefd[0];
-			cmds[counter].pipe_out = pipefd[1];
-		}
-		cmds[counter].pid = fork();
-		if (cmds[counter].pid < -1)
-			return (-1);				// Pipe broken, SIGINT all other progs
-		else if(cmds[counter].pid != 0)
-		{	//0 and amount -1 get read / write not duplicated OR 0 and 1 should be already set
-			dup2(cmds[counter].pipe_in, 0);
-			dup2(cmds[counter].pipe_out, 1);
-			if (execve(cmds[counter].prg_name, cmds[counter].argv, get_appstate()->enviroment) == -10)
-				exit(-1);
-		}
-		else{
-			if (close(pipefd[0]) < 0 || close(pipefd[1] < 0))
-				return (-1);
-			counter++;
-		}
-	}
-	counter = -1;
-	while(++counter < amount)
-	{
-		waitpid(cmds[counter].pid, stat_loc[counter], 0);
-		cmds[counter].ret_value = WEXITSTATUS(stat_loc[counter]);
-	}
-	free(stat_loc);
-}
+// 	counter = 0;
+// 	stat_loc = malloc(amount);
+// 	while(counter < amount)
+// 	{
+// 		if (pipe(pipefd) != 0)	// [0] == read, [1] == write
+// 			return (-1);
+// 		if (counter != (amount - 1)){
+// 			cmds[counter + 1].pipe_in = pipefd[0];
+// 			cmds[counter].pipe_out = pipefd[1];
+// 		}
+// 		cmds[counter].pid = fork();
+// 		if (cmds[counter].pid < -1)
+// 			return (-1);				// Pipe broken, SIGINT all other progs
+// 		else if(cmds[counter].pid != 0)
+// 		{	//0 and amount -1 get read / write not duplicated OR 0 and 1 should be already set
+// 			dup2(cmds[counter].pipe_in, 0);
+// 			dup2(cmds[counter].pipe_out, 1);
+// 			if (execve(cmds[counter].prg_name, cmds[counter].argv, get_appstate()->enviroment) == -10)
+// 				exit(-1);
+// 		}
+// 		else{
+// 			if (close(pipefd[0]) < 0 || close(pipefd[1] < 0))
+// 				return (-1);
+// 			counter++;
+// 		}
+// 	}
+// 	counter = -1;
+// 	while(++counter < amount)
+// 	{
+// 		waitpid(cmds[counter].pid, &stat_loc[counter], 0);
+// 		cmds[counter].ret_value = WEXITSTATUS(stat_loc[counter]);
+// 	}
+// 	free(stat_loc);
+// }
 
 int run_command(t_command	*cmd)
 {
