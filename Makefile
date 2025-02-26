@@ -20,8 +20,6 @@ FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
 FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c prompt/heredoc_util.c
 #	MEMORY
 FILES += mem_manager/ft_malloc.c
-#	EXECUTION
-FILES += execution/execute.c
 
 F_INC = -I ./include
 CC = cc
@@ -57,6 +55,8 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/signals
 	@mkdir -p $(OBJ_DIR)/prompt
 	@mkdir -p $(OBJ_DIR)/mem_manager
+	@mkdir -p $(OBJ_DIR)/AST
+	@mkdir -p $(OBJ_DIR)/state
 
 $(NAME): $(OBJ_FILES) libft
 	@$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline

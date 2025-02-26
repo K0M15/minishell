@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exampleAST.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/26 16:14:16 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:26:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,10 @@ t_command	*parse_pipeline(Token **tokens)
 	// Parse the first command
 	left = parse_simple_command(tokens);
 	if (!left)
-	{
 		return (NULL);
-	}
 	// Check if there's a pipe
 	if ((*tokens)->type != TOKEN_PIPE)
-	{
 		return (left);
-	}
 	// Consume the pipe token
 	*tokens = (*tokens)->next;
 	// Parse the right side of the pipe
@@ -151,10 +147,8 @@ t_redirection	*parse_redirection(Token **tokens)
 	current = current->next;
 	// Check if there's a file/delimiter
 	if (!current || current->type != TOKEN_WORD)
-	{
 		// Handle error: expected filename after redirection
 		return (NULL);
-	}
 	// Create redirection
 	redir = create_redirection(type, current->value);
 	// Consume the filename token
@@ -333,6 +327,23 @@ void	expand_variables(t_command *cmd, char **env)
 // Helper to expand variables in a string
 char	*expand_variables_in_string(const char *str, char **env)
 {
+	char	**result;
+	int		length;
+	
+	length = ft_strlen(str);
+	while(*str)
+	{
+		if (*str == '$')
+		{
+			int c = 0;
+			while (ft_isspace(str[c]))
+				c++;
+			char *data = ft_strndup(str, )
+			length = length - c + ft_strlen(ms_get_env(data))
+			
+		}
+		str++;
+	}
 	// Implementation depends on your shell's behavior
 	// Should handle:
 	// 1. Regular variables: $HOME, $USER, etc.
@@ -349,15 +360,12 @@ int	execute_command(t_command *cmd, char **env)
 	// Expand variables before execution
 	expand_variables(cmd, env);
 	// Execute based on command type
-	switch (cmd->type)
-	{
-	case CMD_SIMPLE:
+	if (cmd->type == CMD_SIMPLE)
 		return (execute_simple_command(cmd, env));
-	case CMD_PIPE:
+	else if (cmd->type == CMD_PIPE)
 		return (execute_pipe_command(cmd, env));
-	default:
+	else
 		return (1); // Error - unknown command type
-	}
 }
 
 // Execute a simple command

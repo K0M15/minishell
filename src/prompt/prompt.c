@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:13:02 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 10:59:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:23:44 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ char	*ms_get_prompt(void)
 
 	// pwd = get_appstate()->working_directory;
 	//get start of last directory. if root + 1 display / in prompt
-	return (SET_BGCOLOR_FIVE"minishell >"RESET_COLOR);
+	return ("minishell >");
 }

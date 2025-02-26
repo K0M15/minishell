@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 18:18:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:20:56 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_command
 
 	// For all commands - redirections
 	t_redirection *redirections; // List of redirections
+	pid_t				pid;
 }				t_command;
 
 #define INITIAL_ARG_CAPACITY 16
@@ -110,20 +111,6 @@ typedef struct sigaction t_sigaction;
 extern char						**environ;
 
 volatile sig_atomic_t	g_ms_signal;
-
-typedef struct s_command
-{
-	//	Progname should be contained in argv, but has to be found in PATH
-	char			*prg_name;
-	//	CURRENTLY i think the underlieing struct argv should be a string... it contains all the entered data.
-	//	**argv points then at zero-terminated parts of this string. We just exchange ' ' (spaces) with /0 (zeroterm)
-	//	
-	char			**argv;			// must be null terminated, alloc ARG_MAX + 1
-	int				pid;
-	unsigned int	ret_value;
-	int				pipe_in;
-	int				pipe_out;
-}	t_command;
 
 typedef enum e_appmode
 {
