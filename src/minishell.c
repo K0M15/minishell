@@ -3,47 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/20 11:28:37 by afelger          ###   ########.fr       */
-=======
-/*   Updated: 2025/02/26 16:32:47 by ckrasniq         ###   ########.fr       */
->>>>>>> remotes/github/ckrasniq
+/*   Updated: 2025/02/26 16:58:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
-<<<<<<< HEAD
-int main(int argc, char **argv, char **envp)
-{
-	(void) argc;
-	(void) argv;
-	(void) envp;
+// int main(int argc, char **argv, char **envp)
+// {
+// 	(void) argc;
+// 	(void) argv;
+// 	(void) envp;
 
-	ms_env_init();
-	ms_display_welcome();
-	using_history();
-	load_history(HISTORY_FILENAME);
-	ms_sig_init();
-	init_terminal();
-	ms_set_state_mode(INTERACTIVE);
-	char *str;
-	while (1)
-	{
-		str = ft_mem_reg(readline(ms_get_prompt()));
-		add_history(str); // check beforehand if string is empty
-		if (ft_strncmp("exit", str, 4) == 0)
-			break;
-		if (ft_strncmp("change", str, 6) == 0)
-			ms_set_state_mode(RUNNING);
-	}
-	dump_history(HISTORY_FILENAME);
-	cleanup(0);
-=======
+// 	ms_env_init();
+// 	ms_display_welcome();
+// 	using_history();
+// 	load_history(HISTORY_FILENAME);
+// 	ms_sig_init();
+// 	init_terminal();
+// 	ms_set_state_mode(INTERACTIVE);
+// 	char *str;
+// 	while (1)
+// 	{
+// 		str = ft_mem_reg(readline(ms_get_prompt()));
+// 		add_history(str); // check beforehand if string is empty
+// 		if (ft_strncmp("exit", str, 4) == 0)
+// 			break;
+// 		if (ft_strncmp("change", str, 6) == 0)
+// 			ms_set_state_mode(RUNNING);
+// 	}
+// 	dump_history(HISTORY_FILENAME);
+// 	cleanup(0);
 
 // int	main(void)
 // {
@@ -104,5 +98,4 @@ int	main(void)
 		free(input);
 	}
 	return (0);
->>>>>>> remotes/github/ckrasniq
 }
