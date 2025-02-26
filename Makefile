@@ -7,11 +7,11 @@ FLAGS += -g -fsanitize=address
 NAME = minishell
 SRC_DIR = src
 #   CORE
-FILES=minishell.c
+FILES = minishell.c
 #	PARSING
-FILES += tokenizing.c
+FILES += AST/tokenizing.c
 #	RUNTIME
-FILES += enviroment/enviroment.c appstate.c
+FILES += enviroment/enviroment.c state/appstate.c
 FILES += signals/signals.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
