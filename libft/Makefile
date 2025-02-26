@@ -33,6 +33,7 @@ FILES=		ft_atoi.o \
 			ft_strmapi.o \
 			ft_strtrim.o \
 			ft_strdup.o \
+			ft_strndup.o \
 			ft_substr.o \
 			ft_strjoin.o \
 			ft_striteri.o \
@@ -74,21 +75,21 @@ $(NAME): $(FILES) $(PRINTF_FILES) $(GNL_FILES)
 	ar -crs $(NAME) $(FILES) $(PRINTF_FILES) $(GNL_FILES)
 
 clean:
-	rm -f $(FILES)
-	rm -f $(PRINTF_FILES)
-	rm -f $(BONUS_FILES)
-	rm -f $(GNL_FILES)
+	@rm -f $(FILES)
+	@rm -f $(PRINTF_FILES)
+	@rm -f $(BONUS_FILES)
+	@rm -f $(GNL_FILES)
 
 fclean: clean
-	rm -f libft.a
+	@rm -f libft.a
 
 re: fclean all
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+	@$(CC) $(CFLAGS) -c -o $@ $^ -I../include
 
 bonus: $(FILES) $(BONUS_FILES) $(NAME) $(PRINTF_FILES) $(GNL_FILES)
-	ar -crs $(NAME) $(FILES) $(BONUS_FILES) $(PRINTF_FILES) $(GNL_FILES)
+	@ar -crs $(NAME) $(FILES) $(BONUS_FILES) $(PRINTF_FILES) $(GNL_FILES)
 
 norm:
 	norminette $(SOURCE) $(BONUS_SOURCE) $(PRINTF_SOURCE) $(GNL_FILES)

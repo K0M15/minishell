@@ -8,6 +8,8 @@ NAME = minishell
 SRC_DIR = src
 #   CORE
 FILES=minishell.c
+#	PARSING
+FILES += tokenizing.c
 #	RUNTIME
 FILES += enviroment/enviroment.c appstate.c
 FILES += signals/signals.c
@@ -31,35 +33,35 @@ all: $(OBJ_DIR) $(NAME)
 
 # Create object directory if it doesn't exist
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)/builtin/pwd
-	mkdir -p $(OBJ_DIR)/builtin/export
-	mkdir -p $(OBJ_DIR)/builtin/unset
-	mkdir -p $(OBJ_DIR)/builtin/cd
-	mkdir -p $(OBJ_DIR)/builtin/echo
-	mkdir -p $(OBJ_DIR)/builtin/exit
-	mkdir -p $(OBJ_DIR)/builtin/env
-	mkdir -p $(OBJ_DIR)/enviroment
-	mkdir -p $(OBJ_DIR)/signals
-	mkdir -p $(OBJ_DIR)/prompt
-	mkdir -p $(OBJ_DIR)/mem_manager
+	@mkdir -p $(OBJ_DIR)/builtin/pwd
+	@mkdir -p $(OBJ_DIR)/builtin/export
+	@mkdir -p $(OBJ_DIR)/builtin/unset
+	@mkdir -p $(OBJ_DIR)/builtin/cd
+	@mkdir -p $(OBJ_DIR)/builtin/echo
+	@mkdir -p $(OBJ_DIR)/builtin/exit
+	@mkdir -p $(OBJ_DIR)/builtin/env
+	@mkdir -p $(OBJ_DIR)/enviroment
+	@mkdir -p $(OBJ_DIR)/signals
+	@mkdir -p $(OBJ_DIR)/prompt
+	@mkdir -p $(OBJ_DIR)/mem_manager
 
 $(NAME): $(OBJ_FILES) libft
-	$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline
+	@$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(FLAGS) -c -o $@ $< $(F_INC)
+	@$(CC) $(FLAGS) -c -o $@ $< $(F_INC)
 
 libft: $(PATH_LIBFT)
 
 $(PATH_LIBFT):
-	make -C libft bonus
+	@make -C libft bonus
 
 clean:
-	make -C libft clean
-	rm -rf $(OBJ_DIR)
+	@make -C libft clean
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	make -C libft fclean
-	rm -f $(NAME)
+	@make -C libft fclean
+	@rm -f $(NAME)
 
 re: fclean all

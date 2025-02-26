@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 11:28:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 16:58:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <stdlib.h>
+# include <ctype.h>
+# include <stdbool.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+
 
 # include "libft.h"
 # include "ft_printf.h"

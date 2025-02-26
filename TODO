@@ -6,7 +6,7 @@ something to decide
 	- cd: should we use the non directory path?
 	
 Parsing
-	=> input handling and history 
+	=> input handling and history
 	=> parsing & tokenizing
 	=> Handling quotes + braces
 	=> Variable expansion
@@ -49,9 +49,9 @@ Runtime
 '
 
 
-Programm call 
+Programm call
 "cat -e"						">" 			"text.txt"
-|								
+|
 v
 "Progname cat" "Args:['-e']"
 
@@ -72,3 +72,8 @@ word word operator word word
 
 
 Generator for ASCII ART https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Filth&t=MINISHELL
+new git commands:
+	=>git branch display branches
+	=> git branch [name] creates branch name
+	=> git checkout [name] switches to branch
+	=> git merge [name] merge branch name to current branch
