@@ -6,320 +6,466 @@
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/19 19:36:11 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:14:16 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <ctype.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "minishell.h"
 
-typedef enum
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	TOKEN_WORD,          // Words and quoted strings
-	TOKEN_PIPE,          // |
-	TOKEN_REDIRECT_IN,   // <
-	TOKEN_REDIRECT_OUT,  // >
-	TOKEN_APPEND_OUT,    // >>
-	TOKEN_HERE_DOCUMENT, // <<
-	TOKEN_EOF            // End of input
-}					TokenType;
+	void	*new_ptr;
+	size_t	copy_size;
 
-typedef struct Token
-{
-	TokenType		type;
-	char			*value;
-	struct Token	*next;
-}					Token;
-
-typedef struct Lexer
-{
-	char			*input;
-	size_t			input_len;
-	size_t			pos;
-	bool			in_dd_quote;
-	bool			in_s_quote;
-}					Lexer;
-
-// Helper functions
-Lexer	*init_lexer(char *input)
-{
-	Lexer	*lexer;
-
-	lexer = malloc(sizeof(Lexer));
-	if (!lexer)
-		return (NULL);
-	lexer->input = input;
-	lexer->input_len = strlen(input);
-	lexer->pos = 0;
-	lexer->in_dd_quote = false;
-	lexer->in_s_quote = false;
-	return (lexer);
-}
-
-char	current_char(Lexer *lexer)
-{
-	if (lexer->pos >= lexer->input_len)
-		return ('\0');
-	return (lexer->input[lexer->pos]);
-}
-
-char	peek_next(Lexer *lexer)
-{
-	if (lexer->pos + 1 >= lexer->input_len)
-		return ('\0');
-	return (lexer->input[lexer->pos + 1]);
-}
-
-void	advance(Lexer *lexer)
-{
-	lexer->pos++;
-}
-
-int	is_operator_char(char c)
-{
-	return (c == '|' || c == '<' || c == '>');
-}
-
-// Function to create a new token
-Token	*create_token(TokenType type, char *value)
-{
-	Token	*token;
-
-	token = malloc(sizeof(Token));
-	if (!token)
-		return (NULL);
-	token->type = type;
-	token->value = value ? strdup(value) : NULL;
-	token->next = NULL;
-	return (token);
-}
-
-// Function to handle operators
-Token	*handle_operator(Lexer *lexer)
-{
-	Token	*token;
-	char	curr;
-	char	next;
-
-	curr = current_char(lexer);
-	next = peek_next(lexer);
-	if (curr == '|')
+	if (!ptr)
+		return (ft_malloc(new_size));
+	if (new_size == 0)
 	{
-		token = create_token(TOKEN_PIPE, "|");
-		advance(lexer);
+		free(ptr);
+		return (NULL);
 	}
-	else if (curr == '<')
+	new_ptr = ft_malloc(new_size);
+	if (!new_ptr)
+		return (NULL);
+	copy_size = (old_size < new_size) ? old_size : new_size;
+	ft_memcpy(new_ptr, ptr, copy_size);
+	free(ptr);
+	return (new_ptr);
+}
+
+// Main parsing function
+t_command	*parse(Token *tokens)
+{
+	if (!tokens || tokens->type == TOKEN_EOF)
 	{
-		if (next == '<')
+		return (NULL);
+	}
+	// Start by parsing a pipeline
+	return (parse_pipeline(tokens));
+}
+
+// Parse a pipeline (cmd1 | cmd2 | ...)
+t_command	*parse_pipeline(Token **tokens)
+{
+	t_command	*left;
+	t_command	*right;
+	t_command	*pipe_cmd;
+
+	// Parse the first command
+	left = parse_simple_command(tokens);
+	if (!left)
+	{
+		return (NULL);
+	}
+	// Check if there's a pipe
+	if ((*tokens)->type != TOKEN_PIPE)
+	{
+		return (left);
+	}
+	// Consume the pipe token
+	*tokens = (*tokens)->next;
+	// Parse the right side of the pipe
+	right = parse_pipeline(tokens);
+	if (!right)
+	{
+		// Handle error: expected command after pipe
+		free_command(left);
+		return (NULL);
+	}
+	// Create a pipeline command
+	pipe_cmd = create_pipe_command(left, right);
+	return (pipe_cmd);
+}
+
+// Parse a simple command (cmd arg1 arg2 ... with possible redirections)
+t_command	*parse_simple_command(Token **tokens)
+{
+	Token			*current;
+	t_command		*cmd;
+	int				arg_count;
+	t_redirection	*redir;
+
+	current = *tokens;
+	cmd = create_simple_command();
+	arg_count = 0;
+	// Collect arguments and redirections
+	while (current && current->type != TOKEN_PIPE && current->type != TOKEN_EOF)
+	{
+		if (is_redirection_token(current->type))
 		{
-			token = create_token(TOKEN_HERE_DOCUMENT, "<<");
-			advance(lexer);
-			advance(lexer);
+			// Handle redirection
+			redir = parse_redirection(&current);
+			if (!redir)
+			{
+				// Handle error
+				free_command(cmd);
+				return (NULL);
+			}
+			add_redirection(cmd, redir);
+		}
+		else if (current->type == TOKEN_WORD)
+		{
+			// Add argument to command
+			add_argument(cmd, current->value);
+			arg_count++;
+			current = current->next;
 		}
 		else
 		{
-			token = create_token(TOKEN_REDIRECT_IN, "<");
-			advance(lexer);
+			// Unexpected token
+			free_command(cmd);
+			return (NULL);
 		}
 	}
-	else if (curr == '>')
+	// Update tokens to point to the next unprocessed token
+	*tokens = current;
+	// Return NULL if we didn't find any arguments
+	if (arg_count == 0)
 	{
-		if (next == '>')
-		{
-			token = create_token(TOKEN_APPEND_OUT, ">>");
-			advance(lexer);
-			advance(lexer);
-		}
-		else
-		{
-			token = create_token(TOKEN_REDIRECT_OUT, ">");
-			advance(lexer);
-		}
+		free_command(cmd);
+		return (NULL);
+	}
+	return (cmd);
+}
+
+// Parse a redirection
+t_redirection	*parse_redirection(Token **tokens)
+{
+	Token			*current;
+	RedirType		type;
+	t_redirection	*redir;
+
+	current = *tokens;
+	// Map token types to redirection types using if-else structure
+	if (current->type == TOKEN_REDIRECT_IN)
+		type = REDIR_IN;
+	else if (current->type == TOKEN_REDIRECT_OUT)
+		type = REDIR_OUT;
+	else if (current->type == TOKEN_APPEND_OUT)
+		type = REDIR_APPEND;
+	else if (current->type == TOKEN_HERE_DOCUMENT)
+		type = REDIR_HEREDOC;
+	else
+		return (NULL);
+	// Consume the redirection token
+	current = current->next;
+	// Check if there's a file/delimiter
+	if (!current || current->type != TOKEN_WORD)
+	{
+		// Handle error: expected filename after redirection
+		return (NULL);
+	}
+	// Create redirection
+	redir = create_redirection(type, current->value);
+	// Consume the filename token
+	*tokens = current->next;
+	return (redir);
+}
+
+// Create a simple command
+t_command	*create_simple_command(void)
+{
+	t_command	*cmd;
+
+	cmd = malloc(sizeof(t_command));
+	if (!cmd)
+		return (NULL);
+	cmd->type = CMD_SIMPLE;
+	cmd->args = malloc(sizeof(char *) * INITIAL_ARG_CAPACITY);
+	if (!cmd->args)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	cmd->args[0] = NULL; // Null-terminate initially
+	cmd->left = NULL;
+	cmd->right = NULL;
+	cmd->redirections = NULL;
+	return (cmd);
+}
+
+// Create a pipe command
+t_command	*create_pipe_command(t_command *left, t_command *right)
+{
+	t_command	*cmd;
+
+	cmd = ft_malloc(sizeof(t_command));
+	if (!cmd)
+		return (NULL);
+	cmd->type = CMD_PIPE;
+	cmd->args = NULL;
+	cmd->left = left;
+	cmd->right = right;
+	cmd->redirections = NULL;
+	return (cmd);
+}
+
+// Add an argument to a command
+void	add_argument(t_command *cmd, const char *arg)
+{
+	int		i;
+	int		current_capacity;
+	int		new_capacity;
+	char	**new_args;
+
+	i = 0;
+	current_capacity = INITIAL_ARG_CAPACITY;
+	// Find the NULL terminator
+	while (cmd->args[i] != NULL)
+		i++;
+	// Check if we need to resize
+	if (i >= current_capacity - 1)
+	{
+		// Resize logic
+		new_capacity = current_capacity * 2;
+		new_args = ft_realloc(cmd->args, sizeof(char *) * new_capacity);
+		if (!new_args)
+			return ; // Handle error
+		cmd->args = new_args;
+		current_capacity = new_capacity;
+	}
+	// Add the new argument
+	cmd->args[i] = ft_strdup(arg);
+	cmd->args[i + 1] = NULL;
+}
+
+// Create a redirection
+t_redirection	*create_redirection(RedirType type, const char *file)
+{
+	t_redirection	*redir;
+
+	redir = malloc(sizeof(t_redirection));
+	if (!redir)
+		return (NULL);
+	redir->type = type;
+	redir->file = ft_strdup(file);
+	redir->next = NULL;
+	return (redir);
+}
+
+// Add a redirection to a command
+void	add_redirection(t_command *cmd, t_redirection *redir)
+{
+	t_redirection	*current;
+
+	if (!cmd->redirections)
+	{
+		cmd->redirections = redir;
 	}
 	else
 	{
-		token = NULL;
-	}
-	return (token);
-}
-
-// Function to handle quoted strings
-Token	*handle_quote(Lexer *lexer)
-{
-	char	quote_char;
-	char	buffer[4096] = {0};
-	int		i;
-
-	quote_char = current_char(lexer);
-	i = 0;
-	// Add the opening quote to buffer
-	buffer[i++] = quote_char;
-	advance(lexer);
-	// Process everything until the closing quote
-	while (current_char(lexer) != '\0' && current_char(lexer) != quote_char)
-	{
-		buffer[i++] = current_char(lexer);
-		advance(lexer);
-	}
-	// Add the closing quote if found
-	if (current_char(lexer) == quote_char)
-	{
-		buffer[i++] = quote_char;
-		advance(lexer);
-	}
-	return (create_token(TOKEN_WORD, buffer));
-}
-
-// Improved function to handle words and quotations
-Token	*handle_word(Lexer *lexer)
-{
-	char	buffer[4096] = {0};
-	int		i;
-
-	i = 0;
-	// If we start with a quote character, handle it separately
-	if (current_char(lexer) == '"' || current_char(lexer) == '\'')
-	{
-		return (handle_quote(lexer));
-	}
-	// Handle normal words
-	while (current_char(lexer) != '\0')
-	{
-		// Stop on whitespace or operators
-		if (isspace(current_char(lexer))
-			|| is_operator_char(current_char(lexer)))
-			break ;
-		// Stop when we hit a quote character - let it be processed separately
-		if (current_char(lexer) == '"' || current_char(lexer) == '\'')
-			break ;
-		buffer[i++] = current_char(lexer);
-		advance(lexer);
-	}
-	if (i == 0)
-		return (NULL);
-	return (create_token(TOKEN_WORD, buffer));
-}
-
-// Function to skip whitespace
-void	skip_whitespace(Lexer *lexer)
-{
-	while (current_char(lexer) != '\0' && isspace(current_char(lexer)))
-		advance(lexer);
-}
-
-// Main tokenizing function
-Token	*get_next_token(Lexer *lexer)
-{
-	skip_whitespace(lexer);
-	if (current_char(lexer) == '\0')
-	{
-		return (create_token(TOKEN_EOF, NULL));
-	}
-	if (is_operator_char(current_char(lexer)))
-	{
-		return (handle_operator(lexer));
-	}
-	return (handle_word(lexer));
-}
-
-// Function to tokenize entire input
-Token	*tokenize(char *input)
-{
-	Lexer	*lexer;
-	Token	*head;
-	Token	*current;
-	Token	*token;
-
-	head = NULL;
-	current = NULL;
-	lexer = init_lexer(input);
-	if (!lexer)
-		return (NULL);
-	while (1)
-	{
-		token = get_next_token(lexer);
-		if (!token)
-			break ;
-		if (head == NULL)
+		// Add to the end of the list
+		current = cmd->redirections;
+		while (current->next)
 		{
-			head = token;
-			current = token;
-		}
-		else
-		{
-			current->next = token;
-			current = token;
-		}
-		if (token->type == TOKEN_EOF)
-			break ;
-	}
-	free(lexer);
-	return (head);
-}
-
-// Helper function to free token list
-void	free_tokens(Token *head)
-{
-	Token	*temp;
-
-	while (head != NULL)
-	{
-		temp = head;
-		head = head->next;
-		free(temp->value);
-		free(temp);
-	}
-}
-
-void	print_token_type(TokenType type)
-{
-	if (type == TOKEN_WORD)
-		printf("WORD");
-	else if (type == TOKEN_PIPE)
-		printf("PIPE");
-	else if (type == TOKEN_REDIRECT_IN)
-		printf("REDIRECT_IN");
-	else if (type == TOKEN_REDIRECT_OUT)
-		printf("REDIRECT_OUT");
-	else if (type == TOKEN_APPEND_OUT)
-		printf("APPEND_OUT");
-	else if (type == TOKEN_HERE_DOCUMENT)
-		printf("HERE_DOCUMENT");
-	else if (type == TOKEN_EOF)
-		printf("EOF");
-}
-
-int	main(void)
-{
-	char *input;
-	Token *tokens;
-	Token *current;
-
-	while (1)
-	{
-		input = readline("minishell: ");
-		if (!input) // Handle Ctrl+D
-			break ;
-		tokens = tokenize(input);
-		current = tokens;
-		while (current)
-		{
-			printf("Type: ");
-			print_token_type(current->type);
-			if (current->value)
-				printf(", Value: %s \n", current->value);
-			else
-				printf("\n");
 			current = current->next;
 		}
-		free_tokens(tokens);
-		free(input);
+		current->next = redir;
 	}
-	return (0);
+}
+
+// Free a command structure
+void	free_command(t_command *cmd)
+{
+	t_redirection	*r;
+	t_redirection	*next;
+
+	if (!cmd)
+		return ;
+	// Free arguments
+	if (cmd->args)
+	{
+		for (int i = 0; cmd->args[i]; i++)
+		{
+			free(cmd->args[i]);
+		}
+		free(cmd->args);
+	}
+	// Free redirections
+	r = cmd->redirections;
+	while (r)
+	{
+		next = r->next;
+		free(r->file);
+		free(r);
+		r = next;
+	}
+	// Free child commands
+	if (cmd->left)
+		free_command(cmd->left);
+	if (cmd->right)
+		free_command(cmd->right);
+	free(cmd);
+}
+
+// Function to expand variables in a command
+void	expand_variables(t_command *cmd, char **env)
+{
+	t_redirection	*r;
+
+	if (!cmd)
+		return ;
+	if (cmd->type == CMD_SIMPLE)
+	{
+		// Expand variables in arguments
+		for (int i = 0; cmd->args[i]; i++)
+		{
+			cmd->args[i] = expand_variables_in_string(cmd->args[i], env);
+		}
+	}
+	// Expand variables in redirections
+	r = cmd->redirections;
+	while (r)
+	{
+		if (r->type != REDIR_HEREDOC)
+		{ // Usually not expanded in heredocs
+			r->file = expand_variables_in_string(r->file, env);
+		}
+		r = r->next;
+	}
+	// Recurse for pipe commands
+	if (cmd->left)
+		expand_variables(cmd->left, env);
+	if (cmd->right)
+		expand_variables(cmd->right, env);
+}
+
+// Helper to expand variables in a string
+char	*expand_variables_in_string(const char *str, char **env)
+{
+	// Implementation depends on your shell's behavior
+	// Should handle:
+	// 1. Regular variables: $HOME, $USER, etc.
+	// 2. Quoted variables: "$HOME", '$USER', etc.
+	// 3. Special cases: $?, $$, etc.
+	// This is a complex function - would need specific implementation
+}
+
+// Main execution function
+int	execute_command(t_command *cmd, char **env)
+{
+	if (!cmd)
+		return (0);
+	// Expand variables before execution
+	expand_variables(cmd, env);
+	// Execute based on command type
+	switch (cmd->type)
+	{
+	case CMD_SIMPLE:
+		return (execute_simple_command(cmd, env));
+	case CMD_PIPE:
+		return (execute_pipe_command(cmd, env));
+	default:
+		return (1); // Error - unknown command type
+	}
+}
+
+// Execute a simple command
+int	execute_simple_command(t_command *cmd, char **env)
+{
+	int		saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
+				dup(STDERR_FILENO)};
+	int		ret;
+	pid_t	pid;
+	int		status;
+
+	// Apply redirections
+	if (!apply_redirections(cmd->redirections))
+	{
+		// Restore file descriptors on error
+		restore_fds(saved_fds);
+		return (1);
+	}
+	// Check for built-in commands
+	if (is_builtin(cmd->args[0]))
+	{
+		ret = execute_builtin(cmd, env);
+		restore_fds(saved_fds);
+		return (ret);
+	}
+	// Fork and execute external command
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		restore_fds(saved_fds);
+		return (1);
+	}
+	if (pid == 0)
+	{
+		// Child process
+		execvp(cmd->args[0], cmd->args);
+		perror("execvp");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		// Parent process
+		waitpid(pid, &status, 0);
+		restore_fds(saved_fds);
+		return (WEXITSTATUS(status));
+	}
+}
+
+// Execute a pipe command
+int	execute_pipe_command(t_command *cmd, char **env)
+{
+	int pipefd[2];
+	if (pipe(pipefd) < 0)
+	{
+		perror("pipe");
+		return (1);
+	}
+
+	// Left side of pipe (writes to pipe)
+	pid_t pid1 = fork();
+	if (pid1 < 0)
+	{
+		perror("fork");
+		close(pipefd[0]);
+		close(pipefd[1]);
+		return (1);
+	}
+
+	if (pid1 == 0)
+	{
+		// Child process 1
+		close(pipefd[0]); // Close read end
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+
+		execute_command(cmd->left, env);
+		exit(EXIT_SUCCESS);
+	}
+
+	// Right side of pipe (reads from pipe)
+	pid_t pid2 = fork();
+	if (pid2 < 0)
+	{
+		perror("fork");
+		close(pipefd[0]);
+		close(pipefd[1]);
+		return (1);
+	}
+
+	if (pid2 == 0)
+	{
+		// Child process 2
+		close(pipefd[1]); // Close write end
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+
+		execute_command(cmd->right, env);
+		exit(EXIT_SUCCESS);
+	}
+
+	// Parent process
+	close(pipefd[0]);
+	close(pipefd[1]);
+
+	int status1, status2;
+	waitpid(pid1, &status1, 0);
+	waitpid(pid2, &status2, 0);
+
+	return (WEXITSTATUS(status2)); // Return status of right command
 }
