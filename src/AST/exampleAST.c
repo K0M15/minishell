@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/26 18:26:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 19:01:10 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,23 +327,23 @@ void	expand_variables(t_command *cmd, char **env)
 // Helper to expand variables in a string
 char	*expand_variables_in_string(const char *str, char **env)
 {
-	char	**result;
-	int		length;
+	// char	**result;
+	// int		length;
 	
-	length = ft_strlen(str);
-	while(*str)
-	{
-		if (*str == '$')
-		{
-			int c = 0;
-			while (ft_isspace(str[c]))
-				c++;
-			char *data = ft_strndup(str, )
-			length = length - c + ft_strlen(ms_get_env(data))
+	// length = ft_strlen(str);
+	// while(*str)
+	// {
+	// 	if (*str == '$')
+	// 	{
+	// 		int c = 0;
+	// 		while (ft_isspace(str[c]))
+	// 			c++;
+	// 		char *data = ft_strndup(str, )
+	// 		length = length - c + ft_strlen(ms_get_env(data))
 			
-		}
-		str++;
-	}
+	// 	}
+	// 	str++;
+	// }
 	// Implementation depends on your shell's behavior
 	// Should handle:
 	// 1. Regular variables: $HOME, $USER, etc.

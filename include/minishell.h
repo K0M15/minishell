@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/26 19:00:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,12 @@ Token	*get_next_token(Lexer *lexer);
 Token	*tokenize(char *input);
 void	free_tokens(Token *tokens);
 void	print_token_type(TokenType type);
-
+//		TODO
+int		is_redirection_token(TokenType type);
+int		apply_redirections(t_redirection *redirections);
+void	restore_fds(int saved_fds[3]);
+int		is_builtin(char *str);
+int		execute_builtin(t_command *cmd, char **env);
+char	*expand_variables_in_string(const char *str, char **env)
 
 #endif // MINISHELL_H
