@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/27 17:17:14 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:19:01 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,24 +303,33 @@ void	expand_variables(t_command *cmd, char **env)
 // Helper to expand variables in a string
 char	*expand_variables_in_string(const char *str, char **env)
 {
-	int		length;
-	
-	(void)env;
-	length = ft_strlen(str);
-	while(*str)
-	{
-		if (*str == '$')
-		{
-			int c = 0;
-			while (ft_isspace(str[c]))
-				c++;
-			char *data = ft_strndup(str, c);
-			length = length - c + ft_strlen(ms_get_env(data));
-			
-		}
-		str++;
-	}
-	return (NULL);
+	char *var_value;
+    char *result = malloc(4*1024); // Allocate buffer (adjust size as needed)
+    char var_name[256];
+
+    if (!result)
+		return NULL;
+    result[0] = '\0'; // Initialize empty string
+
+    for (size_t i = 0; str[i]; i++) {
+        if (str[i] == '$' && str[i + 1] && (str[i + 1] == '_'
+			|| ft_isalpha(str[i + 1]))) {
+            i++;
+            size_t var_start = i;
+            while (str[i] && (ft_isalnum(str[i]) || str[i] == '_')) i++;
+            
+            ft_strndup(var_name, &str[var_start], i - var_start);
+            var_name[i - var_start] = '\0';
+            
+            var_value = ms_get_env(var_name);
+            ft_strlcat(result, var_value, 4*1024);
+            free(var_value);
+            i--;
+        } else {
+            ft_strlcat(result, &str[i], 2);
+        }
+    }
+    return (result);
 }
 
 // Main execution function
@@ -335,6 +344,13 @@ int	execute_command(t_command *cmd, char **env)
 		return (execute_pipe_command(cmd, env));
 	else
 		return (1);
+}
+
+void	restore_fds(int saved_fds[3])
+{
+	dup2(saved_fds[0], STDIN_FILENO);
+	dup2(saved_fds[1], STDOUT_FILENO);
+	dup2(saved_fds[2], STDERR_FILENO);
 }
 
 int	execute_simple_command(t_command *cmd, char **env)
