@@ -6,6 +6,7 @@ stdout.write("I am just a simple test message\n")
 stdout.write("Were working with testfiles from python\n")
 stdout.write("See you soon\n")
 for arg in argv:
-	stdout.write(arg + "\n");
+	stdout.write(arg + "\n")
+stdout.close()
 
 exit(3)
