@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 19:42:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:37:55 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-# include <stdlib.h>
 # include <ctype.h>
 # include <stdbool.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -134,7 +134,7 @@ t_appstate	*get_appstate(void);
 /*
 	Sets the mode of get_appstate
 	Changes interrupts appropriate
-*/	
+*/
 void		ms_set_state_mode(t_appmode mode);
 
 int			builtin_pwd(int argc, char **argv);
@@ -169,7 +169,7 @@ char		*ms_getkey(char *str);
 char		**ms_env_enhance(void);
 //	Appends a key to get_appstate()->enviroment
 int			ms_env_append(char *str);
-/*	
+/*
 	Deletes a position inside of get_appstate()->enviroment
 	by shifting all elements after it one place forward
 */
@@ -259,11 +259,39 @@ Token	*tokenize(char *input);
 void	free_tokens(Token *tokens);
 void	print_token_type(TokenType type);
 //		TODO
-int		is_redirection_token(TokenType type);						//ck
-int		apply_redirections(t_redirection *redirections);			//ck
+int		is_redirection_token(TokenType type);						//done
+int		apply_redirections(t_redirection *redirections);			//done
 void	restore_fds(int saved_fds[3]);
+int		ft_strcmp(const char *s1, const char *s2);
 int		is_builtin(char *str);
 int		execute_builtin(t_command *cmd, char **env);
-char	*expand_variables_in_string(const char *str, char **env)
+char	*expand_variables_in_string(const char *str, char **env);
+
+
+// Example AST
+
+char	*ft_strndup(char *dst, const char *src, size_t n);
+int	is_redirection_token(TokenType type);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+t_command	*parse(Token *tokens);
+t_command	*parse_pipeline(Token **tokens);
+t_command	*parse_simple_command(Token **tokens);
+t_redirection	*parse_redirection(Token **tokens);
+t_command	*create_simple_command(void);
+t_command	*create_pipe_command(t_command *left, t_command *right);
+void	add_argument(t_command *cmd, const char *arg);
+t_redirection	*create_redirection(RedirType type, const char *file);
+void	add_redirection(t_command *cmd, t_redirection *redir);
+void	free_command(t_command *cmd);
+void	expand_variables(t_command *cmd, char **env);
+int		execute_command(t_command *cmd, char **env);
+void	redirection_in(t_redirection *redirection);
+void	redirection_out(t_redirection *redirection);
+void	redirection_append(t_redirection *redirection);
+int	apply_redirections(t_redirection *redirections);
+int	execute_simple_command(t_command *cmd, char **env);
+int	execute_pipe_command(t_command *cmd, char **env);
+
+
 
 #endif // MINISHELL_H

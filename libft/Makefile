@@ -33,7 +33,6 @@ FILES=		ft_atoi.o \
 			ft_strmapi.o \
 			ft_strtrim.o \
 			ft_strdup.o \
-			ft_strndup.o \
 			ft_substr.o \
 			ft_strjoin.o \
 			ft_striteri.o \
