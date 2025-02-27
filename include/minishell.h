@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/27 20:35:54 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 20:47:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,12 +256,33 @@ int			ms_doc_append(struct s_doc *document, struct s_doc **last);
  * @return Lexer
  */
 t_lexer		*init_lexer(char *input);
+/*
+ *	Checks if character is space 🚀
+ */
 int			ft_isspace(char c);
+/*
+ *	Returns the current character 
+ */
 char		current_char(t_lexer *lexer);
+/*
+ *	Returns the next character
+ */
 char		peek_next(t_lexer *lexer);
+/*
+ *	Increases lexer->pos by one
+ */
 void		advance(t_lexer *lexer);
+/*
+ *	Checks if Character is operator 
+ */
 int			is_operator_char(char c);
+/*
+ * creates a token of type and with a copy of value 
+ */
 t_token		*create_token(t_tokentype type, char *value);
+/*
+ * 
+ */
 char		*handle_variable(t_lexer *lexer);
 t_token		*handle_operator(t_lexer *lexer);
 t_token		*handle_word(t_lexer *lexer);
