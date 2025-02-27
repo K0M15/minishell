@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:32:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/26 16:41:01 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:30:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// typedef enum
-// {
-// 	TOKEN_WORD,          // Words and quoted strings
-// 	TOKEN_PIPE,          // |
-// 	TOKEN_REDIRECT_IN,   // <
-// 	TOKEN_REDIRECT_OUT,  // >
-// 	TOKEN_APPEND_OUT,    // >>
-// 	TOKEN_HERE_DOCUMENT, // <<
-// 	TOKEN_EOF            // End of input
-// }					TokenType;
-
-// typedef struct Token
-// {
-// 	TokenType		type;
-// 	char			*value;
-// 	struct Token	*next;
-// }					Token;
-
-// typedef struct Lexer
-// {
-// 	char			*input;
-// 	size_t			input_len;
-// 	size_t			pos;
-// 	bool			in_dd_quote;
-// 	bool			in_s_quote;
-// }					Lexer;
 
 // Helper functions
 char	*ft_strcpy(char * dst, const char * src)
@@ -54,11 +27,11 @@ char	*ft_strcpy(char * dst, const char * src)
 	return (dst);
 }
 
-Lexer	*init_lexer(char *input)
+t_lexer	*init_lexer(char *input)
 {
-	Lexer	*lexer;
+	t_lexer	*lexer;
 
-	lexer = malloc(sizeof(Lexer));
+	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
 		return (NULL);
 	lexer->input = input;
@@ -76,21 +49,21 @@ int	ft_isspace(char c)
 		|| c == '\r');
 }
 
-char	current_char(Lexer *lexer)
+char	current_char(t_lexer *lexer)
 {
 	if (lexer->pos >= lexer->input_len)
 		return ('\0');
 	return (lexer->input[lexer->pos]);
 }
 
-char	peek_next(Lexer *lexer)
+char	peek_next(t_lexer *lexer)
 {
 	if (lexer->pos + 1 >= lexer->input_len)
 		return ('\0');
 	return (lexer->input[lexer->pos + 1]);
 }
 
-void	advance(Lexer *lexer)
+void	advance(t_lexer *lexer)
 {
 	lexer->pos++;
 }
@@ -100,12 +73,11 @@ int	is_operator_char(char c)
 	return (c == '|' || c == '<' || c == '>');
 }
 
-// Function to create a new token
-Token	*create_token(TokenType type, char *value)
+t_token	*create_token(t_tokentype type, char *value)
 {
-	Token	*token;
+	t_token	*token;
 
-	token = malloc(sizeof(Token));
+	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->type = type;
@@ -117,45 +89,41 @@ Token	*create_token(TokenType type, char *value)
 	return (token);
 }
 
-// New function to handle variable expansion
-char	*handle_variable(Lexer *lexer)
+char	*handle_variable(t_lexer *lexer)
 {
+
+	/*================================== COMMENT AF
+		is this needed? we do it in Lexing
+	*/
 	char	buffer[4096] = {0};
 	int		i;
 	bool	has_braces;
 	char	*result;
 
 	i = 0;
-	// Skip the $ character
 	advance(lexer);
-	// Handle special case $?
 	if (current_char(lexer) == '?')
 	{
 		advance(lexer);
 		return (ft_strdup("$?"));
 	}
-	// Check if we have ${VAR} format
 	has_braces = false;
 	if (current_char(lexer) == '{')
 	{
 		has_braces = true;
 		advance(lexer);
 	}
-	// Get the variable name
 	while (current_char(lexer) != '\0')
 	{
-		// Variable names can only contain alphanumeric chars and underscores
 		if (!ft_isalnum(current_char(lexer)) && current_char(lexer) != '_')
 		{
-			// If we had opening brace, we need to find closing one
 			if (has_braces && current_char(lexer) == '}')
 			{
-				advance(lexer); // Skip closing brace
+				advance(lexer);
 				break ;
 			}
 			else if (has_braces)
 			{
-				// Error: unclosed brace
 				// For now we'll just stop processing
 				break ;
 			}
@@ -168,7 +136,6 @@ char	*handle_variable(Lexer *lexer)
 		buffer[i++] = current_char(lexer);
 		advance(lexer);
 	}
-	// Prepend the $ to indicate it's a variable
 	result = malloc(i + 2);
 	if (!result)
 		return (NULL);
@@ -178,9 +145,9 @@ char	*handle_variable(Lexer *lexer)
 }
 
 // Function to handle operators
-Token	*handle_operator(Lexer *lexer)
+t_token	*handle_operator(t_lexer *lexer)
 {
-	Token	*token;
+	t_token	*token;
 	char	curr;
 	char	next;
 
@@ -227,7 +194,7 @@ Token	*handle_operator(Lexer *lexer)
 }
 
 // Function to handle quoted strings
-Token	*handle_quote(Lexer *lexer)
+t_token	*handle_quote(t_lexer *lexer)
 {
 	char	quote_char;
 	char	buffer[4096] = {0};
@@ -267,7 +234,7 @@ Token	*handle_quote(Lexer *lexer)
 }
 
 // Improved function to handle words and quotations
-Token	*handle_word(Lexer *lexer)
+t_token	*handle_word(t_lexer *lexer)
 {
 	char	buffer[4096] = {0};
 	int		i;
@@ -338,14 +305,14 @@ Token	*handle_word(Lexer *lexer)
 }
 
 // Function to skip whitespace
-void	skip_whitespace(Lexer *lexer)
+void	skip_whitespace(t_lexer *lexer)
 {
 	while (current_char(lexer) != '\0' && ft_isspace(current_char(lexer)))
 		advance(lexer);
 }
 
 // Main tokenizing function
-Token	*get_next_token(Lexer *lexer)
+t_token	*get_next_token(t_lexer *lexer)
 {
 	skip_whitespace(lexer);
 	if (current_char(lexer) == '\0')
@@ -363,12 +330,12 @@ Token	*get_next_token(Lexer *lexer)
 }
 
 // Function to tokenize entire input
-Token	*tokenize(char *input)
+t_token	*tokenize(char *input)
 {
-	Lexer	*lexer;
-	Token	*head;
-	Token	*current;
-	Token	*token;
+	t_lexer	*lexer;
+	t_token	*head;
+	t_token	*current;
+	t_token	*token;
 
 	head = NULL;
 	current = NULL;
@@ -398,9 +365,9 @@ Token	*tokenize(char *input)
 }
 
 // Helper function to free token list
-void	free_tokens(Token *head)
+void	free_tokens(t_token *head)
 {
-	Token	*temp;
+	t_token	*temp;
 
 	while (head != NULL)
 	{
@@ -411,7 +378,7 @@ void	free_tokens(Token *head)
 	}
 }
 
-void	print_token_type(TokenType type)
+void	print_token_type(t_tokentype type)
 {
 	if (type == TOKEN_WORD)
 		printf("WORD");

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:17:01 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,31 @@
 # include "ft_printf.h"
 # include "ft_malloc.h"
 
-typedef enum
+typedef enum e_tokentype
 {
-	TOKEN_WORD,          // Words and quoted strings
-	TOKEN_PIPE,          // |
-	TOKEN_REDIRECT_IN,   // <
-	TOKEN_REDIRECT_OUT,  // >
-	TOKEN_APPEND_OUT,    // >>
-	TOKEN_HERE_DOCUMENT, // <<
-	TOKEN_EOF            // End of input
-}					TokenType;
+	TOKEN_WORD,				// Words and quoted strings
+	TOKEN_PIPE,				// |
+	TOKEN_REDIRECT_IN,		// <
+	TOKEN_REDIRECT_OUT,		// >
+	TOKEN_APPEND_OUT,		// >>
+	TOKEN_HERE_DOCUMENT,	// <<
+	TOKEN_EOF,				// End of input
+	TOKEN_DOUBLEAND,		// &&
+	TOKEN_DOUBLEPIPE,		// ||
+	TOKEN_PARATESES_OPEN,	// (
+	TOKEN_PARATESES_CLOSE,	// )
+}	t_tokentype;
 
 
 // Redirection types
-typedef struct Token
+typedef struct s_token
 {
-	TokenType		type;
+	t_tokentype		type;
 	char			*value;
-	struct Token	*next;
-}					Token;
+	struct s_token	*next;
+}	t_token;
 
-typedef struct Lexer
+typedef struct s_lexer
 {
 	char			*input;
 	size_t			input_len;
@@ -57,58 +61,52 @@ typedef struct Lexer
 	bool			in_dd_quote;
 	bool			in_s_quote;
 	bool			contains_var;
-}					Lexer;
+}	t_lexer;
 
 // Command types
-typedef enum
+typedef enum e_commandtype
 {
-	CMD_SIMPLE, // Simple command (e.g., "ls -l")
-	CMD_PIPE,   // Pipeline (e.g., "ls | grep foo")
-	CMD_REDIR   // Command with redirections
-}				CommandType;
+	CMD_SIMPLE,	// Simple command (e.g., "ls -l")
+	CMD_PIPE,	// Pipeline (e.g., "ls | grep foo")
+	CMD_REDIR	// Command with redirections
+}	t_commandtype;
 
-typedef enum
+typedef enum e_redirtype
 {
-	REDIR_IN,     // Input redirection (<)
-	REDIR_OUT,    // Output redirection (>)
-	REDIR_APPEND, // Append output (>>)
-	REDIR_HEREDOC // Here document (<<)
-}				RedirType;
+	REDIR_IN,		// Input redirection (<)
+	REDIR_OUT,		// Output redirection (>)
+	REDIR_APPEND,	// Append output (>>)
+	REDIR_HEREDOC	// Here document (<<)
+}	t_redirtype;
 
-// Redirection structure
 typedef struct s_redirection
 {
-	RedirType				type;
+	t_redirtype				type;
 	char					*file; // Target file/delimiter
 	struct s_redirection	*next; // Next redirection
-}				t_redirection;
+}	t_redirection;
 
 // Command structure (node in the AST)
 typedef struct s_command
 {
-	CommandType	type;
+	t_commandtype		type;
 
-	// For simple commands
-	char **args; // Command arguments (argv-style)
-
-	// For pipelines
-	struct s_command *left;  // Left side of pipe
-	struct s_command *right; // Right side of pipe
-
-	// For all commands - redirections
-	t_redirection *redirections; // List of redirections
+	char				**args;
+	struct s_command	*left; 
+	struct s_command	*right;
+	t_redirection		*redirections;
 	pid_t				pid;
-}				t_command;
+	pid_t				pid2;
+}	t_command;
 
 #define INITIAL_ARG_CAPACITY 16
 
 # define ENV_ALLOC_SIZE 1024
-# define ARG_MAX 262144				//256kb == "$>getconf ARG_MAX"... with 10 calls = 2mb
 # define HISTORY_FILENAME "hist_dump"
 
 typedef struct sigaction t_sigaction;
 
-extern char						**environ;
+extern char		**environ;
 
 volatile sig_atomic_t	g_ms_signal;
 
@@ -137,6 +135,8 @@ t_appstate	*get_appstate(void);
 */	
 void		ms_set_state_mode(t_appmode mode);
 
+
+//============================================		BUILTINS
 int			builtin_pwd(int argc, char **argv);
 int			builtin_env(int argc, char **argv);
 int			builtin_echo(int argc, char **argv);
@@ -145,6 +145,9 @@ int			builtin_exit(int argc, char **argv);
 int			builtin_export(int argc, char **argv);
 int			builtin_unset(int argc, char **argv);
 int			builtin_cd(int argc, char **argv);
+int			is_builtin(char *str);
+int			execute_builtin(t_command *cmd, char **env);
+//============================================		END BUILTINS
 
 //	0 if not found, 1 if deleted
 int			ms_delete_value(char *key);
@@ -204,27 +207,28 @@ int			dump_history(char *filname);
 void		init_terminal(void);
 
 // =================   STILL TODO   ================= //
-//	Initializes the signalhandling
-void		ms_sig_init(void);
-t_sigaction	*ms_get_sig_action(void);
-void		ms_sig_handler_interactive(int signal, siginfo_t *info, void *ctx);
-void		ms_sig_handler_heredoc(int signal, siginfo_t *info, void *ctx);
-void		ms_sig_handler_running(int signal, siginfo_t *info, void *ctx);
-int			ms_sig_kill_all(t_list *processes, int signal);
-int			ms_sig_kill(t_command *process, int signal);
-
-
-int			run_command(t_command	*cmd);
-int			run_single_pipe(t_command *cmdone, t_command *cmdtwo);
-
 /**
  * Three different modes to check:					Behaviour
  * 	-	interactive mode (no execve running)		cancle line, new prompt, not in history
  * 	-	heredoc mode								cancle heredoc and command. Command stays in history
  *  -	process running inside of shell				send SIGINT to process, display output, should stay in history. Maybe display "^C\n"
  */
+//	Initializes the signalhandling
+void		ms_sig_init(void);
+//	Returns a pointer to the current sigaction
+t_sigaction	*ms_get_sig_action(void);
+//	Interupt handler in interactive mode
+void		ms_sig_handler_interactive(int signal, siginfo_t *info, void *ctx);
+//	Interupt handler in heredoc mode
+void		ms_sig_handler_heredoc(int signal, siginfo_t *info, void *ctx);
+//	Interupt handler in running mode
+void		ms_sig_handler_running(int signal, siginfo_t *info, void *ctx);
+//	Kills all the attached processes
+int			ms_sig_kill_all(t_list *processes, int signal);
+//	Kills a single process
+int			ms_sig_kill(t_command *process, int signal);
 
-
+//============================================	HEREDOC
 typedef struct s_doc
 {
 	struct s_doc	*next;
@@ -240,24 +244,49 @@ char		*ms_doc_construct(struct s_doc *document);
 int			ms_doc_get_length(struct s_doc *document);
 int			ms_doc_append(struct s_doc *document, struct s_doc **last);
 
+//============================================	END HEREDOC
 
-// Tokenizing functions
-Lexer	*init_lexer(char *input);
-int		ft_isspace(char c);
-char	current_char(Lexer *lexer);
-char	peek_next(Lexer *lexer);
-void	advance(Lexer *lexer);
-int		is_operator_char(char c);
-Token	*create_token(TokenType type, char *value);
-char	*handle_variable(Lexer *lexer);
-Token	*handle_operator(Lexer *lexer);
-Token	*handle_word(Lexer *lexer);
-Token	*handle_quote(Lexer *lexer);
-void	skip_whitespace(Lexer *lexer);
-Token	*get_next_token(Lexer *lexer);
-Token	*tokenize(char *input);
-void	free_tokens(Token *tokens);
-void	print_token_type(TokenType type);
 
+
+//============================================	LEXING AND EXECUTION
+
+/**
+ * Init Lexer will create a new lexer with the string as input
+ * @param char	*input	String to lex
+ * @return Lexer
+ */
+t_lexer		*init_lexer(char *input);
+int			ft_isspace(char c);
+char		current_char(t_lexer *lexer);
+char		peek_next(t_lexer *lexer);
+void		advance(t_lexer *lexer);
+int			is_operator_char(char c);
+t_token		*create_token(t_tokentype type, char *value);
+char		*handle_variable(t_lexer *lexer);
+t_token		*handle_operator(t_lexer *lexer);
+t_token		*handle_word(t_lexer *lexer);
+t_token		*handle_quote(t_lexer *lexer);
+void		skip_whitespace(t_lexer *lexer);
+t_token		*get_next_token(t_lexer *lexer);
+t_token		*tokenize(char *input);
+void		free_tokens(t_token *tokens);
+void		print_token_type(t_tokentype type);
+char		*expand_variables_in_string(const char *str, char **env);
+t_command	*parse_pipeline(t_token **tokens);
+t_command	*parse_simple_command(t_token **tokens);
+t_command	*create_pipe_command(t_command *left, t_command *right);
+t_command	*create_simple_command(void);
+void		free_command(t_command *cmd);
+void		add_redirection(t_command *cmd, t_redirection *redir);
+void		add_argument(t_command *cmd, const char *arg);
+int			execute_simple_command(t_command *cmd, char **env);
+int			execute_pipe_command(t_command *cmd, char **env);
+t_redirection	*parse_redirection(t_token **tokens);
+t_redirection	*create_redirection(t_redirtype type, const char *file);
+
+//		TODO
+int			is_redirection_token(t_tokentype type);						//ck
+int			apply_redirections(t_redirection *redirections);			//ck
+void		restore_fds(int saved_fds[3]);
 
 #endif // MINISHELL_H

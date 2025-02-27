@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 18:23:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:00:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,10 @@
 int	main(void)
 {
 	char *input;
-	Token *tokens;
-	Token *current;
-	ms_display_welcome();
+	t_token *tokens;
+	t_token *current;
+	if(isatty(STDIN_FILENO))
+		ms_display_welcome();
 	while (1)
 	{
 		input = readline(ms_get_prompt());

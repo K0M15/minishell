@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/26 18:26:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:17:14 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 }
 
 // Main parsing function
-t_command	*parse(Token *tokens)
+t_command	*parse(t_token *tokens)
 {
 	if (!tokens || tokens->type == TOKEN_EOF)
 	{
 		return (NULL);
 	}
 	// Start by parsing a pipeline
-	return (parse_pipeline(tokens));
+	return (parse_pipeline(&tokens));
 }
 
 // Parse a pipeline (cmd1 | cmd2 | ...)
-t_command	*parse_pipeline(Token **tokens)
+t_command	*parse_pipeline(t_token **tokens)
 {
 	t_command	*left;
 	t_command	*right;
@@ -74,9 +74,9 @@ t_command	*parse_pipeline(Token **tokens)
 }
 
 // Parse a simple command (cmd arg1 arg2 ... with possible redirections)
-t_command	*parse_simple_command(Token **tokens)
+t_command	*parse_simple_command(t_token **tokens)
 {
-	Token			*current;
+	t_token			*current;
 	t_command		*cmd;
 	int				arg_count;
 	t_redirection	*redir;
@@ -125,14 +125,13 @@ t_command	*parse_simple_command(Token **tokens)
 }
 
 // Parse a redirection
-t_redirection	*parse_redirection(Token **tokens)
+t_redirection	*parse_redirection(t_token **tokens)
 {
-	Token			*current;
-	RedirType		type;
+	t_token			*current;
+	t_redirtype		type;
 	t_redirection	*redir;
 
 	current = *tokens;
-	// Map token types to redirection types using if-else structure
 	if (current->type == TOKEN_REDIRECT_IN)
 		type = REDIR_IN;
 	else if (current->type == TOKEN_REDIRECT_OUT)
@@ -143,15 +142,10 @@ t_redirection	*parse_redirection(Token **tokens)
 		type = REDIR_HEREDOC;
 	else
 		return (NULL);
-	// Consume the redirection token
 	current = current->next;
-	// Check if there's a file/delimiter
 	if (!current || current->type != TOKEN_WORD)
-		// Handle error: expected filename after redirection
 		return (NULL);
-	// Create redirection
 	redir = create_redirection(type, current->value);
-	// Consume the filename token
 	*tokens = current->next;
 	return (redir);
 }
@@ -171,10 +165,11 @@ t_command	*create_simple_command(void)
 		free(cmd);
 		return (NULL);
 	}
-	cmd->args[0] = NULL; // Null-terminate initially
+	cmd->args[0] = NULL;
 	cmd->left = NULL;
 	cmd->right = NULL;
 	cmd->redirections = NULL;
+	cmd->pid = 0;
 	return (cmd);
 }
 
@@ -212,7 +207,7 @@ void	add_argument(t_command *cmd, const char *arg)
 	{
 		// Resize logic
 		new_capacity = current_capacity * 2;
-		new_args = ft_realloc(cmd->args, sizeof(char *) * new_capacity);
+		new_args = ft_realloc(cmd->args, sizeof(char *) * current_capacity, sizeof(char *) * new_capacity);
 		if (!new_args)
 			return ; // Handle error
 		cmd->args = new_args;
@@ -224,7 +219,7 @@ void	add_argument(t_command *cmd, const char *arg)
 }
 
 // Create a redirection
-t_redirection	*create_redirection(RedirType type, const char *file)
+t_redirection	*create_redirection(t_redirtype type, const char *file)
 {
 	t_redirection	*redir;
 
@@ -243,17 +238,12 @@ void	add_redirection(t_command *cmd, t_redirection *redir)
 	t_redirection	*current;
 
 	if (!cmd->redirections)
-	{
 		cmd->redirections = redir;
-	}
 	else
 	{
-		// Add to the end of the list
 		current = cmd->redirections;
 		while (current->next)
-		{
 			current = current->next;
-		}
 		current->next = redir;
 	}
 }
@@ -266,16 +256,12 @@ void	free_command(t_command *cmd)
 
 	if (!cmd)
 		return ;
-	// Free arguments
 	if (cmd->args)
 	{
 		for (int i = 0; cmd->args[i]; i++)
-		{
 			free(cmd->args[i]);
-		}
 		free(cmd->args);
 	}
-	// Free redirections
 	r = cmd->redirections;
 	while (r)
 	{
@@ -284,7 +270,6 @@ void	free_command(t_command *cmd)
 		free(r);
 		r = next;
 	}
-	// Free child commands
 	if (cmd->left)
 		free_command(cmd->left);
 	if (cmd->right)
@@ -300,24 +285,15 @@ void	expand_variables(t_command *cmd, char **env)
 	if (!cmd)
 		return ;
 	if (cmd->type == CMD_SIMPLE)
-	{
-		// Expand variables in arguments
 		for (int i = 0; cmd->args[i]; i++)
-		{
 			cmd->args[i] = expand_variables_in_string(cmd->args[i], env);
-		}
-	}
-	// Expand variables in redirections
 	r = cmd->redirections;
 	while (r)
 	{
 		if (r->type != REDIR_HEREDOC)
-		{ // Usually not expanded in heredocs
 			r->file = expand_variables_in_string(r->file, env);
-		}
 		r = r->next;
 	}
-	// Recurse for pipe commands
 	if (cmd->left)
 		expand_variables(cmd->left, env);
 	if (cmd->right)
@@ -327,9 +303,9 @@ void	expand_variables(t_command *cmd, char **env)
 // Helper to expand variables in a string
 char	*expand_variables_in_string(const char *str, char **env)
 {
-	char	**result;
 	int		length;
 	
+	(void)env;
 	length = ft_strlen(str);
 	while(*str)
 	{
@@ -338,18 +314,13 @@ char	*expand_variables_in_string(const char *str, char **env)
 			int c = 0;
 			while (ft_isspace(str[c]))
 				c++;
-			char *data = ft_strndup(str, )
-			length = length - c + ft_strlen(ms_get_env(data))
+			char *data = ft_strndup(str, c);
+			length = length - c + ft_strlen(ms_get_env(data));
 			
 		}
 		str++;
 	}
-	// Implementation depends on your shell's behavior
-	// Should handle:
-	// 1. Regular variables: $HOME, $USER, etc.
-	// 2. Quoted variables: "$HOME", '$USER', etc.
-	// 3. Special cases: $?, $$, etc.
-	// This is a complex function - would need specific implementation
+	return (NULL);
 }
 
 // Main execution function
@@ -357,77 +328,65 @@ int	execute_command(t_command *cmd, char **env)
 {
 	if (!cmd)
 		return (0);
-	// Expand variables before execution
 	expand_variables(cmd, env);
-	// Execute based on command type
 	if (cmd->type == CMD_SIMPLE)
 		return (execute_simple_command(cmd, env));
 	else if (cmd->type == CMD_PIPE)
 		return (execute_pipe_command(cmd, env));
 	else
-		return (1); // Error - unknown command type
+		return (1);
 }
 
-// Execute a simple command
 int	execute_simple_command(t_command *cmd, char **env)
 {
 	int		saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
 				dup(STDERR_FILENO)};
 	int		ret;
-	pid_t	pid;
 	int		status;
 
-	// Apply redirections
 	if (!apply_redirections(cmd->redirections))
 	{
-		// Restore file descriptors on error
 		restore_fds(saved_fds);
 		return (1);
 	}
-	// Check for built-in commands
 	if (is_builtin(cmd->args[0]))
 	{
 		ret = execute_builtin(cmd, env);
 		restore_fds(saved_fds);
 		return (ret);
 	}
-	// Fork and execute external command
-	pid = fork();
-	if (pid < 0)
+	cmd->pid = fork();
+	if (cmd->pid < 0)
 	{
 		perror("fork");
 		restore_fds(saved_fds);
 		return (1);
 	}
-	if (pid == 0)
+	if (cmd->pid == 0)
 	{
-		// Child process
 		execvp(cmd->args[0], cmd->args);
 		perror("execvp");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		// Parent process
-		waitpid(pid, &status, 0);
+		waitpid(cmd->pid, &status, 0);
 		restore_fds(saved_fds);
 		return (WEXITSTATUS(status));
 	}
 }
 
-// Execute a pipe command
 int	execute_pipe_command(t_command *cmd, char **env)
 {
 	int pipefd[2];
+	
 	if (pipe(pipefd) < 0)
 	{
 		perror("pipe");
 		return (1);
 	}
-
-	// Left side of pipe (writes to pipe)
-	pid_t pid1 = fork();
-	if (pid1 < 0)
+	cmd->pid = fork();
+	if (cmd->pid < 0)
 	{
 		perror("fork");
 		close(pipefd[0]);
@@ -435,28 +394,27 @@ int	execute_pipe_command(t_command *cmd, char **env)
 		return (1);
 	}
 
-	if (pid1 == 0)
+	if (cmd->pid == 0)
 	{
-		// Child process 1
-		close(pipefd[0]); // Close read end
 		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[0]);
 		close(pipefd[1]);
-
 		execute_command(cmd->left, env);
 		exit(EXIT_SUCCESS);
 	}
 
 	// Right side of pipe (reads from pipe)
-	pid_t pid2 = fork();
-	if (pid2 < 0)
+	cmd->pid2 = fork();
+	if (cmd->pid2 < 0)
 	{
+		// KILL First process? no => error broken pipe
 		perror("fork");
 		close(pipefd[0]);
 		close(pipefd[1]);
 		return (1);
 	}
 
-	if (pid2 == 0)
+	if (cmd->pid2 == 0)
 	{
 		// Child process 2
 		close(pipefd[1]); // Close write end
@@ -472,8 +430,8 @@ int	execute_pipe_command(t_command *cmd, char **env)
 	close(pipefd[1]);
 
 	int status1, status2;
-	waitpid(pid1, &status1, 0);
-	waitpid(pid2, &status2, 0);
+	waitpid(cmd->pid, &status1, 0);
+	waitpid(cmd->pid2, &status2, 0);
 
 	return (WEXITSTATUS(status2)); // Return status of right command
 }
