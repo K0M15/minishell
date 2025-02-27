@@ -6,38 +6,12 @@
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:32:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/26 16:41:01 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:25:40 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// typedef enum
-// {
-// 	TOKEN_WORD,          // Words and quoted strings
-// 	TOKEN_PIPE,          // |
-// 	TOKEN_REDIRECT_IN,   // <
-// 	TOKEN_REDIRECT_OUT,  // >
-// 	TOKEN_APPEND_OUT,    // >>
-// 	TOKEN_HERE_DOCUMENT, // <<
-// 	TOKEN_EOF            // End of input
-// }					TokenType;
-
-// typedef struct Token
-// {
-// 	TokenType		type;
-// 	char			*value;
-// 	struct Token	*next;
-// }					Token;
-
-// typedef struct Lexer
-// {
-// 	char			*input;
-// 	size_t			input_len;
-// 	size_t			pos;
-// 	bool			in_dd_quote;
-// 	bool			in_s_quote;
-// }					Lexer;
 
 // Helper functions
 char	*ft_strcpy(char * dst, const char * src)

@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exampleAST.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/26 19:48:39 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:24:57 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_redeirection_token(TokenType type)
+{
+	return (type == TOKEN_REDIRECT_IN || type == TOKEN_REDIRECT_OUT
+		|| type == TOKEN_APPEND_OUT || type == TOKEN_HERE_DOCUMENT);
+}
 
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
@@ -341,10 +347,10 @@ char	*expand_variables_in_string(const char *str, char **env)
             i++;
             size_t var_start = i;
             while (str[i] && (ft_isalnum(str[i]) || str[i] == '_')) i++;
-            
+
             ft_strndup(var_name, &str[var_start], i - var_start);
             var_name[i - var_start] = '\0';
-            
+
             var_value = ms_get_env(var_name);
             ft_strlcat(result, var_value, 4*1024);
             free(var_value);
@@ -361,7 +367,7 @@ char	*expand_variables_in_string(const char *str, char **env)
 	// 2. Quoted variables: "$HOME", '$USER', etc.
 	// 3. Special cases: $?, $$, etc.
 	// This is a complex function - would need specific implementation
-}
+
 
 // Main execution function
 int	execute_command(t_command *cmd, char **env)
@@ -384,6 +390,73 @@ void	restore_fds(int saved_fds[3])
 	dup2(saved_fds[0], STDIN_FILENO);
 	dup2(saved_fds[1], STDOUT_FILENO);
 	dup2(saved_fds[2], STDERR_FILENO);
+}
+
+void	redirection_in(t_redirection *redirection)
+{
+	int	fd;
+
+	fd = open(redirection->file, O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, STDIN_FILENO);
+}
+
+void	redirection_out(t_redirection *redirection)
+{
+	int	fd;
+
+	fd = open(redirection->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror("open");
+		return (0);
+	}
+	dup2(fd, STDOUT_FILENO);
+}
+
+void	redirection_append(t_redirection *redirection)
+{
+	int fd;
+
+	fd = open(redirection->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+}
+
+int	apply_redirections(t_redirection *redirections)
+{
+	t_redirection	*r;
+	int				fd[2];
+
+	r = redirections;
+	while (r)
+	{
+		if (r->type == REDIR_IN)
+		{
+			redirection_in(r);
+		}
+		else if (r->type == REDIR_OUT)
+		{
+			redirection_out(r);
+		}
+		else if (r->type == REDIR_APPEND)
+		{
+			redirection_append(r);
+		}
+		else if (r->type == REDIR_HEREDOC)
+		{
+			if (pipe(fd) < 0)
+			{
+				perror("pipe");
+				return (1);
+			}
+			ms_heredoc(redirections->file, fd[STDIN_FILENO], NULL);
+		}
+		r = r->next;
+	}
+	return (1);
 }
 
 // Execute a simple command
