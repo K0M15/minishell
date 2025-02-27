@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/27 17:19:01 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 20:43:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,12 +286,12 @@ void	expand_variables(t_command *cmd, char **env)
 		return ;
 	if (cmd->type == CMD_SIMPLE)
 		for (int i = 0; cmd->args[i]; i++)
-			cmd->args[i] = expand_variables_in_string(cmd->args[i], env);
+			cmd->args[i] = expand_variables_in_string(cmd->args[i]);
 	r = cmd->redirections;
 	while (r)
 	{
 		if (r->type != REDIR_HEREDOC)
-			r->file = expand_variables_in_string(r->file, env);
+			r->file = expand_variables_in_string(r->file);
 		r = r->next;
 	}
 	if (cmd->left)
@@ -300,39 +300,38 @@ void	expand_variables(t_command *cmd, char **env)
 		expand_variables(cmd->right, env);
 }
 
-// Helper to expand variables in a string
-char	*expand_variables_in_string(const char *str, char **env)
+char	*expand_variables_in_string(const char *str)
 {
-	char *var_value;
-    char *result = malloc(4*1024); // Allocate buffer (adjust size as needed)
-    char var_name[256];
+	char	*var_value;
+    char	*result;
+    char	var_name[256];
+	size_t	var_start;
 
+	result = malloc(4*1024);
     if (!result)
 		return NULL;
-    result[0] = '\0'; // Initialize empty string
-
-    for (size_t i = 0; str[i]; i++) {
+    result[0] = '\0';
+    for (size_t i = 0; str[i]; ++i) {
         if (str[i] == '$' && str[i + 1] && (str[i + 1] == '_'
-			|| ft_isalpha(str[i + 1]))) {
+			|| ft_isalpha(str[i + 1])))
+		{
             i++;
-            size_t var_start = i;
-            while (str[i] && (ft_isalnum(str[i]) || str[i] == '_')) i++;
-            
-            ft_strndup(var_name, &str[var_start], i - var_start);
+            var_start = i;
+            while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+				i++;
+			ft_memcpy(var_name, &str[var_start], i - var_start);
             var_name[i - var_start] = '\0';
-            
             var_value = ms_get_env(var_name);
             ft_strlcat(result, var_value, 4*1024);
             free(var_value);
             i--;
-        } else {
-            ft_strlcat(result, &str[i], 2);
         }
+		else
+            ft_strlcat(result, &str[i], 2);
     }
     return (result);
 }
 
-// Main execution function
 int	execute_command(t_command *cmd, char **env)
 {
 	if (!cmd)

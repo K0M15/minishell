@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/27 17:18:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 20:35:54 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ t_token		*get_next_token(t_lexer *lexer);
 t_token		*tokenize(char *input);
 void		free_tokens(t_token *tokens);
 void		print_token_type(t_tokentype type);
-char		*expand_variables_in_string(const char *str, char **env);
+char		*expand_variables_in_string(const char *str);
 t_command	*parse_pipeline(t_token **tokens);
 t_command	*parse_simple_command(t_token **tokens);
 t_command	*create_pipe_command(t_command *left, t_command *right);
