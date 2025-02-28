@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   exampleAST.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/27 20:43:58 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:24:37 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_strndup(char *dst, const char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
+}
+
+int	is_redirection_token(TokenType type)
+{
+	return (type == TOKEN_REDIRECT_IN || type == TOKEN_REDIRECT_OUT
+		|| type == TOKEN_APPEND_OUT || type == TOKEN_HERE_DOCUMENT);
+}
 
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
@@ -27,7 +47,10 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	new_ptr = ft_malloc(new_size);
 	if (!new_ptr)
 		return (NULL);
-	copy_size = (old_size < new_size) ? old_size : new_size;
+	if (old_size < new_size)
+		copy_size = old_size;
+	else
+		copy_size = new_size;
 	ft_memcpy(new_ptr, ptr, copy_size);
 	free(ptr);
 	return (new_ptr);
@@ -72,28 +95,51 @@ t_command	*parse_pipeline(t_token **tokens)
 	pipe_cmd = create_pipe_command(left, right);
 	return (pipe_cmd);
 }
+char	*handle_quotes(char *str)
+{
+	char	*result;
+	char	*temp;
+	int		in_single_quotes;
+	int		in_double_quotes;
 
-// Parse a simple command (cmd arg1 arg2 ... with possible redirections)
-t_command	*parse_simple_command(t_token **tokens)
+	result = ft_strdup("");
+	in_single_quotes = 0;
+	in_double_quotes = 0;
+	while (*str)
+	{
+		if (*str == '\'' && !in_double_quotes)
+			in_single_quotes = !in_single_quotes;
+		else if (*str == '"' && !in_single_quotes)
+			in_double_quotes = !in_double_quotes;
+		else
+		{
+			temp = result;
+			result = ft_strjoin(result, (char[]){*str, '\0'});
+			free(temp);
+		}
+		str++;
+	}
+	return (result);
+}
+
+t_command	*parse_simple_command(Token **tokens)
 {
 	t_token			*current;
 	t_command		*cmd;
 	int				arg_count;
 	t_redirection	*redir;
+	char			*processed_arg;
 
 	current = *tokens;
 	cmd = create_simple_command();
 	arg_count = 0;
-	// Collect arguments and redirections
 	while (current && current->type != TOKEN_PIPE && current->type != TOKEN_EOF)
 	{
 		if (is_redirection_token(current->type))
 		{
-			// Handle redirection
 			redir = parse_redirection(&current);
 			if (!redir)
 			{
-				// Handle error
 				free_command(cmd);
 				return (NULL);
 			}
@@ -101,21 +147,20 @@ t_command	*parse_simple_command(t_token **tokens)
 		}
 		else if (current->type == TOKEN_WORD)
 		{
-			// Add argument to command
-			add_argument(cmd, current->value);
+			// Handle quotes in arguments
+			processed_arg = handle_quotes(current->value);
+			add_argument(cmd, processed_arg);
+			free(processed_arg); // Free the processed argument if not needed
 			arg_count++;
 			current = current->next;
 		}
 		else
 		{
-			// Unexpected token
 			free_command(cmd);
 			return (NULL);
 		}
 	}
-	// Update tokens to point to the next unprocessed token
 	*tokens = current;
-	// Return NULL if we didn't find any arguments
 	if (arg_count == 0)
 	{
 		free_command(cmd);
@@ -123,6 +168,56 @@ t_command	*parse_simple_command(t_token **tokens)
 	}
 	return (cmd);
 }
+// Parse a simple command (cmd arg1 arg2 ... with possible redirections)
+// t_command	*parse_simple_command(Token **tokens)
+// {
+// 	Token			*current;
+// 	t_command		*cmd;
+// 	int				arg_count;
+// 	t_redirection	*redir;
+
+// 	current = *tokens;
+// 	cmd = create_simple_command();
+// 	arg_count = 0;
+// 	// Collect arguments and redirections
+// 	while (current && current->type != TOKEN_PIPE && current->type != TOKEN_EOF)
+// 	{
+// 		if (is_redirection_token(current->type))
+// 		{
+// 			// Handle redirection
+// 			redir = parse_redirection(&current);
+// 			if (!redir)
+// 			{
+// 				// Handle error
+// 				free_command(cmd);
+// 				return (NULL);
+// 			}
+// 			add_redirection(cmd, redir);
+// 		}
+// 		else if (current->type == TOKEN_WORD)
+// 		{
+// 			// Add argument to command
+// 			add_argument(cmd, current->value);
+// 			arg_count++;
+// 			current = current->next;
+// 		}
+// 		else
+// 		{
+// 			// Unexpected token
+// 			free_command(cmd);
+// 			return (NULL);
+// 		}
+// 	}
+// 	// Update tokens to point to the next unprocessed token
+// 	*tokens = current;
+// 	// Return NULL if we didn't find any arguments
+// 	if (arg_count == 0)
+// 	{
+// 		free_command(cmd);
+// 		return (NULL);
+// 	}
+// 	return (cmd);
+// }
 
 // Parse a redirection
 t_redirection	*parse_redirection(t_token **tokens)
@@ -130,6 +225,7 @@ t_redirection	*parse_redirection(t_token **tokens)
 	t_token			*current;
 	t_redirtype		type;
 	t_redirection	*redir;
+	char			*processed_value;
 
 	current = *tokens;
 	if (current->type == TOKEN_REDIRECT_IN)
@@ -145,7 +241,11 @@ t_redirection	*parse_redirection(t_token **tokens)
 	current = current->next;
 	if (!current || current->type != TOKEN_WORD)
 		return (NULL);
-	redir = create_redirection(type, current->value);
+	// Create redirection
+	processed_value = handle_quotes(current->value);
+	redir = create_redirection(type, processed_value);
+	free(processed_value);
+	// Consume the filename token
 	*tokens = current->next;
 	return (redir);
 }
@@ -207,7 +307,8 @@ void	add_argument(t_command *cmd, const char *arg)
 	{
 		// Resize logic
 		new_capacity = current_capacity * 2;
-		new_args = ft_realloc(cmd->args, sizeof(char *) * current_capacity, sizeof(char *) * new_capacity);
+		new_args = ft_realloc(cmd->args, sizeof(char *) * new_capacity,
+				sizeof(char *) * current_capacity);
 		if (!new_args)
 			return ; // Handle error
 		cmd->args = new_args;
@@ -352,6 +453,85 @@ void	restore_fds(int saved_fds[3])
 	dup2(saved_fds[2], STDERR_FILENO);
 }
 
+void	redirection_in(t_redirection *redirection)
+{
+	int	fd;
+
+	fd = open(redirection->file, O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+}
+
+void	redirection_out(t_redirection *redirection)
+{
+	int	fd;
+
+	fd = open(redirection->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+}
+
+void	redirection_append(t_redirection *redirection)
+{
+	int	fd;
+
+	fd = open(redirection->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+}
+// Here Document (<<): Your ms_heredoc function reads input until a delimiter,
+// but it doesn’t handle multi-line input correctly. Also,
+//	it updates the history, which is not allowed for <<.
+int	apply_redirections(t_redirection *redirections)
+{
+	t_redirection	*r;
+	int				fd[2];
+
+	r = redirections;
+	while (r)
+	{
+		if (r->type == REDIR_IN)
+		{
+			redirection_in(r);
+		}
+		else if (r->type == REDIR_OUT)
+		{
+			redirection_out(r);
+		}
+		else if (r->type == REDIR_APPEND)
+		{
+			redirection_append(r);
+		}
+		else if (r->type == REDIR_HEREDOC)
+		{
+			if (pipe(fd) < 0)
+			{
+				perror("pipe");
+				return (1);
+			}
+			ms_heredoc(redirections->file, fd[STDIN_FILENO], NULL);
+		}
+		r = r->next;
+	}
+	return (1);
+}
+
+// Execute a simple command
 int	execute_simple_command(t_command *cmd, char **env)
 {
 	int		saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
@@ -394,16 +574,28 @@ int	execute_simple_command(t_command *cmd, char **env)
 int	execute_pipe_command(t_command *cmd, char **env)
 {
 	int pipefd[2];
-	
-	if (pipe(pipefd) < 0)
+	pid_t pid1, pid2;
+	int status1, status2;
+
+	if (!cmd || !cmd->left || !cmd->right)
 	{
-		perror("pipe");
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
+			STDERR_FILENO);
 		return (1);
 	}
-	cmd->pid = fork();
-	if (cmd->pid < 0)
+
+	// Create the pipe
+	if (pipe(pipefd) < 0)
 	{
-		perror("fork");
+		perror("minishell: pipe");
+		return (1);
+	}
+
+	// Fork for the left side of the pipe (writes to pipe)
+	pid1 = fork();
+	if (pid1 < 0)
+	{
+		perror("minishell: fork");
 		close(pipefd[0]);
 		close(pipefd[1]);
 		return (1);
@@ -411,42 +603,47 @@ int	execute_pipe_command(t_command *cmd, char **env)
 
 	if (cmd->pid == 0)
 	{
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
+		// Child process 1: left side of the pipe
+		close(pipefd[0]);               // Close read end
+		dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to pipe
 		close(pipefd[1]);
+
+		// Execute the left command
 		execute_command(cmd->left, env);
 		exit(EXIT_SUCCESS);
 	}
 
-	// Right side of pipe (reads from pipe)
-	cmd->pid2 = fork();
-	if (cmd->pid2 < 0)
+	// Fork for the right side of the pipe (reads from pipe)
+	pid2 = fork();
+	if (pid2 < 0)
 	{
-		// KILL First process? no => error broken pipe
-		perror("fork");
+		perror("minishell: fork");
 		close(pipefd[0]);
 		close(pipefd[1]);
+		waitpid(pid1, &status1, 0); // Wait for the first child to avoid zombies
 		return (1);
 	}
 
 	if (cmd->pid2 == 0)
 	{
-		// Child process 2
-		close(pipefd[1]); // Close write end
-		dup2(pipefd[0], STDIN_FILENO);
+		// Child process 2: right side of the pipe
+		close(pipefd[1]);              // Close write end
+		dup2(pipefd[0], STDIN_FILENO); // Redirect stdin to pipe
 		close(pipefd[0]);
 
+		// Execute the right command
 		execute_command(cmd->right, env);
 		exit(EXIT_SUCCESS);
 	}
 
 	// Parent process
-	close(pipefd[0]);
+	close(pipefd[0]); // Close both ends of the pipe in the parent
 	close(pipefd[1]);
 
-	int status1, status2;
-	waitpid(cmd->pid, &status1, 0);
-	waitpid(cmd->pid2, &status2, 0);
+	// Wait for both child processes to finish
+	waitpid(pid1, &status1, 0);
+	waitpid(pid2, &status2, 0);
 
-	return (WEXITSTATUS(status2)); // Return status of right command
+	// Return the exit status of the right command
+	return (WEXITSTATUS(status2));
 }

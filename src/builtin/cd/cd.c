@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:19:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:47:45 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	display_error(int errcode, char* progname, char *target)
 	return (1);
 }
 
-int	buildin_cd(int argc, char **argv) {
+int	builtin_cd(int argc, char **argv) {
 	if (argc > 1)
 		display_error(change_directory(argv[1]), argv[0], argv[1]);
 	else

@@ -15,7 +15,7 @@ FILES += enviroment/enviroment.c state/appstate.c
 FILES += signals/signals.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
-FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c
+FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c builtin/builtin.c
 #	PROMPT
 FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c prompt/heredoc_util.c
 #	MEMORY
