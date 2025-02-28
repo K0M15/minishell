@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 15:19:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:43:45 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ char	*ms_getkey(char *str)
 	c = 0;
 	while (str[c] && str[c] != '=')
 		c++;
-	result = malloc(c);
+	result = malloc(++c);
 	if (result == NULL)
 		return (NULL);
-	while (c >= 0)
+	result[--c] = '\0';
+	while (c > 0)
 	{
 		c--;
 		result[c] = str[c];
@@ -89,13 +90,17 @@ char	*ms_setvalue(char *key, char *value)
 {
 	char	**enviroment;
 	char	*new_entry;
+	char	*buffer;
 
-	new_entry = ft_strjoin(ft_strjoin(key, "="), value); // THIS COULD ERROR WITH EMPTY VALUE!
+	buffer = ft_strjoin(key, "=");
+	new_entry = ft_strjoin(buffer, value); // THIS COULD ERROR WITH EMPTY VALUE!
+	free(buffer);
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
 	{
 		if (ms_is_key(*enviroment, key))
 		{
+			free(*enviroment);
 			*enviroment = new_entry;
 			return (new_entry);
 		}
@@ -158,6 +163,7 @@ void	ms_env_delete(int id)
 	if (id < 0)
 		return ;
 	ctr = (unsigned long) id;
+	free(state->enviroment[ctr]);
 	while(++ctr < state->env_filled)
 		state->enviroment[ctr - 1] = state->enviroment[ctr];
 	state->enviroment[ctr - 1] = NULL;
