@@ -71,7 +71,7 @@ CC=cc
 all: bonus
 
 $(NAME): $(FILES) $(PRINTF_FILES) $(GNL_FILES)
-	ar -crs $(NAME) $(FILES) $(PRINTF_FILES) $(GNL_FILES)
+	@ar -crs $(NAME) $(FILES) $(PRINTF_FILES) $(GNL_FILES)
 
 clean:
 	@rm -f $(FILES)

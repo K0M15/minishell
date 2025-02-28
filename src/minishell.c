@@ -6,7 +6,7 @@
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/27 20:56:36 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:51:54 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int main (int argc, char **argv, char **envp)
 			free_command(cmd);
 		}
 		free_tokens(tokens);
-		free(str);
+		// free(str);
 		add_history(str); // check beforehand if string is empty
 		if (ft_strncmp("exit", str, 4) == 0)
 			break ;
