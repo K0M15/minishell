@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exampleAST.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/28 14:40:04 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:43:49 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,12 @@ t_command	*parse(t_token *tokens)
 	return (parse_pipeline(&tokens));
 }
 
-// Parse a pipeline (cmd1 | cmd2 | ...)
 t_command	*parse_pipeline(t_token **tokens)
 {
 	t_command	*left;
 	t_command	*right;
 	t_command	*pipe_cmd;
 
-	// Parse the first command
 	left = parse_simple_command(tokens);
 	if (!left)
 		return (NULL);
@@ -139,33 +137,23 @@ t_command	*parse_simple_command(t_token **tokens)
 		{
 			redir = parse_redirection(&current);
 			if (!redir)
-			{
-				free_command(cmd);
-				return (NULL);
-			}
+				return (free_command(cmd), NULL);
 			add_redirection(cmd, redir);
 		}
 		else if (current->type == TOKEN_WORD)
 		{
-			// Handle quotes in arguments
 			processed_arg = handle_quotes(current->value);
 			add_argument(cmd, processed_arg);
-			free(processed_arg); // Free the processed argument if not needed
+			free(processed_arg);
 			arg_count++;
 			current = current->next;
 		}
 		else
-		{
-			free_command(cmd);
-			return (NULL);
-		}
+			return (free_command(cmd), NULL);
 	}
 	*tokens = current;
 	if (arg_count == 0)
-	{
-		free_command(cmd);
-		return (NULL);
-	}
+		return (free_command(cmd), NULL);
 	return (cmd);
 }
 // Parse a simple command (cmd arg1 arg2 ... with possible redirections)
@@ -241,7 +229,6 @@ t_redirection	*parse_redirection(t_token **tokens)
 	current = current->next;
 	if (!current || current->type != TOKEN_WORD)
 		return (NULL);
-	// Create redirection
 	processed_value = handle_quotes(current->value);
 	redir = create_redirection(type, processed_value);
 	free(processed_value);
@@ -404,10 +391,10 @@ void	expand_variables(t_command *cmd, char **env)
 void	ft_strncat(char *target, const char *source, size_t amount, size_t max)
 {
 	size_t	counter;
-	size_t 	max_counter;
-	
+	size_t	max_counter;
+
 	max_counter = 0;
-	while(*target && max_counter < max)
+	while (*target && max_counter < max)
 	{
 		target++;
 		max_counter++;
@@ -426,33 +413,34 @@ void	ft_strncat(char *target, const char *source, size_t amount, size_t max)
 char	*expand_variables_in_string(const char *str)
 {
 	char	*var_value;
-    char	*result;
-    char	var_name[256];
+	char	*result;
+	char	var_name[256];
 	size_t	var_start;
 
-	result = malloc(4*1024);
-    if (!result)
-		return NULL;
-    result[0] = '\0';
-    for (size_t i = 0; str[i]; ++i) {
-        if (str[i] == '$' && str[i + 1] && (str[i + 1] == '_'
-			|| ft_isalpha(str[i + 1])))
+	result = malloc(4 * 1024);
+	if (!result)
+		return (NULL);
+	result[0] = '\0';
+	for (size_t i = 0; str[i]; ++i)
+	{
+		if (str[i] == '$' && str[i + 1] && (str[i + 1] == '_'
+				|| ft_isalpha(str[i + 1])))
 		{
-            i++;
-            var_start = i;
-            while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+			i++;
+			var_start = i;
+			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 				i++;
 			ft_memcpy(var_name, &str[var_start], i - var_start);
-            var_name[i - var_start] = '\0';
-            var_value = ms_get_env(var_name);
-            ft_strlcat(result, var_value, 4*1024);
-            free(var_value);
-            i--;
-        }
+			var_name[i - var_start] = '\0';
+			var_value = ms_get_env(var_name);
+			ft_strlcat(result, var_value, 4 * 1024);
+			free(var_value);
+			i--;
+		}
 		else
-            ft_strncat(result, &str[i], 2, 4*1024);
-    }
-    return (result);
+			ft_strncat(result, &str[i], 2, 4 * 1024);
+	}
+	return (result);
 }
 
 int	execute_command(t_command *cmd, char **env)
@@ -528,17 +516,11 @@ int	apply_redirections(t_redirection *redirections)
 	while (r)
 	{
 		if (r->type == REDIR_IN)
-		{
 			redirection_in(r);
-		}
 		else if (r->type == REDIR_OUT)
-		{
 			redirection_out(r);
-		}
 		else if (r->type == REDIR_APPEND)
-		{
 			redirection_append(r);
-		}
 		else if (r->type == REDIR_HEREDOC)
 		{
 			if (pipe(fd) < 0)
@@ -556,10 +538,10 @@ int	apply_redirections(t_redirection *redirections)
 // Execute a simple command
 int	execute_simple_command(t_command *cmd, char **env)
 {
-	int		saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
-				dup(STDERR_FILENO)};
-	int		ret;
-	int		status;
+	int	saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
+			dup(STDERR_FILENO)};
+	int	ret;
+	int	status;
 
 	if (!apply_redirections(cmd->redirections))
 	{
@@ -581,8 +563,8 @@ int	execute_simple_command(t_command *cmd, char **env)
 	}
 	if (cmd->pid == 0)
 	{
-		execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
-		perror("execvp");
+		execute(cmd->args[0], env);
+		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -595,24 +577,22 @@ int	execute_simple_command(t_command *cmd, char **env)
 
 int	execute_pipe_command(t_command *cmd, char **env)
 {
-	int pipefd[2];
+	int	pipefd[2];
+
 	pid_t pid1, pid2;
 	int status1, status2;
-
 	if (!cmd || !cmd->left || !cmd->right)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
 			STDERR_FILENO);
 		return (1);
 	}
-
 	// Create the pipe
 	if (pipe(pipefd) < 0)
 	{
 		perror("minishell: pipe");
 		return (1);
 	}
-
 	// Fork for the left side of the pipe (writes to pipe)
 	pid1 = fork();
 	if (pid1 < 0)
@@ -622,19 +602,16 @@ int	execute_pipe_command(t_command *cmd, char **env)
 		close(pipefd[1]);
 		return (1);
 	}
-
 	if (cmd->pid == 0)
 	{
 		// Child process 1: left side of the pipe
 		close(pipefd[0]);               // Close read end
 		dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to pipe
 		close(pipefd[1]);
-
 		// Execute the left command
 		execute_command(cmd->left, env);
 		exit(EXIT_SUCCESS);
 	}
-
 	// Fork for the right side of the pipe (reads from pipe)
 	pid2 = fork();
 	if (pid2 < 0)
@@ -645,27 +622,74 @@ int	execute_pipe_command(t_command *cmd, char **env)
 		waitpid(pid1, &status1, 0); // Wait for the first child to avoid zombies
 		return (1);
 	}
-
 	if (cmd->pid2 == 0)
 	{
 		// Child process 2: right side of the pipe
 		close(pipefd[1]);              // Close write end
 		dup2(pipefd[0], STDIN_FILENO); // Redirect stdin to pipe
 		close(pipefd[0]);
-
 		// Execute the right command
 		execute_command(cmd->right, env);
 		exit(EXIT_SUCCESS);
 	}
-
 	// Parent process
 	close(pipefd[0]); // Close both ends of the pipe in the parent
 	close(pipefd[1]);
-
 	// Wait for both child processes to finish
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
-
 	// Return the exit status of the right command
 	return (WEXITSTATUS(status2));
+}
+
+void	free_string_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
+char	*find_path(char *cmd, char **envp)
+{
+	char	**paths;
+	int		i;
+	char	*part_path;
+	char	*path;
+
+	i = 0;
+	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
+		i++;
+	paths = ft_split(envp[i] + 5, ':');
+	i = 0;
+	while (paths[i])
+	{
+		part_path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(part_path, cmd);
+		free(part_path);
+		if (access(path, X_OK) == 0)
+			return (path);
+		free(path);
+		i++;
+	}
+	free_string_arr(paths);
+	return (NULL);
+}
+
+void	execute(char *av, char **envp)
+{
+	char	*path;
+
+	// char	**cmd;
+	// cmd = ft_split(av, ' ');
+	path = find_path(av, envp);
+	if (!path)
+	{
+		// free_string_arr(cmd);
+		perror("path");
+	}
+	if (execve(path, &av, envp) == -1)
+		perror("execve");
 }

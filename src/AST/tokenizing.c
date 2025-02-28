@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:32:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/27 19:19:05 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:00:24 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Helper functions
-char	*ft_strcpy(char * dst, const char * src)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (src[i])
@@ -91,15 +91,14 @@ t_token	*create_token(t_tokentype type, char *value)
 
 char	*handle_variable(t_lexer *lexer)
 {
-
-	/*================================== COMMENT AF
-		is this needed? we do it in Lexing
-	*/
 	char	buffer[4096] = {0};
 	int		i;
 	bool	has_braces;
 	char	*result;
 
+	/*================================== COMMENT AF
+		is this needed? we do it in Lexing
+	*/
 	i = 0;
 	advance(lexer);
 	if (current_char(lexer) == '?')
@@ -143,55 +142,98 @@ char	*handle_variable(t_lexer *lexer)
 	strcpy(result + 1, buffer);
 	return (result);
 }
+t_token	*handle_pipe(t_lexer *lexer)
+{
+	advance(lexer);
+	return (create_token(TOKEN_PIPE, "|"));
+}
 
-// Function to handle operators
+t_token	*handle_redirect_in(t_lexer *lexer)
+{
+	if (peek_next(lexer) == '<')
+	{
+		advance(lexer);
+		advance(lexer);
+		return (create_token(TOKEN_HERE_DOCUMENT, "<<"));
+	}
+	advance(lexer);
+	return (create_token(TOKEN_REDIRECT_IN, "<"));
+}
+
+t_token	*handle_redirect_out(t_lexer *lexer)
+{
+	if (peek_next(lexer) == '>')
+	{
+		advance(lexer);
+		advance(lexer);
+		return (create_token(TOKEN_APPEND_OUT, ">>"));
+	}
+	advance(lexer);
+	return (create_token(TOKEN_REDIRECT_OUT, ">"));
+}
+
 t_token	*handle_operator(t_lexer *lexer)
 {
-	t_token	*token;
 	char	curr;
-	char	next;
 
 	curr = current_char(lexer);
-	next = peek_next(lexer);
 	if (curr == '|')
-	{
-		token = create_token(TOKEN_PIPE, "|");
-		advance(lexer);
-	}
+		return (handle_pipe(lexer));
 	else if (curr == '<')
-	{
-		if (next == '<')
-		{
-			token = create_token(TOKEN_HERE_DOCUMENT, "<<");
-			advance(lexer);
-			advance(lexer);
-		}
-		else
-		{
-			token = create_token(TOKEN_REDIRECT_IN, "<");
-			advance(lexer);
-		}
-	}
+		return (handle_redirect_in(lexer));
 	else if (curr == '>')
-	{
-		if (next == '>')
-		{
-			token = create_token(TOKEN_APPEND_OUT, ">>");
-			advance(lexer);
-			advance(lexer);
-		}
-		else
-		{
-			token = create_token(TOKEN_REDIRECT_OUT, ">");
-			advance(lexer);
-		}
-	}
-	else
-	{
-		token = NULL;
-	}
-	return (token);
+		return (handle_redirect_out(lexer));
+	return (NULL);
 }
+
+// Function to handle operators
+// t_token	*handle_operator(t_lexer *lexer)
+// {
+// 	t_token	*token;
+// 	char	curr;
+// 	char	next;
+
+// 	curr = current_char(lexer);
+// 	next = peek_next(lexer);
+// 	if (curr == '|')
+// 	{
+// 		token = create_token(TOKEN_PIPE, "|");
+// 		advance(lexer);
+// 	}
+// 	else if (curr == '<')
+// 	{
+// 		if (next == '<')
+// 		{
+// 			token = create_token(TOKEN_HERE_DOCUMENT, "<<");
+// 			advance(lexer);
+// 			advance(lexer);
+// 		}
+// 		else
+// 		{
+// 			token = create_token(TOKEN_REDIRECT_IN, "<");
+// 			advance(lexer);
+// 		}
+// 	}
+// 	else if (curr == '>')
+// 	{
+// 		if (next == '>')
+// 		{
+// 			token = create_token(TOKEN_APPEND_OUT, ">>");
+// 			advance(lexer);
+// 			advance(lexer);
+// 		}
+// 		else
+// 		{
+// 			token = create_token(TOKEN_REDIRECT_OUT, ">");
+// 			advance(lexer);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		token = NULL;
+// 	}
+// 	return (token);
+// }
 
 // Function to handle quoted strings
 t_token	*handle_quote(t_lexer *lexer)
