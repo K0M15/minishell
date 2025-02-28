@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 13:58:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:59:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ typedef struct s_appstate
 	char			**enviroment;
 	size_t			env_alloc;
 	size_t			env_filled;
-	char			*working_directory;
 	t_list			*children;
 	t_appmode		active_mode;
 	int				rainbow;

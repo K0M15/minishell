@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:13:02 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/26 18:23:44 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 16:00:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	*ms_get_prompt(void)
 
 	// user = ms_get_env("USER");
 
-	// pwd = get_appstate()->working_directory;
 	//get start of last directory. if root + 1 display / in prompt
 	return ("minishell >");
 }
