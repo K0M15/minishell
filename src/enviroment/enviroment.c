@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:26:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:19:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ms_is_key(char *str, char *key)
 	int	str_c;
 
 	str_c = ft_strlen(key);
-	if (ft_strncmp(str, key, str_c == 0) && str[str_c + 1] == '=')
+	if (ft_strncmp(str, key, str_c) == 0 && str[str_c] == '=')
 		return (1);
 	return (0);
 }
