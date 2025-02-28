@@ -1,3 +1,5 @@
 *.o
 *.a
 .*/*
+./tests/*
+.DS_Store

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 13:57:36 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 13:59:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int main (int argc, char **argv, char **envp)
 			free_command(cmd);
 		}
 		free_tokens(tokens);
-		free(str);
+		// free(str);
 		add_history(str); // check beforehand if string is empty
 		if (ft_strncmp("exit", str, 4) == 0)
 			break ;

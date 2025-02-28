@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/28 13:58:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:40:04 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,6 +401,28 @@ void	expand_variables(t_command *cmd, char **env)
 		expand_variables(cmd->right, env);
 }
 
+void	ft_strncat(char *target, const char *source, size_t amount, size_t max)
+{
+	size_t	counter;
+	size_t 	max_counter;
+	
+	max_counter = 0;
+	while(*target && max_counter < max)
+	{
+		target++;
+		max_counter++;
+	}
+	counter = 0;
+	while (source[counter] && counter < amount - 1 && max_counter < max)
+	{
+		*target = source[counter];
+		target++;
+		counter++;
+		max_counter++;
+	}
+	*target = '\0';
+}
+
 char	*expand_variables_in_string(const char *str)
 {
 	char	*var_value;
@@ -428,7 +450,7 @@ char	*expand_variables_in_string(const char *str)
             i--;
         }
 		else
-            ft_strlcat(result, &str[i], 2);
+            ft_strncat(result, &str[i], 2, 4*1024);
     }
     return (result);
 }
@@ -559,7 +581,7 @@ int	execute_simple_command(t_command *cmd, char **env)
 	}
 	if (cmd->pid == 0)
 	{
-		execvp(cmd->args[0], cmd->args);
+		execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
 		perror("execvp");
 		exit(EXIT_FAILURE);
 	}
