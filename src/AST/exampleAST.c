@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exampleAST.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/27 19:24:37 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:58:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strndup(char *dst, const char *src, size_t n)
 	return (dst);
 }
 
-int	is_redirection_token(TokenType type)
+int	is_redirection_token(t_tokentype type)
 {
 	return (type == TOKEN_REDIRECT_IN || type == TOKEN_REDIRECT_OUT
 		|| type == TOKEN_APPEND_OUT || type == TOKEN_HERE_DOCUMENT);
@@ -122,7 +122,7 @@ char	*handle_quotes(char *str)
 	return (result);
 }
 
-t_command	*parse_simple_command(Token **tokens)
+t_command	*parse_simple_command(t_token **tokens)
 {
 	t_token			*current;
 	t_command		*cmd;
@@ -169,9 +169,9 @@ t_command	*parse_simple_command(Token **tokens)
 	return (cmd);
 }
 // Parse a simple command (cmd arg1 arg2 ... with possible redirections)
-// t_command	*parse_simple_command(Token **tokens)
+// t_command	*parse_simple_command(t_token **tokens)
 // {
-// 	Token			*current;
+// 	t_token			*current;
 // 	t_command		*cmd;
 // 	int				arg_count;
 // 	t_redirection	*redir;

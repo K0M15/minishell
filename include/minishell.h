@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/27 19:37:55 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:58:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,29 +305,27 @@ int			execute_pipe_command(t_command *cmd, char **env);
 t_redirection	*parse_redirection(t_token **tokens);
 t_redirection	*create_redirection(t_redirtype type, const char *file);
 
-//		TODO
-int		is_redirection_token(TokenType type);						//done
-int		apply_redirections(t_redirection *redirections);			//done
-void	restore_fds(int saved_fds[3]);
-int		ft_strcmp(const char *s1, const char *s2);
-int		is_builtin(char *str);
-int		execute_builtin(t_command *cmd, char **env);
-char	*expand_variables_in_string(const char *str, char **env);
+int			is_redirection_token(t_tokentype type);						//done
+int			apply_redirections(t_redirection *redirections);			//done
+void		restore_fds(int saved_fds[3]);
+int			ft_strcmp(const char *s1, const char *s2);
+int			is_builtin(char *str);
+int			execute_builtin(t_command *cmd, char **env);
 
 
 // Example AST
 
 char	*ft_strndup(char *dst, const char *src, size_t n);
-int	is_redirection_token(TokenType type);
+int	is_redirection_token(t_tokentype type);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-t_command	*parse(Token *tokens);
-t_command	*parse_pipeline(Token **tokens);
-t_command	*parse_simple_command(Token **tokens);
-t_redirection	*parse_redirection(Token **tokens);
+t_command	*parse(t_token *tokens);
+t_command	*parse_pipeline(t_token **tokens);
+t_command	*parse_simple_command(t_token **tokens);
+t_redirection	*parse_redirection(t_token **tokens);
 t_command	*create_simple_command(void);
 t_command	*create_pipe_command(t_command *left, t_command *right);
 void	add_argument(t_command *cmd, const char *arg);
-t_redirection	*create_redirection(RedirType type, const char *file);
+t_redirection	*create_redirection(t_redirtype type, const char *file);
 void	add_redirection(t_command *cmd, t_redirection *redir);
 void	free_command(t_command *cmd);
 void	expand_variables(t_command *cmd, char **env);
