@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 13:56:35 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:07:40 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int main (int argc, char **argv, char **envp)
 	status = 0;
 
 	ms_env_init();
-	ms_display_welcome();
+	// ms_display_welcome();
 	using_history();
 	load_history(HISTORY_FILENAME);
 	ms_sig_init();
@@ -84,7 +84,7 @@ int main (int argc, char **argv, char **envp)
 		cmd = parse(tokens);
 		if (cmd)
 		{
-			status = execute_command(cmd, get_appstate()->enviroment);
+			get_appstate()->last_status = execute_command(cmd, get_appstate()->enviroment);
 			free_command(cmd);
 			init_terminal();
 		}
