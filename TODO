@@ -25,6 +25,14 @@ Execution
 				test needed
 				double heredoc: only the last heredoc is redirected to the fd. So maybe we should pack this into a single string and overwrite it with the next heredoc
 				🆇 not working: double heredoc: in cat<<a<<b, 2 prompts will be displayed. if you enter a before b, there'll be a segfault
+				🆇 not working: SIGINT should prevent other processes from running...
+				Maybe I need to rework HEREDOC, since it clearly should be running before the target process is started.
+				An Idea is, to put a t_doc struct inside of the cmd,
+				write to it in ms_heredoc (without fork),
+				open the pipe right before execution (or have something associated with the filed descriptors in the struct)
+				then write to the pipe right after execve from main process.
+				if interrupt occures, just dont execute
+				(ChatGPT said, this sounds like a solid plan 🤣🤣)
 
 Runtime
 	=> variables
