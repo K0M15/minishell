@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 15:48:17 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 13:56:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,18 @@ int main (int argc, char **argv, char **envp)
 	while (1)
 	{
 		str = ft_mem_reg(readline(ms_get_prompt()));
+		if (str == NULL)
+		{
+			printf("exit");	//go back to last line and write "exit"
+			cleanup(0);
+		}
 		tokens = tokenize(str);
 		cmd = parse(tokens);
 		if (cmd)
 		{
 			status = execute_command(cmd, get_appstate()->enviroment);
 			free_command(cmd);
+			init_terminal();
 		}
 		free_tokens(tokens);
 		// free(str);
