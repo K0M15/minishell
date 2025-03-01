@@ -6,11 +6,35 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 11:16:16 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 13:49:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+pid_t		ft_fork(void)
+{
+	long pid;
+
+	pid = fork();
+	if (pid < 0)
+		return (perror("Fork error"), -1);
+	else if (pid == 0)
+	{
+		ms_sig_init();
+		ms_set_state_mode(INTERACTIVE);
+		init_child_terminal();
+		return pid;
+	}
+	else
+	{
+		if (get_appstate()->children == NULL)
+			get_appstate()->children = ft_lstnew((void *)pid);
+		else
+			ft_lstadd_back(&get_appstate()->children, ft_lstnew((void *)pid));
+		return pid;
+	}
+}
 
 char	*ft_strndup(char *dst, const char *src, size_t n)
 {
@@ -454,9 +478,7 @@ void	redirection_append(t_redirection *redirection)
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 }
-// Here Document (<<): Your ms_heredoc function reads input until a delimiter,
-// but it doesn’t handle multi-line input correctly. Also,
-//	it updates the history, which is not allowed for <<.
+
 int	apply_redirections(t_redirection *redirections)
 {
 	t_redirection	*r;
@@ -475,7 +497,7 @@ int	apply_redirections(t_redirection *redirections)
 		{
 			if (pipe(fd) < 0)
 				return (perror("pipe"), 1);
-			if (ms_heredoc(redirections->file, fd[STDOUT_FILENO]) == -1)
+			if (ms_heredoc(r->file, fd[STDOUT_FILENO]) == -1)
 				perror("HEREDOC");
 			dup2(fd[STDIN_FILENO], STDIN_FILENO);
 			close(fd[STDIN_FILENO]);
@@ -509,7 +531,7 @@ int	execute_simple_command(t_command *cmd, char **env)
 	reppath = find_path(cmd->args[0]);
 	if (reppath != NULL)
 		cmd->args[0] = reppath;
-	cmd->pid = fork();
+	cmd->pid = ft_fork();
 	if (cmd->pid < 0)
 	{
 		perror("fork");
@@ -550,7 +572,7 @@ int	execute_pipe_command(t_command *cmd, char **env)
 		return (1);
 	}
 	// Fork for the left side of the pipe (writes to pipe)
-	pid1 = fork();
+	pid1 = ft_fork();
 	if (pid1 < 0)
 	{
 		perror("minishell: fork");
@@ -569,7 +591,7 @@ int	execute_pipe_command(t_command *cmd, char **env)
 		exit(EXIT_SUCCESS);
 	}
 	// Fork for the right side of the pipe (reads from pipe)
-	pid2 = fork();
+	pid2 = ft_fork();
 	if (pid2 < 0)
 	{
 		perror("minishell: fork");
