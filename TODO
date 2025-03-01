@@ -7,37 +7,38 @@ something to decide
 
 Execution
 	=> Builtins X
-		cd								test needed		afelger
-		pwd								test needed		afelger
-		export	need env variables		test needed		afelger
-		unset	need env variables		test needed		afelger
-		env		need env variables		test needed		afelger
-		exit	not implemented yet
-		echo	with -n					test needed		afelger
+		cd								check for edge cases		afelger
+		pwd								✅ looks good
+		export	need env variables		✅ looks good
+		unset	need env variables		✅ looks good
+		env		need env variables		✅ looks good
+		exit							✅ looks good
+		echo	with -n					✅ looks good
 	
-	=> Redirecting
+	=> Redirecting 		✅ looks good
 	=> Pipes
-	=> execve
+				🆇 not working: double prompt, at least one of the processes does not return
 	=> Heredoc	
 				(another readline with "herdoc>" prompt, listening for the delimter and saving to linkedlist or equal)
 				(there could be multiple)
 				prompt and write to fd done				afelger
 				test needed
 				double heredoc: only the last heredoc is redirected to the fd. So maybe we should pack this into a single string and overwrite it with the next heredoc
+				🆇 not working: double heredoc: in cat<<a<<b, 2 prompts will be displayed. if you enter a before b, there'll be a segfault
 
 Runtime
-	=> Variables
-		get in main						not needed due to global environ like in description of POSIX.1
-		put to variable					test needed		afelger
-		READ Pid and output on $$ 	//$$			- not posible, needs to be handled? NOOOO
+	=> variables
+		🆇 display return type is missing
 	=> abstraction for malloc
 		2 Areas => duration of minishell, duration of single line entry or heredoc
+		🆇 not implemented yet
 	=> Signalhandling (Sigabort does not close shell)
-		SIGINT (STRG C)					test needed		afelger
-		SIGQUIT (STRG \) not needed, ignored		TODO: avoid funny empty string display...
+		SIGINT (STRG C)		test needed		afelger
+				✅ working in interactive mode
+				🆇 not working when programm is executed. Double display of prompt
+		SIGQUIT (STRG \) not needed, ignored 🟨 seems to be working, more testing needed
 		EXIT (STRG D)
-			enter "exit", then quit => not a signal but closing stdin
-		SIGTSTP (STRG Z) ?? check if handling is need				NO HANDLING NEEDED, WORKS OUT OF THE BOX 😁
+			🆇 exits, but displays exit line on wrong line
 
 FUN:
 	- implement Rainbowmode
