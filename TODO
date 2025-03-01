@@ -4,12 +4,6 @@ something to decide
 	- how much work is it, to add input of heredoc to history?
 	- could we handle readline leak if we fork the process for each input?
 	- cd: should we use the non directory path?
-	
-Parsing
-	=> input handling and history
-	=> parsing & tokenizing
-	=> Handling quotes + braces
-	=> Variable expansion
 
 Execution
 	=> Builtins X
@@ -81,7 +75,7 @@ word word operator word word
 
 Generator for ASCII ART https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Filth&t=MINISHELL
 new git commands:
-	=>git branch display branches
+	=> git branch display branches
 	=> git branch [name] creates branch name
 	=> git checkout [name] switches to branch
 	=> git merge [name] merge branch name to current branch
