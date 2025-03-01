@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exampleAST.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/28 15:43:49 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/01 10:15:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -538,11 +538,12 @@ int	apply_redirections(t_redirection *redirections)
 // Execute a simple command
 int	execute_simple_command(t_command *cmd, char **env)
 {
-	int	saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
-			dup(STDERR_FILENO)};
-	int	ret;
-	int	status;
-
+	int		saved_fds[3] = {dup(STDIN_FILENO), dup(STDOUT_FILENO),
+					dup(STDERR_FILENO)};
+	int		ret;
+	int		status;
+	char	*reppath;
+	
 	if (!apply_redirections(cmd->redirections))
 	{
 		restore_fds(saved_fds);
@@ -554,6 +555,9 @@ int	execute_simple_command(t_command *cmd, char **env)
 		restore_fds(saved_fds);
 		return (ret);
 	}
+	reppath = find_path(cmd->args[0]);
+	if (reppath != NULL)
+		cmd->args[0] = reppath;
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 	{
@@ -563,7 +567,8 @@ int	execute_simple_command(t_command *cmd, char **env)
 	}
 	if (cmd->pid == 0)
 	{
-		execute(cmd->args[0], env);
+		execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
+		// execute(cmd->args[0], env);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
@@ -651,8 +656,10 @@ void	free_string_arr(char **arr)
 		free(arr[i]);
 	free(arr);
 }
-
-char	*find_path(char *cmd, char **envp)
+/**	Returns a freeable string with the application name in it.
+ *	Frees cmd, if path found
+ */
+char	*find_path(char *cmd)
 {
 	char	**paths;
 	int		i;
@@ -660,17 +667,17 @@ char	*find_path(char *cmd, char **envp)
 	char	*path;
 
 	i = 0;
-	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = 0;
+	paths = ft_split(ms_get_env("PATH"), ':');
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd);
 		free(part_path);
 		if (access(path, X_OK) == 0)
+		{
+			free(cmd);
 			return (path);
+		}
 		free(path);
 		i++;
 	}
@@ -678,18 +685,18 @@ char	*find_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	execute(char *av, char **envp)
-{
-	char	*path;
+// void	execute(char *av, char **envp)
+// {
+// 	char	*path;
 
-	// char	**cmd;
-	// cmd = ft_split(av, ' ');
-	path = find_path(av, envp);
-	if (!path)
-	{
-		// free_string_arr(cmd);
-		perror("path");
-	}
-	if (execve(path, &av, envp) == -1)
-		perror("execve");
-}
+// 	// char	**cmd;
+// 	// cmd = ft_split(av, ' ');
+// 	path = find_path(av, envp);
+// 	if (!path)
+// 	{
+// 		// free_string_arr(cmd);
+// 		perror("path");
+// 	}
+// 	if (execve(path, &av, envp) == -1)
+// 		perror("execve");
+// }

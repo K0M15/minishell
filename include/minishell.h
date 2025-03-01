@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 16:25:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 10:13:20 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,8 +345,8 @@ void			redirection_append(t_redirection *redirection);
 int				apply_redirections(t_redirection *redirections);
 int				execute_simple_command(t_command *cmd, char **env);
 int				execute_pipe_command(t_command *cmd, char **env);
-void			execute(char *av, char **envp);
-char			*find_path(char *cmd, char **envp);
+// void			execute(char *av, char **envp);
+char			*find_path(char *cmd);
 void			free_string_arr(char **arr);
 
 
