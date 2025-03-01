@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 11:11:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 13:45:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ void			load_history(char *filename);
 int				dump_history(char *filname);
 
 void			init_terminal(void);
+void			init_child_terminal(void);
 
 // =================   STILL TODO   ================= //
 /**
