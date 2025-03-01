@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 13:49:39 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 14:11:25 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -501,7 +501,6 @@ int	apply_redirections(t_redirection *redirections)
 				perror("HEREDOC");
 			dup2(fd[STDIN_FILENO], STDIN_FILENO);
 			close(fd[STDIN_FILENO]);
-			return (1);
 		}
 		r = r->next;
 	}
