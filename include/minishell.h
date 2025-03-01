@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 10:13:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 11:11:31 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ typedef struct s_doc
 }	t_doc;
 
 //	executes heredoc. dellimter = EOF, fd -> output pipe, document = NULL (is called recursive)
-int				ms_heredoc(char *dellimter, int fd, t_doc *document);
+int				ms_heredoc(char *dellimter, int fd);
 t_doc			*ms_doc_app_or_new(struct s_doc **document);
 int				ms_doc_display_free(struct s_doc *document, int fd);
 char			*ms_doc_construct(struct s_doc *document);

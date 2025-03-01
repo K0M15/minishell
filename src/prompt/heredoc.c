@@ -6,13 +6,13 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 15:05:43 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 11:23:06 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_heredoc(char *dellimter, int fd, t_doc *document)
+int	heredoc_process(char *dellimter, int fd, t_doc *document)
 {
 	char	*str;
 	t_doc	*last;
@@ -29,13 +29,27 @@ int	ms_heredoc(char *dellimter, int fd, t_doc *document)
 	last->content = ft_strjoin(str, "\n");
 	free(str);
 	last->length = ft_strlen(last->content);
-	iseof = ms_heredoc(dellimter, fd, last);
+	iseof = heredoc_process(dellimter, fd, last);
 	if (iseof == -1)
 		return (-1);
 	if (document != NULL)
 		return (iseof);
 	ms_doc_display_free(last, fd);
 	return (iseof);
+}
+
+int ms_heredoc(char *delimiter, int fd) {
+    pid_t pid;
+	
+	pid = fork();
+    if (pid == 0)
+	{
+        heredoc_process(delimiter, fd, NULL);
+        exit(0);
+    }
+	else if (pid > 0)
+        return (close(fd), 0);
+    return (perror("fork failed"), -1);
 }
 
 // int	ms_heredoc(char *delimiter, int fd, t_doc *document)

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 10:15:30 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 11:16:16 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,56 +156,6 @@ t_command	*parse_simple_command(t_token **tokens)
 		return (free_command(cmd), NULL);
 	return (cmd);
 }
-// Parse a simple command (cmd arg1 arg2 ... with possible redirections)
-// t_command	*parse_simple_command(t_token **tokens)
-// {
-// 	t_token			*current;
-// 	t_command		*cmd;
-// 	int				arg_count;
-// 	t_redirection	*redir;
-
-// 	current = *tokens;
-// 	cmd = create_simple_command();
-// 	arg_count = 0;
-// 	// Collect arguments and redirections
-// 	while (current && current->type != TOKEN_PIPE && current->type != TOKEN_EOF)
-// 	{
-// 		if (is_redirection_token(current->type))
-// 		{
-// 			// Handle redirection
-// 			redir = parse_redirection(&current);
-// 			if (!redir)
-// 			{
-// 				// Handle error
-// 				free_command(cmd);
-// 				return (NULL);
-// 			}
-// 			add_redirection(cmd, redir);
-// 		}
-// 		else if (current->type == TOKEN_WORD)
-// 		{
-// 			// Add argument to command
-// 			add_argument(cmd, current->value);
-// 			arg_count++;
-// 			current = current->next;
-// 		}
-// 		else
-// 		{
-// 			// Unexpected token
-// 			free_command(cmd);
-// 			return (NULL);
-// 		}
-// 	}
-// 	// Update tokens to point to the next unprocessed token
-// 	*tokens = current;
-// 	// Return NULL if we didn't find any arguments
-// 	if (arg_count == 0)
-// 	{
-// 		free_command(cmd);
-// 		return (NULL);
-// 	}
-// 	return (cmd);
-// }
 
 // Parse a redirection
 t_redirection	*parse_redirection(t_token **tokens)
@@ -524,11 +474,12 @@ int	apply_redirections(t_redirection *redirections)
 		else if (r->type == REDIR_HEREDOC)
 		{
 			if (pipe(fd) < 0)
-			{
-				perror("pipe");
-				return (1);
-			}
-			ms_heredoc(redirections->file, fd[STDIN_FILENO], NULL);
+				return (perror("pipe"), 1);
+			if (ms_heredoc(redirections->file, fd[STDOUT_FILENO]) == -1)
+				perror("HEREDOC");
+			dup2(fd[STDIN_FILENO], STDIN_FILENO);
+			close(fd[STDIN_FILENO]);
+			return (1);
 		}
 		r = r->next;
 	}
@@ -684,19 +635,3 @@ char	*find_path(char *cmd)
 	free_string_arr(paths);
 	return (NULL);
 }
-
-// void	execute(char *av, char **envp)
-// {
-// 	char	*path;
-
-// 	// char	**cmd;
-// 	// cmd = ft_split(av, ' ');
-// 	path = find_path(av, envp);
-// 	if (!path)
-// 	{
-// 		// free_string_arr(cmd);
-// 		perror("path");
-// 	}
-// 	if (execve(path, &av, envp) == -1)
-// 		perror("execve");
-// }
