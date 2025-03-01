@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 11:23:06 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 11:32:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int ms_heredoc(char *delimiter, int fd) {
 	pid = fork();
     if (pid == 0)
 	{
+		ms_set_state_mode(HEREDOC);
         heredoc_process(delimiter, fd, NULL);
         exit(0);
     }
