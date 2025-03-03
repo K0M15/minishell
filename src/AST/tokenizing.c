@@ -6,87 +6,45 @@
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:32:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/02/28 16:00:24 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/01 17:10:17 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Helper functions
-char	*ft_strcpy(char *dst, const char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
-
-t_lexer	*init_lexer(char *input)
+// Function to tokenize entire input
+t_token	*tokenize(char *input)
 {
 	t_lexer	*lexer;
-
-	lexer = malloc(sizeof(t_lexer));
-	if (!lexer)
-		return (NULL);
-	lexer->input = input;
-	lexer->input_len = ft_strlen(input);
-	lexer->pos = 0;
-	lexer->in_dd_quote = false;
-	lexer->in_s_quote = false;
-	lexer->contains_var = false;
-	return (lexer);
-}
-
-int	ft_isspace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r');
-}
-
-char	current_char(t_lexer *lexer)
-{
-	if (lexer->pos >= lexer->input_len)
-		return ('\0');
-	return (lexer->input[lexer->pos]);
-}
-
-char	peek_next(t_lexer *lexer)
-{
-	if (lexer->pos + 1 >= lexer->input_len)
-		return ('\0');
-	return (lexer->input[lexer->pos + 1]);
-}
-
-void	advance(t_lexer *lexer)
-{
-	lexer->pos++;
-}
-
-int	is_operator_char(char c)
-{
-	return (c == '|' || c == '<' || c == '>');
-}
-
-t_token	*create_token(t_tokentype type, char *value)
-{
+	t_token	*head;
+	t_token	*current;
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
-	if (!token)
+	head = NULL;
+	current = NULL;
+	lexer = init_lexer(input);
+	if (!lexer)
 		return (NULL);
-	token->type = type;
-	if (value)
-		token->value = ft_strdup(value);
-	else
-		token->value = NULL;
-	token->next = NULL;
-	return (token);
+	while (1)
+	{
+		token = get_next_token(lexer);
+		if (!token)
+			break ;
+		if (head == NULL)
+		{
+			head = token;
+			current = token;
+		}
+		else
+		{
+			current->next = token;
+			current = token;
+		}
+		if (token->type == TOKEN_EOF)
+			break ;
+	}
+	free(lexer);
+	return (head);
 }
 
 char	*handle_variable(t_lexer *lexer)
@@ -139,52 +97,10 @@ char	*handle_variable(t_lexer *lexer)
 	if (!result)
 		return (NULL);
 	result[0] = '$';
-	strcpy(result + 1, buffer);
+	ft_strcpy(result + 1, buffer);
 	return (result);
 }
-t_token	*handle_pipe(t_lexer *lexer)
-{
-	advance(lexer);
-	return (create_token(TOKEN_PIPE, "|"));
-}
 
-t_token	*handle_redirect_in(t_lexer *lexer)
-{
-	if (peek_next(lexer) == '<')
-	{
-		advance(lexer);
-		advance(lexer);
-		return (create_token(TOKEN_HERE_DOCUMENT, "<<"));
-	}
-	advance(lexer);
-	return (create_token(TOKEN_REDIRECT_IN, "<"));
-}
-
-t_token	*handle_redirect_out(t_lexer *lexer)
-{
-	if (peek_next(lexer) == '>')
-	{
-		advance(lexer);
-		advance(lexer);
-		return (create_token(TOKEN_APPEND_OUT, ">>"));
-	}
-	advance(lexer);
-	return (create_token(TOKEN_REDIRECT_OUT, ">"));
-}
-
-t_token	*handle_operator(t_lexer *lexer)
-{
-	char	curr;
-
-	curr = current_char(lexer);
-	if (curr == '|')
-		return (handle_pipe(lexer));
-	else if (curr == '<')
-		return (handle_redirect_in(lexer));
-	else if (curr == '>')
-		return (handle_redirect_out(lexer));
-	return (NULL);
-}
 
 // Function to handle operators
 // t_token	*handle_operator(t_lexer *lexer)
@@ -344,96 +260,4 @@ t_token	*handle_word(t_lexer *lexer)
 	if (i == 0)
 		return (NULL);
 	return (create_token(TOKEN_WORD, buffer));
-}
-
-// Function to skip whitespace
-void	skip_whitespace(t_lexer *lexer)
-{
-	while (current_char(lexer) != '\0' && ft_isspace(current_char(lexer)))
-		advance(lexer);
-}
-
-// Main tokenizing function
-t_token	*get_next_token(t_lexer *lexer)
-{
-	skip_whitespace(lexer);
-	if (current_char(lexer) == '\0')
-	{
-		return (create_token(TOKEN_EOF, NULL));
-	}
-	// Only pipe, redirect operators should be treated as operators
-	// $ is not a separate operator
-	if (current_char(lexer) == '|' || current_char(lexer) == '<'
-		|| current_char(lexer) == '>')
-	{
-		return (handle_operator(lexer));
-	}
-	return (handle_word(lexer));
-}
-
-// Function to tokenize entire input
-t_token	*tokenize(char *input)
-{
-	t_lexer	*lexer;
-	t_token	*head;
-	t_token	*current;
-	t_token	*token;
-
-	head = NULL;
-	current = NULL;
-	lexer = init_lexer(input);
-	if (!lexer)
-		return (NULL);
-	while (1)
-	{
-		token = get_next_token(lexer);
-		if (!token)
-			break ;
-		if (head == NULL)
-		{
-			head = token;
-			current = token;
-		}
-		else
-		{
-			current->next = token;
-			current = token;
-		}
-		if (token->type == TOKEN_EOF)
-			break ;
-	}
-	free(lexer);
-	return (head);
-}
-
-// Helper function to free token list
-void	free_tokens(t_token *head)
-{
-	t_token	*temp;
-
-	while (head != NULL)
-	{
-		temp = head;
-		head = head->next;
-		free(temp->value);
-		free(temp);
-	}
-}
-
-void	print_token_type(t_tokentype type)
-{
-	if (type == TOKEN_WORD)
-		printf("WORD");
-	else if (type == TOKEN_PIPE)
-		printf("PIPE");
-	else if (type == TOKEN_REDIRECT_IN)
-		printf("REDIRECT_IN");
-	else if (type == TOKEN_REDIRECT_OUT)
-		printf("REDIRECT_OUT");
-	else if (type == TOKEN_APPEND_OUT)
-		printf("APPEND_OUT");
-	else if (type == TOKEN_HERE_DOCUMENT)
-		printf("HERE_DOCUMENT");
-	else if (type == TOKEN_EOF)
-		printf("EOF");
 }

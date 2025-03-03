@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 16:45:50 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/03 12:51:31 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,27 +286,50 @@ int				is_operator_char(char c);
  */
 t_token			*create_token(t_tokentype type, char *value);
 /*
- *
+ * Findes the operators and passes them to the appropriate function
  */
-
-// void	handle_in_redirection(t_token *token, char next, t_lexer *lexer);
-// void	handle_out_redirection(t_token *token, char next, t_lexer *lexer);
-t_token	*handle_redirect_out(t_lexer *lexer);
-t_token	*handle_redirect_in(t_lexer *lexer);
-t_token	*handle_pipe(t_lexer *lexer);
-
-
-
-
-char			*handle_variable(t_lexer *lexer);
 t_token			*handle_operator(t_lexer *lexer);
-t_token			*handle_word(t_lexer *lexer);
-t_token			*handle_quote(t_lexer *lexer);
+/*
+ * Will return a Pipe Token
+ */
+t_token			*handle_pipe(t_lexer *lexer);
+/*
+ * Will return a Redirect out Token
+ */
+t_token			*handle_redirect_out(t_lexer *lexer);
+/*
+ * Will return a Redirect in Token
+ */
+t_token			*handle_redirect_in(t_lexer *lexer);
+/*
+ * Will skip all whitespaces
+ */
 void			skip_whitespace(t_lexer *lexer);
-t_token			*get_next_token(t_lexer *lexer);
+/*
+ * Will handle variables even if they are inside of quotes
+ */
+char			*handle_variable(t_lexer *lexer);
+/*
+ * Will handle words and quotes
+ */
+t_token			*handle_word(t_lexer *lexer);
+/*
+ * Will handle quotes
+ */
+t_token			*handle_quote(t_lexer *lexer);
+/*
+ * Will tokenize the input, and return a linked list of tokens
+ */
 t_token			*tokenize(char *input);
-void			free_tokens(t_token *tokens);
-void			print_token_type(t_tokentype type);
+t_token			*get_next_token(t_lexer *lexer);
+/*
+*	Will free the linked list of tokens
+*/
+void			free_tokens(t_token *head);
+//============================================	END LEXING AND TOKENIZING
+
+
+
 char			*expand_variables_in_string(const char *str);
 t_command		*parse_pipeline(t_token **tokens);
 t_command		*parse_simple_command(t_token **tokens);
