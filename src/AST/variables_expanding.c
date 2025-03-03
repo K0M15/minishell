@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_expanding.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:03:12 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 17:05:12 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:30:37 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*expand_variables_in_string(const char *str)
 	{
 		if (str[i] == '$' && str[i + 1] && str[i + 1] == '?')
 		{
-			var_value = ft_itoa(get_appstate()->last_status);
+			var_value = ft_itoa(get_appstate()->last_return);
 			ft_strlcat(result, var_value, 4 * 1024);
 			i += 1;
 			free(var_value);
@@ -65,7 +65,7 @@ char	*expand_variables_in_string(const char *str)
 			var_name[i - var_start] = '\0';
 			var_value = ms_get_env(var_name);
 			ft_strlcat(result, var_value, 4 * 1024);
-			free(var_value);
+			// free(var_value);
 			i--;
 		}
 		else
