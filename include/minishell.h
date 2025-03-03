@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/03 12:51:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/03 13:26:21 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,8 +323,8 @@ t_token			*handle_quote(t_lexer *lexer);
 t_token			*tokenize(char *input);
 t_token			*get_next_token(t_lexer *lexer);
 /*
-*	Will free the linked list of tokens
-*/
+ *	Will free the linked list of tokens
+ */
 void			free_tokens(t_token *head);
 //============================================	END LEXING AND TOKENIZING
 
@@ -376,7 +376,8 @@ int				execute_pipe_command(t_command *cmd, char **env);
 // void			execute(char *av, char **envp);
 char			*find_path(char *cmd);
 void			free_string_arr(char **arr);
-
-
-
+char			*ft_strcpy(char *dst, const char *src);
+void			ft_strncat(char *target, const char *source, size_t amount, size_t max);
+char  			*handle_quotes(char *str);
+pid_t		ft_fork(void);
 #endif // MINISHELL_H
