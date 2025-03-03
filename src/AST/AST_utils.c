@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AST_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 16:56:43 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 17:11:14 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:17:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*handle_quotes(char *str)
 	int		in_single_quotes;
 	int		in_double_quotes;
 
-	result = ft_strdup("");
+	result = ft_strdup("");	//this is not good handling of that. We malloc and free a lot of memory
 	in_single_quotes = 0;
 	in_double_quotes = 0;
 	while (*str)
@@ -100,6 +100,7 @@ char	*handle_quotes(char *str)
 			in_double_quotes = !in_double_quotes;
 		else
 		{
+			//hanlde here variable extraction
 			temp = result;
 			result = ft_strjoin(result, (char[]){*str, '\0'});
 			free(temp);
