@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 14:11:25 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 17:09:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,9 @@ t_command	*create_simple_command(void)
 	cmd->left = NULL;
 	cmd->right = NULL;
 	cmd->redirections = NULL;
+	cmd->heredoc = NULL;
 	cmd->pid = 0;
+	cmd->canceled = false;
 	return (cmd);
 }
 
@@ -397,7 +399,14 @@ char	*expand_variables_in_string(const char *str)
 	result[0] = '\0';
 	for (size_t i = 0; str[i]; ++i)
 	{
-		if (str[i] == '$' && str[i + 1] && (str[i + 1] == '_'
+		if (str[i] == '$' && str[i + 1] && str[i + 1] == '?' )
+		{
+			var_value = ft_itoa(get_appstate()->last_return);
+			ft_strlcat(result, var_value, 4 * 1024);
+			i += 1;
+			free(var_value);
+		}
+		else if (str[i] == '$' && str[i + 1] && (str[i + 1] == '_'
 				|| ft_isalpha(str[i + 1])))
 		{
 			i++;
@@ -408,7 +417,8 @@ char	*expand_variables_in_string(const char *str)
 			var_name[i - var_start] = '\0';
 			var_value = ms_get_env(var_name);
 			ft_strlcat(result, var_value, 4 * 1024);
-			free(var_value);
+			// if (var_value != NULL)
+			// 	free(var_value);
 			i--;
 		}
 		else
@@ -479,13 +489,13 @@ void	redirection_append(t_redirection *redirection)
 	close(fd);
 }
 
-int	apply_redirections(t_redirection *redirections)
+int	apply_redirections(t_command *cmd)
 {
 	t_redirection	*r;
-	int				fd[2];
+	// int				fd[2];
 
-	r = redirections;
-	while (r)
+	r = cmd->redirections;
+	while (r && !cmd->canceled)
 	{
 		if (r->type == REDIR_IN)
 			redirection_in(r);
@@ -494,14 +504,8 @@ int	apply_redirections(t_redirection *redirections)
 		else if (r->type == REDIR_APPEND)
 			redirection_append(r);
 		else if (r->type == REDIR_HEREDOC)
-		{
-			if (pipe(fd) < 0)
-				return (perror("pipe"), 1);
-			if (ms_heredoc(r->file, fd[STDOUT_FILENO]) == -1)
-				perror("HEREDOC");
-			dup2(fd[STDIN_FILENO], STDIN_FILENO);
-			close(fd[STDIN_FILENO]);
-		}
+			if((cmd->heredoc = ms_heredoc(r->file)) == NULL)
+				cmd->canceled = true;
 		r = r->next;
 	}
 	return (1);
@@ -516,7 +520,7 @@ int	execute_simple_command(t_command *cmd, char **env)
 	int		status;
 	char	*reppath;
 	
-	if (!apply_redirections(cmd->redirections))
+	if (!apply_redirections(cmd))
 	{
 		restore_fds(saved_fds);
 		return (1);
@@ -530,6 +534,8 @@ int	execute_simple_command(t_command *cmd, char **env)
 	reppath = find_path(cmd->args[0]);
 	if (reppath != NULL)
 		cmd->args[0] = reppath;
+	if (cmd->canceled)
+		return (130);	// shell convention 130 = SIGINT
 	cmd->pid = ft_fork();
 	if (cmd->pid < 0)
 	{
