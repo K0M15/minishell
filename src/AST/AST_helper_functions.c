@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AST_helper_functions.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 16:58:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 17:12:24 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/03 12:54:25 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ t_command	*create_simple_command(void)
 	cmd->right = NULL;
 	cmd->redirections = NULL;
 	cmd->pid = 0;
+	cmd->heredoc = NULL;
+	cmd->canceled = false;
 	return (cmd);
 }
 

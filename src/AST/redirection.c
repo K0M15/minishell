@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:27:31 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 17:12:11 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/03 12:56:16 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 
 
-int	apply_redirections(t_redirection *redirections)
+int	apply_redirections(t_command *cmd)
 {
 	t_redirection	*r;
-	int				fd[2];
+	// int				fd[2];
 
-	r = redirections;
-	while (r)
+	r = cmd->redirections;
+	while (r && !cmd->canceled)
 	{
 		if (r->type == REDIR_IN)
 			redirection_in(r);
@@ -29,14 +29,8 @@ int	apply_redirections(t_redirection *redirections)
 		else if (r->type == REDIR_APPEND)
 			redirection_append(r);
 		else if (r->type == REDIR_HEREDOC)
-		{
-			if (pipe(fd) < 0)
-				return (perror("pipe"), 1);
-			if (ms_heredoc(r->file, fd[STDOUT_FILENO]) == -1)
-				perror("HEREDOC");
-			dup2(fd[STDIN_FILENO], STDIN_FILENO);
-			close(fd[STDIN_FILENO]);
-		}
+			if((cmd->heredoc = ms_heredoc(r->file)) == NULL)
+				cmd->canceled = true;
 		r = r->next;
 	}
 	return (1);

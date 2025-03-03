@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:00:58 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 17:02:17 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/03 12:56:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	execute_simple_command(t_command *cmd, char **env)
 	int		status;
 	char	*reppath;
 
-	if (!apply_redirections(cmd->redirections))
+	if (!apply_redirections(cmd))
 	{
 		restore_fds(saved_fds);
 		return (1);
@@ -35,6 +35,8 @@ int	execute_simple_command(t_command *cmd, char **env)
 	reppath = find_path(cmd->args[0]);
 	if (reppath != NULL)
 		cmd->args[0] = reppath;
+		if (cmd->canceled)
+			return (130);	// shell convention 130 = SIGINT but could be only (1)
 	cmd->pid = ft_fork();
 	if (cmd->pid < 0)
 	{
