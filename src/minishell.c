@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 13:56:35 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 17:08:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ int main (int argc, char **argv, char **envp)
 	(void) envp;
 	t_token		*tokens;
 	t_command	*cmd;
-	int			status;
+	t_appstate			*state;
+	int status;
 
-	status = 0;
+	state = get_appstate();
 
 	ms_env_init();
-	ms_display_welcome();
+	// ms_display_welcome();
 	using_history();
 	load_history(HISTORY_FILENAME);
 	ms_sig_init();
@@ -84,7 +85,8 @@ int main (int argc, char **argv, char **envp)
 		cmd = parse(tokens);
 		if (cmd)
 		{
-			status = execute_command(cmd, get_appstate()->enviroment);
+			status = execute_command(cmd, state->enviroment);
+			state->last_return = status;
 			free_command(cmd);
 			init_terminal();
 		}
@@ -96,7 +98,7 @@ int main (int argc, char **argv, char **envp)
 	}
 	dump_history(HISTORY_FILENAME);
 	cleanup(0);
-	return (status);
+	return (0);
 }
 
 // int	main(void)
