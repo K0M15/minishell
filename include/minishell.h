@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 13:45:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:45:50 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 # include "ft_printf.h"
 # include "ft_malloc.h"
 
+typedef struct s_doc
+{
+	struct s_doc	*next;
+	char			*content;
+	int				length;
+}	t_doc;
+
 typedef enum e_tokentype
 {
 	TOKEN_WORD,				// Words and quoted strings
@@ -38,10 +45,10 @@ typedef enum e_tokentype
 	TOKEN_APPEND_OUT,		// >>
 	TOKEN_HERE_DOCUMENT,	// <<
 	TOKEN_EOF,				// End of input
-	TOKEN_DOUBLEAND,		// &&
-	TOKEN_DOUBLEPIPE,		// ||
-	TOKEN_PARATESES_OPEN,	// (
-	TOKEN_PARATESES_CLOSE,	// )
+	// TOKEN_DOUBLEAND,		// &&
+	// TOKEN_DOUBLEPIPE,		// ||
+	// TOKEN_PARATESES_OPEN,	// (
+	// TOKEN_PARATESES_CLOSE,	// )
 }	t_tokentype;
 
 
@@ -97,6 +104,8 @@ typedef struct s_command
 	t_redirection		*redirections;
 	pid_t				pid;
 	pid_t				pid2;
+	t_doc				*heredoc;
+	bool				canceled;
 }	t_command;
 
 #define INITIAL_ARG_CAPACITY 16
@@ -125,6 +134,8 @@ typedef struct s_appstate
 	t_list			*children;
 	t_appmode		active_mode;
 	int				rainbow;
+	volatile bool	cancled_heredoc;
+	int				last_return;
 }	t_appstate;
 
 t_appstate		*get_appstate(void);
@@ -229,20 +240,14 @@ int				ms_sig_kill_all(t_list *processes, int signal);
 int				ms_sig_kill(t_command *process, int signal);
 
 //============================================	HEREDOC
-typedef struct s_doc
-{
-	struct s_doc	*next;
-	char			*content;
-	int				length;
-}	t_doc;
-
 //	executes heredoc. dellimter = EOF, fd -> output pipe, document = NULL (is called recursive)
-int				ms_heredoc(char *dellimter, int fd);
+t_doc			*ms_heredoc(char *delimiter);
 t_doc			*ms_doc_app_or_new(struct s_doc **document);
 int				ms_doc_display_free(struct s_doc *document, int fd);
 char			*ms_doc_construct(struct s_doc *document);
 int				ms_doc_get_length(struct s_doc *document);
 int				ms_doc_append(struct s_doc *document, struct s_doc **last);
+void			ms_doc_free(t_doc *document);
 
 //============================================	END HEREDOC
 
@@ -316,7 +321,6 @@ t_redirection	*parse_redirection(t_token **tokens);
 t_redirection	*create_redirection(t_redirtype type, const char *file);
 
 int				is_redirection_token(t_tokentype type);						//done
-int				apply_redirections(t_redirection *redirections);			//done
 void			restore_fds(int saved_fds[3]);
 int				ft_strcmp(const char *s1, const char *s2);
 int				is_builtin(char *str);
@@ -343,7 +347,7 @@ int				execute_command(t_command *cmd, char **env);
 void			redirection_in(t_redirection *redirection);
 void			redirection_out(t_redirection *redirection);
 void			redirection_append(t_redirection *redirection);
-int				apply_redirections(t_redirection *redirections);
+int				apply_redirections(t_command *cmd);
 int				execute_simple_command(t_command *cmd, char **env);
 int				execute_pipe_command(t_command *cmd, char **env);
 // void			execute(char *av, char **envp);

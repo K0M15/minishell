@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:17:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 10:38:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 14:53:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,11 @@ char	*ms_doc_construct(t_doc *document)
 int	ms_doc_display_free(t_doc *document, int fd)
 {
 	char	*str;
-	t_doc	*next;
 	int		written;
 
 	str = ms_doc_construct(document);
 	written = write(fd, str, ft_strlen(str));
-	while (document != NULL)
-	{
-		next = document->next;
-		free(document->content);
-		free(document);
-		document = next;
-	}
+	ms_doc_free(document);
 	return (written);
 }
 
