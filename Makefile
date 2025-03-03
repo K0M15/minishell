@@ -9,7 +9,9 @@ SRC_DIR = src
 #   CORE
 FILES = minishell.c
 #	PARSING
-FILES += AST/tokenizing.c AST/exampleAST.c
+FILES += AST/tokenizing.c AST/tokenizing_handler.c AST/tokenizing_init.c AST/tokenizing_utils.c
+FILES += AST/variables_expanding.c AST/redirection.c AST/redirection_utils.c AST/parsing.c
+FILES += AST/AST_helper_functions.c AST/AST_utils.c AST/execution.c
 #	RUNTIME
 FILES += enviroment/enviroment.c state/appstate.c
 FILES += signals/signals.c
