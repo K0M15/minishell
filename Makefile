@@ -35,20 +35,6 @@ OBJ_FILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(FILES))
 
 all: $(OBJ_DIR) $(NAME)
 
-#Test execute simple command
-tsimple: $(OBJ_DIR) $(OBJ_FILES)
-	cc tests/test_simple_cmd.c $(filter-out objects/minishell.o, $(OBJ_FILES)) $(F_INC) -o tests/test_simple_cmd $(FLAGS) $(PATH_LIBFT) -lreadline
-	# time tests/test_simple_cmd
-
-#Test execution
-texe: $(OBJ_DIR) $(OBJ_FILES)
-	cc tests/test_run_command.c $(filter-out objects/minishell.o, $(OBJ_FILES)) $(F_INC) -o tests/test_run_command $(FLAGS) $(PATH_LIBFT) -lreadline
-	time tests/test_run_command
-
-theredoc: $(OBJ_DIR) $(OBJ_FILES)
-	cc tests/test_run_heredoc.c $(filter-out objects/minishell.o, $(OBJ_FILES)) $(F_INC) -o tests/test_run_heredoc $(FLAGS) $(PATH_LIBFT) -lreadline
-	time tests/test_run_heredoc
-
 # Create object directory if it doesn't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/builtin/pwd
