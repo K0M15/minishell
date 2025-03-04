@@ -1,7 +1,6 @@
 .PHONY = clean fclean re
 
 PATH_LIBFT = libft/libft.a
-PATH_FT_DYN_STR = ft_dyn_str/ft_dyn_str.a
 FLAGS = -Wall -Wextra -Werror
 FLAGS += -g -fsanitize=address
 # FLAGS += -lreadline
@@ -66,28 +65,23 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/AST
 	@mkdir -p $(OBJ_DIR)/state
 
-$(NAME): $(OBJ_FILES) $(PATH_LIBFT) $(PATH_FT_DYN_STR)
-	@$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) $(PATH_FT_DYN_STR) -lreadline
+$(NAME): $(OBJ_FILES) libft
+	@$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) -lreadline
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(FLAGS) -c -o $@ $< $(F_INC)
 
-# libft: $(PATH_LIBFT)
-
-$(PATH_FT_DYN_STR):
-	@make -C ft_dyn_str
+libft: $(PATH_LIBFT)
 
 $(PATH_LIBFT):
 	@make -C libft bonus
 
 clean:
 	@make -C libft clean
-	@make -C ft_dyn_str clean
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@make -C libft fclean
-	@make -C ft_dyn_str fclean
 	@rm -f $(NAME)
 
 re: fclean all
