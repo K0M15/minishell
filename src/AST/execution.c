@@ -6,11 +6,23 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:00:58 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/04 14:33:23 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:45:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
+#include "errno.h"
+
+int is_directory(const char *path)
+{
+	struct stat path_stat;
+    if (stat(path, &path_stat) != 0) {
+        perror("stat failed");
+        return 0; // Error, assume not a directory
+    }
+    return S_ISDIR(path_stat.st_mode);
+}
 
 // Execute a simple command
 int	execute_simple_command(t_command *cmd, char **env)
@@ -46,10 +58,13 @@ int	execute_simple_command(t_command *cmd, char **env)
 	}
 	if (cmd->pid == 0)
 	{
+		// check if file is directory, and check if executable
+		if (is_directory(cmd->args[0]))
+			return (printf(" is a directory"), 126); //replace printf with Error output
 		execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
-		// execute(cmd->args[0], env);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		if (errno & (EACCES | ENOENT))
+			printf(" command not found"); //replace printf with Error output
+		exit(127);
 	}
 	else
 	{
