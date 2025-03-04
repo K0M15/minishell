@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/03 13:26:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:13:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "ft_malloc.h"
+# include "ft_dyn_str.h"
 
 typedef struct s_doc
 {
@@ -163,7 +164,7 @@ int				execute_builtin(t_command *cmd, char **env);
 int				ms_delete_value(char *key);
 //	returns new enty string if inserted or NULL if error occured
 char			*ms_setvalue(char *key, char *value);
-//	Return value either the value of key or NULL if not found
+//	Return value either the value of key or a non-freeable empty string if not found
 char			*ms_get_env(char *key);
 //	Returns the index of the char * object inside the enviroment
 int				ms_getindex(char *key);
@@ -379,5 +380,6 @@ void			free_string_arr(char **arr);
 char			*ft_strcpy(char *dst, const char *src);
 void			ft_strncat(char *target, const char *source, size_t amount, size_t max);
 char  			*handle_quotes(char *str);
+int	add_variable(t_dyn_str *result, char **str);
 pid_t		ft_fork(void);
 #endif // MINISHELL_H

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 16:56:43 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/03 14:17:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:30:45 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,14 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	return (new_ptr);
 }
 
-
 char	*handle_quotes(char *str)
 {
-	char	*result;
-	char	*temp;
-	int		in_single_quotes;
-	int		in_double_quotes;
+	t_dyn_str	*result;
+	int			in_single_quotes;
+	int			in_double_quotes;
+	char		*tmp;
 
-	result = ft_strdup("");	//this is not good handling of that. We malloc and free a lot of memory
+	result = dyn_str_new();
 	in_single_quotes = 0;
 	in_double_quotes = 0;
 	while (*str)
@@ -98,14 +97,15 @@ char	*handle_quotes(char *str)
 			in_single_quotes = !in_single_quotes;
 		else if (*str == '"' && !in_single_quotes)
 			in_double_quotes = !in_double_quotes;
-		else
+		else if (*str == '$' && !in_single_quotes)
 		{
-			//hanlde here variable extraction
-			temp = result;
-			result = ft_strjoin(result, (char[]){*str, '\0'});
-			free(temp);
+			if(add_variable(result, &str) == 0)
+				perror("minishell: ");
 		}
+		else
+			dyn_str_addchar(result, *str);
 		str++;
 	}
-	return (result);
+	tmp = result->str;
+	return (free(result), tmp);
 }

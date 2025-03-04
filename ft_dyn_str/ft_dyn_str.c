@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:38:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 12:53:50 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 13:13:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,23 @@
 t_dyn_str	*dyn_str_new(void)
 {
 	t_dyn_str	*str;
-	
+
 	str = malloc(sizeof(t_dyn_str));
 	if (str->str == NULL)
 		return (NULL);
 	str->alloc = DYN_STR_ALLOC;
 	str->str = malloc(str->alloc);
 	if (str->str == NULL)
+	{
+		free(str);
 		return (NULL);
-		str->filled = 0;
+	}
+	str->filled = 0;
 	str->str[0] = 0;
 	return (str);
 }
 
-int			dyn_str_enhance(t_dyn_str *str)
+int	dyn_str_enhance(t_dyn_str *str)
 {
 	char	*temp;
 
@@ -36,14 +39,16 @@ int			dyn_str_enhance(t_dyn_str *str)
 	str->alloc *= 2;
 	str->str = malloc(str->alloc);
 	if (str->str == NULL)
+	{
 		str->str = temp;
 		return (0);
-	ft_memcpy(str->str, temp, str->alloc/2);
+	}
+	ft_memcpy(str->str, temp, str->alloc / 2);
 	free(temp);
 	return (1);
 }
 
-int			dyn_str_addchar(t_dyn_str *str, char c)
+int	dyn_str_addchar(t_dyn_str *str, char c)
 {
 	if (str->alloc < str->filled + 2)
 		if (dyn_str_enhance(str) == 0)
@@ -53,7 +58,7 @@ int			dyn_str_addchar(t_dyn_str *str, char c)
 	return (1);
 }
 
-int			dyn_str_addstr(t_dyn_str *str, char *src)
+int	dyn_str_addstr(t_dyn_str *str, char *src)
 {
 	while (str->alloc < str->filled + 1 + ft_strlen(src))
 		if (dyn_str_enhance(str) == 0)
@@ -62,7 +67,7 @@ int			dyn_str_addstr(t_dyn_str *str, char *src)
 	return (1);
 }
 
-void		dyn_str_free(t_dyn_str *str)
+void	dyn_str_free(t_dyn_str *str)
 {
 	free(str->str);
 	free(str);

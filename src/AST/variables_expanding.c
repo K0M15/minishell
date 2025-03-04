@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:03:12 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/03 13:30:37 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:35:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,32 @@ void	expand_variables(t_command *cmd, char **env)
 		expand_variables(cmd->left, env);
 	if (cmd->right)
 		expand_variables(cmd->right, env);
+}
+
+int	add_variable(t_dyn_str *result, char **str)
+{
+	char	*var_name;
+	char	*var_value;
+	int		ctr;
+
+	if (**str != '$' || !(ft_isalpha((*str)[1]) || (*str)[1] == '_'))
+		return (0);
+	if (**str == '$' && (*str)[1] == '?')
+	{
+		var_value = ft_itoa(get_appstate()->last_return);
+		dyn_str_addstr(result, var_value);
+		return (1);
+	}
+	ctr = 1;
+	while((*str)[ctr] && (ft_isalnum((*str)[ctr]) || (*str)[ctr] == '_'))
+		ctr++;
+	var_name = malloc(ctr);
+	ft_strndup(var_name, &((*str)[1]), ctr - 1);
+	var_value = ms_get_env(var_name);
+	dyn_str_addstr(result, var_value);
+	*str += ctr - 1;
+	free (var_name);
+	return (1);
 }
 
 char	*expand_variables_in_string(const char *str)
