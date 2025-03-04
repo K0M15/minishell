@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 15:43:45 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 13:56:21 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	ms_getindex(char *key)
 char	*ms_get_env(char *key)
 {
 	char	**enviroment;
+	char	*result;
 
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
@@ -83,7 +84,9 @@ char	*ms_get_env(char *key)
 			return (ms_getvalue(*enviroment));
 		enviroment++;
 	}
-	return (NULL);
+	result = malloc(1);
+	result[0] = 0;
+	return (result);
 }
 
 char	*ms_setvalue(char *key, char *value)
