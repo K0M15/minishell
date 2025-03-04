@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/03 12:52:12 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 16:27:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int main (int argc, char **argv, char **envp)
 	state = get_appstate();
 
 	ms_env_init();
-	// ms_display_welcome();
+	if(isatty(STDIN_FILENO))
+		ms_display_welcome();
 	using_history();
 	load_history(HISTORY_FILENAME);
 	ms_sig_init();
@@ -75,10 +76,22 @@ int main (int argc, char **argv, char **envp)
 	char *str;
 	while (1)
 	{
-		str = ft_mem_reg(readline(ms_get_prompt()));
+		if(isatty(STDIN_FILENO))
+			str = ft_mem_reg(readline(ms_get_prompt()));
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			if (line != NULL)
+				str = ft_strtrim(line, "\n");
+			else
+				str = NULL;
+			free(line);
+		}
 		if (str == NULL)
 		{
-			printf("exit");	//go back to last line and write "exit"
+			if(isatty(STDIN_FILENO))
+				printf("exit");	//go back to last line and write "exit"
 			cleanup(0);
 		}
 		tokens = tokenize(str);

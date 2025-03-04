@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 14:13:35 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 16:25:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "ft_malloc.h"
+# include "get_next_line.h"
 # include "ft_dyn_str.h"
 
 typedef struct s_doc
