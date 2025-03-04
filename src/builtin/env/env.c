@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:24:59 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:20:13 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:19:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	builtin_env(int argc, char **argv)
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
 	{
-		ft_printf("%s\n", *enviroment);
+		if (ms_getvalue(*enviroment)[0] != 0)
+			ft_printf("%s\n", *enviroment);
 		enviroment++;
 	}
 	return (0);
