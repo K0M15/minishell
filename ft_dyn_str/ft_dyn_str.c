@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:38:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 13:13:33 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:04:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,14 @@ int	dyn_str_addchar(t_dyn_str *str, char c)
 
 int	dyn_str_addstr(t_dyn_str *str, char *src)
 {
-	while (str->alloc < str->filled + 1 + ft_strlen(src))
+	size_t	srclen;
+
+	srclen = ft_strlen(src);
+	while (str->alloc < str->filled + 1 + srclen)
 		if (dyn_str_enhance(str) == 0)
 			return (0);
 	ft_strlcat(str->str, src, str->alloc);
+	str->filled += srclen;
 	return (1);
 }
 

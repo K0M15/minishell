@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:03:12 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/04 14:35:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 15:09:13 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,15 @@ int	add_variable(t_dyn_str *result, char **str)
 	char	*var_value;
 	int		ctr;
 
-	if (**str != '$' || !(ft_isalpha((*str)[1]) || (*str)[1] == '_'))
-		return (0);
 	if (**str == '$' && (*str)[1] == '?')
 	{
 		var_value = ft_itoa(get_appstate()->last_return);
 		dyn_str_addstr(result, var_value);
-		return (1);
+		(*str)++;
+		return (free(var_value), 1);
 	}
+	if (**str != '$' || !(ft_isalpha((*str)[1]) || (*str)[1] == '_'))
+		return (dyn_str_addstr(result, "$"), 1);
 	ctr = 1;
 	while((*str)[ctr] && (ft_isalnum((*str)[ctr]) || (*str)[ctr] == '_'))
 		ctr++;
