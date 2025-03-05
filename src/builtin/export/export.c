@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 15:14:43 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/05 15:46:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	builtin_export(int argc, char **argv)
 			return (1);
 		}
 		value = ms_getvalue(argv[c]);
-		ms_setvalue(key, value);
+		if (ms_setvalue(key, value) == NULL)
+			perror("minishell: export: ");
 		free(key);
 		c++;
 	}

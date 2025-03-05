@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/05 14:20:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/05 16:04:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef enum e_appmode
 typedef struct s_appstate
 {
 	char			**enviroment;
+	char			*appname;
 	size_t			env_alloc;
 	size_t			env_filled;
 	t_list			*children;

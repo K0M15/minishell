@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 16:36:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/05 16:21:03 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,12 @@ int main (int argc, char **argv, char **envp)
 
 	ms_env_init();
 	if(isatty(STDIN_FILENO))
+	{
 		ms_display_welcome();
+		state->appname = argv[0];
+	}
+	else
+		state->appname = "bash";
 	using_history();
 	load_history(HISTORY_FILENAME);
 	ms_sig_init();
@@ -92,7 +97,7 @@ int main (int argc, char **argv, char **envp)
 		{
 			if(isatty(STDIN_FILENO))
 				printf("exit");	//go back to last line and write "exit"
-			cleanup(0);
+			cleanup(state->last_return);
 		}
 		tokens = tokenize(str);
 		cmd = parse(tokens);
