@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 16:25:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:20:03 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,6 +381,6 @@ void			free_string_arr(char **arr);
 char			*ft_strcpy(char *dst, const char *src);
 void			ft_strncat(char *target, const char *source, size_t amount, size_t max);
 char  			*handle_quotes(char *str);
-int	add_variable(t_dyn_str *result, char **str);
+int	add_variable(t_dyn_str *result, char *str, long *pos);
 pid_t		ft_fork(void);
 #endif // MINISHELL_H

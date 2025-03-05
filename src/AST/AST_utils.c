@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 16:56:43 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/04 14:30:45 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:26:46 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,27 +84,27 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 char	*handle_quotes(char *str)
 {
 	t_dyn_str	*result;
-	int			in_single_quotes;
-	int			in_double_quotes;
+	int			in_quotes[2];
+	long		ctr;
 	char		*tmp;
 
 	result = dyn_str_new();
-	in_single_quotes = 0;
-	in_double_quotes = 0;
-	while (*str)
+	ft_memset(in_quotes, 0, 2);
+	ctr = 0;
+	while (str[ctr])
 	{
-		if (*str == '\'' && !in_double_quotes)
-			in_single_quotes = !in_single_quotes;
-		else if (*str == '"' && !in_single_quotes)
-			in_double_quotes = !in_double_quotes;
-		else if (*str == '$' && !in_single_quotes)
+		if (str[ctr] == '\'' && !in_quotes[1])
+			in_quotes[0] = !in_quotes[0];
+		else if (str[ctr] == '"' && !in_quotes[0])
+			in_quotes[1] = !in_quotes[1];
+		else if (str[ctr] == '$' && !in_quotes[0])
 		{
-			if(add_variable(result, &str) == 0)
+			if(add_variable(result, str, &ctr) == 0)
 				perror("minishell: ");
 		}
 		else
-			dyn_str_addchar(result, *str);
-		str++;
+			dyn_str_addchar(result, str[ctr]);
+		ctr++;
 	}
 	tmp = result->str;
 	return (free(result), tmp);

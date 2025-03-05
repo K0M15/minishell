@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:03:12 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/04 15:09:13 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/05 14:39:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,34 @@ void	expand_variables(t_command *cmd, char **env)
 		expand_variables(cmd->right, env);
 }
 
-int	add_variable(t_dyn_str *result, char **str)
+int	add_variable(t_dyn_str *result, char *str, long *pos)
 {
 	char	*var_name;
 	char	*var_value;
 	int		ctr;
 
-	if (**str == '$' && (*str)[1] == '?')
+	if (str[*pos] == '$' && str[*pos + 1] == '?')
 	{
 		var_value = ft_itoa(get_appstate()->last_return);
 		dyn_str_addstr(result, var_value);
-		(*str)++;
+		(*pos)++;
 		return (free(var_value), 1);
 	}
-	if (**str != '$' || !(ft_isalpha((*str)[1]) || (*str)[1] == '_'))
-		return (dyn_str_addstr(result, "$"), 1);
-	ctr = 1;
-	while((*str)[ctr] && (ft_isalnum((*str)[ctr]) || (*str)[ctr] == '_'))
+	if ((str[*pos] != '$' || !(ft_isalpha(str[*pos + 1]) || str[*pos + 1] == '_'))\
+		&& *pos - 1 >= 0 && !ft_isalpha((str[*pos - 1])))
+		return (1);
+	if ((str[*pos] != '$' || !(ft_isalpha(str[*pos + 1]) || str[*pos + 1] == '_' || str[*pos + 1] == '"')) \
+		&& *pos - 1 >= 0 && ft_isalnum((str[*pos-1]))) // i feel to dumb for that
+		return (dyn_str_addchar(result, '$'),1);
+	ctr = *pos + 1;
+	while(str[ctr] && (ft_isalnum(str[ctr]) || str[ctr] == '_'))
 		ctr++;
-	var_name = malloc(ctr);
-	ft_strndup(var_name, &((*str)[1]), ctr - 1);
+	var_name = malloc(ctr - *pos);
+	ft_strndup(var_name, &(str[*pos + 1]), ctr - 1);
 	var_value = ms_get_env(var_name);
 	dyn_str_addstr(result, var_value);
-	*str += ctr - 1;
-	free (var_name);
-	return (1);
+	*pos += ctr - *pos - 1;
+	return (free (var_name), 1);
 }
 
 char	*expand_variables_in_string(const char *str)

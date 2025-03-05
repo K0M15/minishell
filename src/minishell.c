@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/04 16:27:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 16:36:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ int main (int argc, char **argv, char **envp)
 			ms_set_state_mode(RUNNING);
 	}
 	dump_history(HISTORY_FILENAME);
-	cleanup(0);
-	return (0);
+	cleanup(get_appstate()->last_return);
 }
 
 // int	main(void)
