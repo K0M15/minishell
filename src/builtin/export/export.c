@@ -6,13 +6,13 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 13:24:54 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 18:31:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	export_displayX(void)
+static void	export_displayx(void)
 {
 	char	**env;
 
@@ -24,7 +24,7 @@ static void	export_displayX(void)
 	}
 }
 
-static int contains_illegal(char *str)
+static int	contains_illegal(char *str)
 {
 	if (!(ft_isalpha(*str) || *str == '_' || *str == '-'))
 		return (1);
@@ -44,7 +44,7 @@ int	builtin_export(int argc, char **argv)
 	int		c;
 
 	if (argc == 1)
-		return (export_displayX(), 0);
+		return (export_displayx(), 0);
 	c = 1;
 	while (c < argc)
 	{

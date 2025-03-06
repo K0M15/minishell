@@ -6,13 +6,13 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 10:58:18 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 13:38:49 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 18:32:02 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int contains_illegal(char *str)
+static int	contains_illegal(char *str)
 {
 	if (!(ft_isalpha(*str) || *str == '_' || *str == '-'))
 		return (1);

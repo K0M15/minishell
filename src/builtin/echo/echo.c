@@ -6,22 +6,22 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:30:45 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/05 15:38:40 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 18:30:10 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int get_mode(char *arg)
+int	get_mode(char *arg)
 {
-	int ctr;
-	int result;
+	int	ctr;
+	int	result;
 
 	ctr = 1;
 	result = 0;
 	if (arg && arg[0] == '-')
 	{
-		while(arg[ctr])
+		while (arg[ctr])
 		{
 			if (arg[ctr] == 'n')
 				result = result | 0b1;
@@ -55,7 +55,6 @@ int	builtin_echo(int argc, char **argv)
 		while (argv[++ctr] && argv[ctr + 1])
 			printf("%s ", argv[ctr]);
 		printf("%s", argv[ctr]);
-
 	}
 	if (!(mode & 0b1))
 		printf("\n");

@@ -6,16 +6,17 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/05 16:14:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 18:28:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "errno.h"
 
-static int	change_directory(const char *path) {
-	int	chresult;
-	char *cwd;
+static int	change_directory(const char *path)
+{
+	int		chresult;
+	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
 	if (path == NULL)
@@ -35,7 +36,7 @@ static int	change_directory(const char *path) {
 
 static int	display_error(int errcode, char *target)
 {
-	char *buff;
+	char	*buff;
 
 	if (errcode)
 	{
@@ -47,11 +48,9 @@ static int	display_error(int errcode, char *target)
 	return (0);
 }
 
-int	builtin_cd(int argc, char **argv) {
+int	builtin_cd(int argc, char **argv)
+{
 	if (argc > 1)
 		return (display_error(change_directory(argv[1]), argv[1]));
-	// Check if target is folder or file
-	// bash: line 1: cd: test: Not a directory
-	// bash: line 1: cd: 1123123: No such file or directory
 	return (display_error(change_directory(NULL), ms_get_env("HOME")));
 }

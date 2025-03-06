@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:08:13 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 15:59:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 18:31:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	builtin_pwd(int argc, char **argv)
 {
-	char *cwd;
+	char	*cwd;
 
 	(void) argc;
 	(void) argv;
