@@ -14,7 +14,8 @@ FILES += AST/tokenizing.c AST/tokenizing_handler.c AST/tokenizing_init.c AST/tok
 FILES += AST/variables_expanding.c AST/redirection.c AST/redirection_utils.c AST/parsing.c
 FILES += AST/AST_helper_functions.c AST/AST_utils.c AST/execution.c
 #	RUNTIME
-FILES += enviroment/enviroment.c state/appstate.c
+FILES += enviroment/enviroment.c enviroment/env_strfunc.c enviroment/env_data.c
+FILES += state/appstate.c
 FILES += signals/signals.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
