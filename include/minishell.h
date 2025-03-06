@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/05 16:04:36 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 19:02:10 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,7 +341,6 @@ t_command		*create_simple_command(void);
 void			free_command(t_command *cmd);
 void			add_redirection(t_command *cmd, t_redirection *redir);
 void			add_argument(t_command *cmd, const char *arg);
-int				execute_simple_command(t_command *cmd, char **env);
 int				execute_pipe_command(t_command *cmd, char **env);
 t_redirection	*parse_redirection(t_token **tokens);
 t_redirection	*create_redirection(t_redirtype type, const char *file);
@@ -369,12 +368,12 @@ t_redirection	*create_redirection(t_redirtype type, const char *file);
 void			add_redirection(t_command *cmd, t_redirection *redir);
 void			free_command(t_command *cmd);
 void			expand_variables(t_command *cmd, char **env);
-int				execute_command(t_command *cmd, char **env);
+int				execute_command(t_command *cmd, char **env, int fork);
 void			redirection_in(t_redirection *redirection);
 void			redirection_out(t_redirection *redirection);
 void			redirection_append(t_redirection *redirection);
 int				apply_redirections(t_command *cmd);
-int				execute_simple_command(t_command *cmd, char **env);
+int				execute_simple_command(t_command *cmd, char **env, int fork);
 int				execute_pipe_command(t_command *cmd, char **env);
 // void			execute(char *av, char **envp);
 char			*find_path(char *cmd);

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/05 16:21:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 19:02:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int main (int argc, char **argv, char **envp)
 		cmd = parse(tokens);
 		if (cmd)
 		{
-			status = execute_command(cmd, state->enviroment);
+			status = execute_command(cmd, state->enviroment, 1);
 			state->last_return = status;
 			free_command(cmd);
 			init_terminal();
