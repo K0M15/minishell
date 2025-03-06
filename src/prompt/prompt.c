@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:13:02 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/28 16:00:04 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/04 16:23:15 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,8 @@ void	ms_display_welcome(void)
 
 char	*ms_get_prompt(void)
 {
-	// char *pwd;
-	// char *machine;
-	// char *user;
-
-	// user = ms_get_env("USER");
-
-	//get start of last directory. if root + 1 display / in prompt
-	return ("minishell >");
+	if (isatty(STDIN_FILENO))
+		return ("minishell >");
+	else
+		return ("");
 }

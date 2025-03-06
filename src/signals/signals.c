@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 14:03:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 11:23:29 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:47:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,12 @@ void	ms_sig_handler_heredoc(int signal, siginfo_t *info, void *ctx)
 {
 	(void) info;
 	(void) ctx;
-	g_ms_signal = signal;
-	//add entys to history
-	ms_set_state_mode(INTERACTIVE);
+	if (signal == SIGINT)
+	{
+		rl_done = 1;
+		//	stop heredoc function (rl_done = 1 for current readline)
+		//	
+	}
 }
 
 int	ms_sig_kill(t_command *process, int signal)
@@ -66,6 +69,7 @@ void	ms_sig_handler_running(int signal, siginfo_t *info, void *ctx)
 	(void) ctx;
 	g_ms_signal = signal;
 	state = get_appstate();
+	printf("Recieved SIGNAL");
 	ft_putstr_fd("^C\n", 1);
 	rl_on_new_line();
 	ms_sig_kill_all(state->children, signal);
