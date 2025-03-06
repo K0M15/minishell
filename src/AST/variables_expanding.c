@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:03:12 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/05 14:39:39 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 12:54:54 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int	add_variable(t_dyn_str *result, char *str, long *pos)
 		&& *pos - 1 >= 0 && ft_isalnum((str[*pos-1]))) // i feel to dumb for that
 		return (dyn_str_addchar(result, '$'),1);
 	ctr = *pos + 1;
-	while(str[ctr] && (ft_isalnum(str[ctr]) || str[ctr] == '_'))
+	while(str[ctr] && (ft_isalnum(str[ctr]) || str[ctr] == '_') && str[ctr] != '\'' && str[ctr] != '"')
 		ctr++;
 	var_name = malloc(ctr - *pos);
-	ft_strndup(var_name, &(str[*pos + 1]), ctr - 1);
+	ft_strndup(var_name, &(str[*pos + 1]), ctr - *pos - 1);
 	var_value = ms_get_env(var_name);
 	dyn_str_addstr(result, var_value);
 	*pos += ctr - *pos - 1;

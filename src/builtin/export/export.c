@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/05 15:46:58 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/06 13:24:54 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	export_displayX(void)
 
 static int contains_illegal(char *str)
 {
-	if (!(ft_isalpha(*str) || *str == '_'))
+	if (!(ft_isalpha(*str) || *str == '_' || *str == '-'))
 		return (1);
 	while (*str)
 	{
@@ -51,15 +51,15 @@ int	builtin_export(int argc, char **argv)
 		key = ms_getkey(argv[c]);
 		if (key[0] == 0 || contains_illegal(key))
 		{
-			write(2, "minishell: export: \"", 20);
-			write(2, key, ft_strlen(key));
-			write(2, "\": not a valid identifier\n", 26);
+			write(2, "bash: export: `", 15);
+			write(2, argv[c], ft_strlen(argv[c]));
+			write(2, "': not a valid identifier\n", 26);
 			free(key);
 			return (1);
 		}
 		value = ms_getvalue(argv[c]);
 		if (ms_setvalue(key, value) == NULL)
-			perror("minishell: export: ");
+			perror("bash: export: ");
 		free(key);
 		c++;
 	}
