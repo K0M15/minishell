@@ -36,11 +36,9 @@ int	get_mode(char *arg)
 int	builtin_echo(int argc, char **argv)
 {
 	int		ctr;
-	size_t	strl;
 	int		mode;
 
 	ctr = 1;
-	strl = 0;
 	mode = 0;
 	if (argc > 1)
 	{

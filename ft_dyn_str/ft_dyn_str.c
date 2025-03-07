@@ -17,7 +17,7 @@ t_dyn_str	*dyn_str_new(void)
 	t_dyn_str	*str;
 
 	str = malloc(sizeof(t_dyn_str));
-	if (str->str == NULL)
+	if (str == NULL)
 		return (NULL);
 	str->alloc = DYN_STR_ALLOC;
 	str->str = malloc(str->alloc);

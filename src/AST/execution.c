@@ -6,13 +6,15 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:00:58 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/06 19:05:52 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/07 14:00:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/stat.h>
 #include "errno.h"
+#include "sys/wait.h"
+#include "sys/types.h"
 
 int is_directory(const char *path)
 {
