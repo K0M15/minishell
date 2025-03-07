@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:00:58 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/07 14:00:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/07 15:28:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ int	execute_pipe_command(t_command *cmd, char **env)
 	pid1 = ft_fork();
 	if (pid1 < 0)
 		return (perror("minishell: fork"), close(pipefd[1]), close(pipefd[0]), 1);
-	if (cmd->pid == 0)
+	if (pid1 == 0)
 	{
 		// Child process 1: left side of the pipe
-		close(pipefd[0]);               // Close read end
-		dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to pipe
-		close(pipefd[1]);
+		close(pipefd[STDIN_FILENO]);               // Close read end
+		dup2(pipefd[STDOUT_FILENO], STDOUT_FILENO); // Redirect stdout to pipe
+		close(pipefd[STDOUT_FILENO]);
 		// Execute the left command
 		exit(execute_command(cmd->left, env, 0));
 	}
@@ -105,14 +105,14 @@ int	execute_pipe_command(t_command *cmd, char **env)
 	pid2 = ft_fork();
 	if (pid2 < 0)
 		return (perror("minishell: fork"), close(pipefd[0]), close(pipefd[1]), waitpid(pid1, &status1, 0), 1);
-	if (cmd->pid2 == 0)
+	if (pid2 == 0)
 	{
 		// Child process 2: right side of the pipe
-		close(pipefd[1]);              // Close write end
-		dup2(pipefd[0], STDIN_FILENO); // Redirect stdin to pipe
-		close(pipefd[0]);
+		close(pipefd[STDOUT_FILENO]);              // Close write end
+		dup2(pipefd[STDIN_FILENO], STDIN_FILENO); // Redirect stdin to pipe
+		close(pipefd[STDIN_FILENO]);
 		// Execute the right command
-		exit(execute_command(cmd->left, env, 0));
+		exit(execute_command(cmd->right, env, 0));
 	}
 	// Parent process
 	close(pipefd[0]); // Close both ends of the pipe in the parent

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 14:47:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 09:22:16 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/07 14:44:19 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	cleanup(char reason)
 	{
 		last = mem;
 		mem = mem->next;
-		free(last->content);
+		if (last->content != NULL && last->content > (void *) &last)
+			free(last->content);
 		free(last);
 	}
-	free(*get_mem());
 	exit(reason);
 }
