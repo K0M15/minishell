@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 18:34:36 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 18:34:51 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/07 17:15:50 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ char	*ms_getvalue(char *str)
 	c = 0;
 	while (str[c] && str[c] != '=')
 		c++;
-	if (!str[c])
+	if (!str[c] && c > 0 && str[c] == '=')
 		return ("");
+	if (!str[c] && c > 0 && str[c] != '=')
+		return NULL;
 	c++;
 	return (&str[c]);
 }

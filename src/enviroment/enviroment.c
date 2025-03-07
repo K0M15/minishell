@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 18:40:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/07 17:19:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,14 @@ char	*ms_setvalue(char *key, char *value)
 	char	*new_entry;
 	char	*buffer;
 
-	buffer = ft_strjoin(key, "=");
-	new_entry = ft_strjoin(buffer, value);
-	free(buffer);
+	if (value != NULL)
+	{
+		buffer = ft_strjoin(key, "=");
+		new_entry = ft_strjoin(buffer, value);
+		free(buffer);
+	}
+	else
+		new_entry = key;
 	enviroment = get_appstate()->enviroment;
 	while (*enviroment)
 	{
@@ -43,7 +48,7 @@ char	*ms_setvalue(char *key, char *value)
 			free(*enviroment);
 			*enviroment = new_entry;
 			return (new_entry);
-		}
+		}	
 		enviroment++;
 	}
 	if (ms_env_append(new_entry))
