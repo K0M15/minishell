@@ -16,12 +16,10 @@ char	**ms_env_enhance(void)
 {
 	t_appstate	*state;
 	char		**new_env;
-	size_t		i;
 
 	state = get_appstate();
 	new_env = malloc(state->env_alloc * 2);
 	state->env_alloc *= 2;
-	i = 0;
 	ft_memcpy(state->enviroment, new_env, state->env_filled);
 	free(state->enviroment);
 	state->enviroment = new_env;

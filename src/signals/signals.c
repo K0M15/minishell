@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+volatile sig_atomic_t	g_ms_signal;
+
 t_sigaction	*ms_get_sig_action(void)
 {
 	static t_sigaction	sa;

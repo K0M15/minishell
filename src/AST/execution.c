@@ -13,6 +13,8 @@
 #include "minishell.h"
 #include <sys/stat.h>
 #include "errno.h"
+#include "sys/wait.h"
+#include "sys/types.h"
 
 int is_directory(const char *path)
 {
@@ -47,8 +49,8 @@ int	execute_simple_command(t_command *cmd, char **env)
 	reppath = find_path(cmd->args[0]);
 	if (reppath != NULL)
 		cmd->args[0] = reppath;
-		if (cmd->canceled)
-			return (130);	// shell convention 130 = SIGINT but could be only (1)
+	if (cmd->canceled)
+		return (130);	// shell convention 130 = SIGINT but could be only (1)
 	cmd->pid = ft_fork();
 	if (cmd->pid < 0)
 	{

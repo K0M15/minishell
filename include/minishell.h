@@ -119,7 +119,7 @@ typedef struct sigaction t_sigaction;
 
 extern char		**environ;
 
-volatile sig_atomic_t	g_ms_signal;
+extern volatile sig_atomic_t	g_ms_signal;
 
 typedef enum e_appmode
 {
