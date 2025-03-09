@@ -2,17 +2,29 @@
 
 PATH_LIBFT = libft/libft.a
 PATH_FT_DYN_STR = ft_dyn_str/ft_dyn_str.a
+
+# Compiler flags
 FLAGS = -Wall -Wextra -Werror
 FLAGS += -g -fsanitize=address
+
+# Readline flags
+READLINE_PATH := $(shell brew --prefix readline)
+LDFLAGS = -L$(READLINE_PATH)/lib
+CFLAGS = -I$(READLINE_PATH)/include
+LIBS = -lreadline
 # FLAGS += -lreadline
 NAME = minishell
 SRC_DIR = src
 #   CORE
 FILES = minishell.c
-#	PARSING
-FILES += AST/tokenizing.c AST/tokenizing_handler.c AST/tokenizing_init.c AST/tokenizing_utils.c
-FILES += AST/variables_expanding.c AST/redirection.c AST/redirection_utils.c AST/parsing.c
-FILES += AST/AST_helper_functions.c AST/AST_utils.c AST/execution.c
+#	LEXER
+FILES += Lexer_Tokenizer/lexer_init.c Lexer_Tokenizer/lexer_operators.c Lexer_Tokenizer/lexer_tokens.c
+FILES += Lexer_Tokenizer/lexer_words.c Lexer_Tokenizer/lexer_quotes.c Lexer_Tokenizer/tokenizing.c
+#	AST
+# Add to FILES under #AST section:
+FILES += AST/variables_expanding.c AST/redirections.c AST/string_utils.c AST/var_utils.c 
+FILES += AST/parser_commands.c AST/parser_redirections.c AST/memory_utils.c AST/parser_utils.c
+FILES += AST/utils.c AST/executor_utils.c AST/executor.c AST/pipe_utils.c
 #	RUNTIME
 FILES += enviroment/enviroment.c enviroment/env_strfunc.c enviroment/env_data.c
 FILES += state/appstate.c
@@ -51,13 +63,14 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/prompt
 	@mkdir -p $(OBJ_DIR)/mem_manager
 	@mkdir -p $(OBJ_DIR)/AST
+	@mkdir -p $(OBJ_DIR)/Lexer_Tokenizer
 	@mkdir -p $(OBJ_DIR)/state
 
 $(NAME): $(OBJ_FILES) $(PATH_LIBFT) $(PATH_FT_DYN_STR)
-	@$(CC) $(OBJ_FILES) -o $(NAME) $(FLAGS) $(PATH_LIBFT) $(PATH_FT_DYN_STR) -lreadline
+	@$(CC) $(FLAGS) $(LDFLAGS) -o $(NAME) $(OBJ_FILES) $(PATH_LIBFT) $(PATH_FT_DYN_STR) $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	@$(CC) $(FLAGS) -c -o $@ $< $(F_INC)
+	@$(CC) $(FLAGS) $(CFLAGS) -c -o $@ $< $(F_INC)
 
 # libft: $(PATH_LIBFT)
 
