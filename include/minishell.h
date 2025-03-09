@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 19:02:10 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/09 18:59:03 by ckrasniqi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,132 +255,161 @@ void			ms_doc_free(t_doc *document);
 //============================================	END HEREDOC
 
 
-
-//============================================	LEXING AND EXECUTION
+//============================================
+// LEXER INITIALIZATION AND UTILITY FUNCTIONS
+//============================================
 
 /**
- * Init Lexer will create a new lexer with the string as input
- * @param char	*input	String to lex
+ * Creates a new lexer with the string as input
+ * @param char *input String to lex
  * @return Lexer
  */
-t_lexer			*init_lexer(char *input);
-/*
- *	Checks if character is space 🚀
- */
-int				ft_isspace(char c);
-/*
- *	Returns the current character
- */
-char			current_char(t_lexer *lexer);
-/*
- *	Returns the next character
- */
-char			peek_next(t_lexer *lexer);
-/*
- *	Increases lexer->pos by one
- */
-void			advance(t_lexer *lexer);
-/*
- *	Checks if Character is operator
- */
-int				is_operator_char(char c);
-/*
- * creates a token of type and with a copy of value
- */
-t_token			*create_token(t_tokentype type, char *value);
-/*
- * Findes the operators and passes them to the appropriate function
- */
-t_token			*handle_operator(t_lexer *lexer);
-/*
- * Will return a Pipe Token
- */
-t_token			*handle_pipe(t_lexer *lexer);
-/*
- * Will return a Redirect out Token
- */
-t_token			*handle_redirect_out(t_lexer *lexer);
-/*
- * Will return a Redirect in Token
- */
-t_token			*handle_redirect_in(t_lexer *lexer);
-/*
- * Will skip all whitespaces
- */
-void			skip_whitespace(t_lexer *lexer);
-/*
- * Will handle variables even if they are inside of quotes
- */
-char			*handle_variable(t_lexer *lexer);
-/*
- * Will handle words and quotes
- */
-t_token			*handle_word(t_lexer *lexer);
-/*
- * Will handle quotes
- */
-t_token			*handle_quote(t_lexer *lexer);
-/*
- * Will tokenize the input, and return a linked list of tokens
- */
-t_token			*tokenize(char *input);
-t_token			*get_next_token(t_lexer *lexer);
-/*
- *	Will free the linked list of tokens
- */
-void			free_tokens(t_token *head);
-//============================================	END LEXING AND TOKENIZING
+t_lexer *init_lexer(char *input);
 
+char    current_char(t_lexer *lexer);
+char    peek_next(t_lexer *lexer);
+void    advance(t_lexer *lexer);
+int     ft_isspace(char c);
+int     is_operator_char(char c);
+void    skip_whitespace(t_lexer *lexer);
 
+//============================================
+// TOKEN HANDLING AND CREATION
+//============================================
 
-char			*expand_variables_in_string(const char *str);
-t_command		*parse_pipeline(t_token **tokens);
-t_command		*parse_simple_command(t_token **tokens);
-t_command		*create_pipe_command(t_command *left, t_command *right);
-t_command		*create_simple_command(void);
-void			free_command(t_command *cmd);
-void			add_redirection(t_command *cmd, t_redirection *redir);
-void			add_argument(t_command *cmd, const char *arg);
-int				execute_pipe_command(t_command *cmd, char **env);
-t_redirection	*parse_redirection(t_token **tokens);
-t_redirection	*create_redirection(t_redirtype type, const char *file);
+/**
+ * Creates a token of type and with a copy of value
+ */
+t_token *create_token(t_tokentype type, char *value);
+t_token *get_next_token(t_lexer *lexer);
+void    free_tokens(t_token *head);
+void    add_token_to_list(t_token **head, t_token **current, t_token *token);
 
-int				is_redirection_token(t_tokentype type);						//done
-void			restore_fds(int saved_fds[3]);
-int				ft_strcmp(const char *s1, const char *s2);
-int				is_builtin(char *str);
-int				execute_builtin(t_command *cmd, char **env);
+/**
+ * Tokenizes the input and returns a linked list of tokens
+ */
+t_token *tokenize(char *input);
+t_token *build_token_list(t_lexer *lexer);
 
+//============================================
+// OPERATOR AND SPECIAL TOKEN HANDLERS
+//============================================
 
-// Example AST
+/**
+ * Identifies operators and delegates to the appropriate function
+ */
+t_token *handle_operator(t_lexer *lexer);
+t_token *handle_pipe(t_lexer *lexer);
+t_token *handle_redirect_out(t_lexer *lexer);
+t_token *handle_redirect_in(t_lexer *lexer);
+int     is_redirection_token(t_tokentype type);
 
-char			*ft_strndup(char *dst, const char *src, size_t n);
-int				is_redirection_token(t_tokentype type);
-void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-t_command		*parse(t_token *tokens);
-t_command		*parse_pipeline(t_token **tokens);
-t_command		*parse_simple_command(t_token **tokens);
-t_redirection	*parse_redirection(t_token **tokens);
-t_command		*create_simple_command(void);
-t_command		*create_pipe_command(t_command *left, t_command *right);
-void			add_argument(t_command *cmd, const char *arg);
-t_redirection	*create_redirection(t_redirtype type, const char *file);
-void			add_redirection(t_command *cmd, t_redirection *redir);
-void			free_command(t_command *cmd);
-void			expand_variables(t_command *cmd, char **env);
-int				execute_command(t_command *cmd, char **env, int fork);
-void			redirection_in(t_redirection *redirection);
-void			redirection_out(t_redirection *redirection);
-void			redirection_append(t_redirection *redirection);
-int				apply_redirections(t_command *cmd);
-int				execute_simple_command(t_command *cmd, char **env, int fork);
-int				execute_pipe_command(t_command *cmd, char **env);
-// void			execute(char *av, char **envp);
-char			*find_path(char *cmd);
-void			free_string_arr(char **arr);
-char			*ft_strcpy(char *dst, const char *src);
-void			ft_strncat(char *target, const char *source, size_t amount, size_t max);
-char  			*handle_quotes(char *str);
-int	add_variable(t_dyn_str *result, char *str, long *pos);
-pid_t		ft_fork(void);
+//============================================
+// WORD AND VARIABLE HANDLING
+//============================================
+
+t_token *handle_word(t_lexer *lexer);
+t_token *handle_quote(t_lexer *lexer);
+char    *handle_variable(t_lexer *lexer);
+char    *expand_variables_in_string(const char *str);
+void    process_quote_content(t_lexer *lexer, char *buffer, int *i, char quote_char);
+void    process_variable_name(t_lexer *lexer, char *buffer, int *i, bool has_braces);
+void    process_variable_in_word(t_lexer *lexer, char *buffer, int *i);
+void    process_quotes_in_word(t_lexer *lexer, char *buffer, int *i);
+void    process_variable_in_quotes(t_lexer *lexer, char *buffer, int *i, char quote_char);
+char    *handle_quotes(char *str);
+
+//============================================
+// DYNAMIC STRING AND VARIABLE EXPANSION
+//============================================
+
+int     add_variable(t_dyn_str *result, char *str, long *pos);
+int     handle_exit_status(t_dyn_str *result, long *pos);
+void    handle_exit_status_var(char *result, size_t *i);
+void    handle_env_var(const char *str, char *result, size_t *i);
+void    process_char(t_dyn_str *result, char *str, long *ctr, int *in_quotes);
+void    handle_quote_state(char c, int *in_quotes);
+
+//============================================
+// PARSING AND AST CONSTRUCTION
+//============================================
+
+/**
+ * Main parsing function that constructs the AST from tokens
+ */
+t_command *parse(t_token *tokens);
+t_command *parse_pipeline(t_token **tokens);
+t_command *parse_simple_command(t_token **tokens);
+t_redirection *parse_redirection(t_token **tokens);
+int       process_command_tokens(t_token **current, t_command *cmd);
+int       handle_word_token(t_token **current, t_command *cmd);
+
+//============================================
+// COMMAND AND REDIRECTION CREATION
+//============================================
+
+t_command *create_simple_command(void);
+t_command *initialize_simple_command(void);
+t_command *create_pipe_command(t_command *left, t_command *right);
+void      add_argument(t_command *cmd, const char *arg);
+t_redirection *create_redirection(t_redirtype type, const char *file);
+void      add_redirection(t_command *cmd, t_redirection *redir);
+t_redirection *handle_redirection_token(t_token **current, t_command *cmd);
+void      free_command(t_command *cmd);
+
+//============================================
+// COMMAND EXECUTION
+//============================================
+
+/**
+ * Executes a command node from the AST
+ */
+int       execute_command(t_command *cmd, char **env, int fork);
+int       execute_simple_command(t_command *cmd, char **env, int fork);
+int       execute_pipe_command(t_command *cmd, char **env);
+int       execute_builtin(t_command *cmd, char **env);
+int       is_builtin(char *str);
+void      expand_variables(t_command *cmd, char **env);
+
+//============================================
+// REDIRECTION HANDLING
+//============================================
+
+int       apply_redirections(t_command *cmd);
+int       redirection_in(t_redirection *redirection);
+int       redirection_out(t_redirection *redirection);
+int       redirection_append(t_redirection *redirection);
+int       handle_redirection_type(t_command *cmd, t_redirection *r);
+int       apply_heredoc(t_command *cmd, t_redirection *r);
+int       save_fds(int *saved_fds);
+void      restore_fds(int saved_fds[3]);
+
+//============================================
+// PROCESS MANAGEMENT
+//============================================
+
+pid_t     ft_fork(void);
+int       create_pipe(int *pipefd);
+pid_t     fork_and_execute_left(t_command *cmd, char **env, int *pipefd);
+pid_t     fork_and_execute_right(t_command *cmd, char **env, int *pipefd);
+int       execute_child_process(t_command *cmd);
+int       execute_forked_command(t_command *cmd, int *saved_fds);
+int       handle_builtin_or_redirections(t_command *cmd, char **env, int *saved_fds);
+void      handle_execve_error(char *cmd);
+
+//============================================
+// UTILITY FUNCTIONS
+//============================================
+
+char      *find_path(char *cmd);
+void      free_string_arr(char **arr);
+char      *ft_strcpy(char *dst, const char *src);
+void      ft_strncat(char *target, const char *source, size_t amount, size_t max);
+char      *ft_strndup(char *dst, const char *src, size_t n);
+void      *ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int       ft_strlencmp(const char *s1, const char *s2);
+void      toggle_quote(int *quote_flag);
+int       count_args(char **args);
+int       is_directory(const char *path);
+
 #endif // MINISHELL_H
