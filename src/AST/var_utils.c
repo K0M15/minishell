@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   var_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 19:36:14 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/09 18:05:29 by ckrasniqi        ###   ########.fr       */
+/*   Created: 2025/03/09 17:57:42 by ckrasniqi         #+#    #+#             */
+/*   Updated: 2025/03/09 18:22:12 by ckrasniqi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_args(char **args)
+
+
+void	handle_exit_status_var(char *result, size_t *i)
 {
-	int	count;
+	char	*var_value;
 
-	count = 0;
-	while (args[count])
-		count++;
-	return (count);
+	var_value = ft_itoa(get_appstate()->last_return);
+	ft_strlcat(result, var_value, 4 * 1024);
+	*i += 1;
+	free(var_value);
 }
-
-int	ft_strlencmp(const char *s1, const char *s2)
-{
-	while (*s1 && (*s1 == *s2))
-	{
-		s1++;
-		s2++;
-	}
-	if (ft_strlen(s1) != ft_strlen(s2))
-		return (-1);
-	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
-}
-

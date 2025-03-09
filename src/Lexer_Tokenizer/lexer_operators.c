@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizing_handler.c                               :+:      :+:    :+:   */
+/*   lexer_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/01 16:43:47 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 16:44:20 by ckrasniq         ###   ########.fr       */
+/*   Created: 2025/03/09 17:33:13 by ckrasniqi         #+#    #+#             */
+/*   Updated: 2025/03/09 17:34:51 by ckrasniqi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_token	*handle_operator(t_lexer *lexer)
+{
+	char	curr;
+
+	curr = current_char(lexer);
+	if (curr == '|')
+		return (handle_pipe(lexer));
+	else if (curr == '<')
+		return (handle_redirect_in(lexer));
+	else if (curr == '>')
+		return (handle_redirect_out(lexer));
+	return (NULL);
+}
 
 t_token	*handle_pipe(t_lexer *lexer)
 {
@@ -40,31 +54,4 @@ t_token	*handle_redirect_out(t_lexer *lexer)
 	}
 	advance(lexer);
 	return (create_token(TOKEN_REDIRECT_OUT, ">"));
-}
-
-t_token	*handle_operator(t_lexer *lexer)
-{
-	char	curr;
-
-	curr = current_char(lexer);
-	if (curr == '|')
-		return (handle_pipe(lexer));
-	else if (curr == '<')
-		return (handle_redirect_in(lexer));
-	else if (curr == '>')
-		return (handle_redirect_out(lexer));
-	return (NULL);
-}
-
-void	free_tokens(t_token *head)
-{
-	t_token	*temp;
-
-	while (head != NULL)
-	{
-		temp = head;
-		head = head->next;
-		free(temp->value);
-		free(temp);
-	}
 }

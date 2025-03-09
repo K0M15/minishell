@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizing_utils.c                                 :+:      :+:    :+:   */
+/*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/01 16:40:36 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/01 16:41:37 by ckrasniq         ###   ########.fr       */
+/*   Created: 2025/03/09 17:20:58 by ckrasniqi         #+#    #+#             */
+/*   Updated: 2025/03/09 17:23:28 by ckrasniqi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Helper functions
-char	*ft_strcpy(char *dst, const char *src)
+t_lexer	*init_lexer(char *input)
 {
-	int	i;
+	t_lexer	*lexer;
 
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
+	lexer = malloc(sizeof(t_lexer));
+	if (!lexer)
+		return (NULL);
+	lexer->input = input;
+	lexer->input_len = ft_strlen(input);
+	lexer->pos = 0;
+	lexer->in_dd_quote = false;
+	lexer->in_s_quote = false;
+	lexer->contains_var = false;
+	return (lexer);
 }
 
 int	ft_isspace(char c)
