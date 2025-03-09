@@ -1,0 +1,93 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/09 18:05:46 by ckrasniqi         #+#    #+#             */
+/*   Updated: 2025/03/09 18:07:00 by ckrasniqi        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	handle_builtin_or_redirections(t_command *cmd, char **env, int *saved_fds)
+{
+	int	ret;
+
+	if (!apply_redirections(cmd))
+		return (restore_fds(saved_fds), 1);
+	if (is_builtin(cmd->args[0]))
+	{
+		ret = execute_builtin(cmd, env);
+		restore_fds(saved_fds);
+		return (ret);
+	}
+	return (-1);
+}
+
+void	handle_execve_error(char *cmd)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	perror("");
+	exit(127);
+}
+
+int	execute_child_process(t_command *cmd)
+{
+	if (is_directory(cmd->args[0]))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		exit(126);
+	}
+	execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
+	handle_execve_error(cmd->args[0]);
+	return (EXIT_FAILURE);
+}
+
+int	execute_forked_command(t_command *cmd, int *saved_fds)
+{
+	int	status;
+
+	cmd->pid = ft_fork();
+	if (cmd->pid < 0)
+		return (perror("fork"), restore_fds(saved_fds), 1);
+	if (cmd->pid == 0)
+		execute_child_process(cmd);
+	waitpid(cmd->pid, &status, 0);
+	restore_fds(saved_fds);
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (WEXITSTATUS(status));
+}
+
+char	*find_path(char *cmd)
+{
+	char	**paths;
+	int		i;
+	char	*part_path;
+	char	*path;
+
+	i = 0;
+	paths = ft_split(ms_get_env("PATH"), ':');
+	while (paths[i])
+	{
+		part_path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(part_path, cmd);
+		free(part_path);
+		if (access(path, X_OK) == 0)
+		{
+			free(cmd);
+			return (path);
+		}
+		free(path);
+		i++;
+	}
+	free_string_arr(paths);
+	return (NULL);
+}

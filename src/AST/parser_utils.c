@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AST_helper_functions.c                             :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/01 16:58:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/03 12:54:25 by afelger          ###   ########.fr       */
+/*   Created: 2025/03/09 18:00:10 by ckrasniqi         #+#    #+#             */
+/*   Updated: 2025/03/09 18:02:04 by ckrasniqi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// Add an argument to a command
-void	add_argument(t_command *cmd, const char *arg)
-{
-	int		i;
-	int		current_capacity;
-	int		new_capacity;
-	char	**new_args;
-
-	i = 0;
-	current_capacity = INITIAL_ARG_CAPACITY;
-	// Find the NULL terminator
-	while (cmd->args[i] != NULL)
-		i++;
-	// Check if we need to resize
-	if (i >= current_capacity - 1)
-	{
-		// Resize logic
-		new_capacity = current_capacity * 2;
-		new_args = ft_realloc(cmd->args, sizeof(char *) * new_capacity,
-				sizeof(char *) * current_capacity);
-		if (!new_args)
-			return ; // Handle error
-		cmd->args = new_args;
-		current_capacity = new_capacity;
-	}
-	// Add the new argument
-	cmd->args[i] = ft_strdup(arg);
-	cmd->args[i + 1] = NULL;
-}
 
 t_command	*create_simple_command(void)
 {
@@ -108,4 +78,43 @@ void	free_command(t_command *cmd)
 	if (cmd->right)
 		free_command(cmd->right);
 	free(cmd);
+}
+
+// Add an argument to a command
+void	add_argument(t_command *cmd, const char *arg)
+{
+	int		i;
+	int		current_capacity;
+	int		new_capacity;
+	char	**new_args;
+
+	i = 0;
+	current_capacity = INITIAL_ARG_CAPACITY;
+	while (cmd->args[i] != NULL)
+		i++;
+	if (i >= current_capacity - 1)
+	{
+		new_capacity = current_capacity * 2;
+		new_args = ft_realloc(cmd->args, sizeof(char *) * new_capacity,
+				sizeof(char *) * current_capacity);
+		if (!new_args)
+			return ;
+		cmd->args = new_args;
+		current_capacity = new_capacity;
+	}
+	cmd->args[i] = ft_strdup(arg);
+	cmd->args[i + 1] = NULL;
+}
+
+int	handle_word_token(t_token **current, t_command *cmd)
+{
+	char	*processed_arg;
+
+	processed_arg = handle_quotes((*current)->value);
+	if (!processed_arg)
+		return (0);
+	add_argument(cmd, processed_arg);
+	free(processed_arg);
+	*current = (*current)->next;
+	return (1);
 }
