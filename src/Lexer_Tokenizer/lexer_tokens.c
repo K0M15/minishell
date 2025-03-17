@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:24:21 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 17:32:47 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/17 13:28:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,16 @@ t_token	*create_token(t_tokentype type, char *value)
 
 t_token	*get_next_token(t_lexer *lexer)
 {
+	char	current;
+
 	skip_whitespace(lexer);
-	if (current_char(lexer) == '\0')
+	current = current_char(lexer);
+	if (current == '\0')
 	{
 		return (create_token(TOKEN_EOF, NULL));
 	}
-	if (current_char(lexer) == '|' || current_char(lexer) == '<'
-		|| current_char(lexer) == '>')
+	if (current == '|' || current == '<'
+		|| current == '>')
 	{
 		return (handle_operator(lexer));
 	}

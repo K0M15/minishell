@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:02:12 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 18:03:41 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/17 13:29:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_redirection	*handle_redirection_token(t_token **current, t_command *cmd)
 	redir = parse_redirection(current);
 	if (!redir)
 	{
-		free_command(cmd);
+		// free_command(cmd);
 		return (NULL);
 	}
 	add_redirection(cmd, redir);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/09 18:59:03 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/17 14:53:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_command
 	t_commandtype		type;
 
 	char				**args;
+	size_t				args_cap;
 	struct s_command	*left;
 	struct s_command	*right;
 	t_redirection		*redirections;
@@ -197,6 +198,9 @@ int				ms_env_init(void);
 void			ms_display_welcome(void);
 //	get prompt string
 char			*ms_get_prompt(void);
+
+// get a token type representation for errors. If word, it returns value of token
+const char		*look_token_rep(t_token *token);
 
 //	Writes out history entry to fd
 int				write_hist_entry(int fd, HIST_ENTRY *entry);

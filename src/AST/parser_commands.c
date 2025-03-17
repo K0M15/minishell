@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_commands.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:58:31 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 17:59:57 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/17 14:10:20 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,13 @@ t_command	*parse_simple_command(t_token **tokens)
 	current = *tokens;
 	arg_count = process_command_tokens(&current, cmd);
 	if (arg_count == -1 || arg_count == 0)
+	{
+		write(2, "bash: syntax error near unexpected token ", 41);
+		write(2, look_token_rep(current->next), ft_strlen(look_token_rep(current->next)));
+		write(2, "\n", 1);
+		get_appstate()->last_return = 2;
 		return (free_command(cmd), NULL);
+	}
 	*tokens = current;
 	return (cmd);
 }

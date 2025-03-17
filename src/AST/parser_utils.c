@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:00:10 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 18:02:04 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/17 14:55:38 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_command	*create_simple_command(void)
 		return (NULL);
 	}
 	cmd->args[0] = NULL;
+	cmd->args_cap = INITIAL_ARG_CAPACITY;
 	cmd->left = NULL;
 	cmd->right = NULL;
 	cmd->redirections = NULL;
@@ -83,24 +84,22 @@ void	free_command(t_command *cmd)
 // Add an argument to a command
 void	add_argument(t_command *cmd, const char *arg)
 {
-	int		i;
-	int		current_capacity;
-	int		new_capacity;
+	size_t	i;
+	size_t	new_capacity;
 	char	**new_args;
 
 	i = 0;
-	current_capacity = INITIAL_ARG_CAPACITY;
 	while (cmd->args[i] != NULL)
 		i++;
-	if (i >= current_capacity - 1)
+	if (i >= cmd->args_cap - 1)
 	{
-		new_capacity = current_capacity * 2;
-		new_args = ft_realloc(cmd->args, sizeof(char *) * new_capacity,
-				sizeof(char *) * current_capacity);
+		new_capacity = cmd->args_cap * 2;
+		new_args = ft_realloc(cmd->args, sizeof(char *) * cmd->args_cap,
+				sizeof(char *) * new_capacity);
 		if (!new_args)
 			return ;
 		cmd->args = new_args;
-		current_capacity = new_capacity;
+		cmd->args_cap = new_capacity;
 	}
 	cmd->args[i] = ft_strdup(arg);
 	cmd->args[i + 1] = NULL;

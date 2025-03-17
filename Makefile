@@ -8,9 +8,9 @@ FLAGS = -Wall -Wextra -Werror
 FLAGS += -g -fsanitize=address
 
 # Readline flags
-READLINE_PATH := $(shell brew --prefix readline)
-LDFLAGS = -L$(READLINE_PATH)/lib
-CFLAGS = -I$(READLINE_PATH)/include
+# READLINE_PATH := $(shell brew --prefix readline)
+# LDFLAGS = -L$(READLINE_PATH)/lib
+# CFLAGS = -I$(READLINE_PATH)/include
 LIBS = -lreadline
 # FLAGS += -lreadline
 NAME = minishell
@@ -33,7 +33,7 @@ FILES += signals/signals.c
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c builtin/builtin.c
 #	PROMPT
-FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c prompt/heredoc_util.c
+FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c prompt/heredoc_util.c prompt/token2string.c
 #	MEMORY
 FILES += mem_manager/ft_malloc.c
 
