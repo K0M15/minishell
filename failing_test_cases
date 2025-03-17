@@ -1,0 +1,11 @@
+env | sort | grep -v SHLVL | grep -v ^_   ---- it outputs the correct thing even tho the tester says it doesnt
+
+cat ./test_files/infile_big | grep oi     ---- stdout & stderr working, exit code also outputs 1 like bash but the tester still says we output 134....
+
+export GHOST=123 | env | grep GHOST        ---- stdout working, stderr there is no error beeing printed, and exit code is actually correct...
+//btw  you can get the sdterr by doing 2> errors.log at the end ofc
+
+/bin/echo 1 | grep 1                    ---- stdout working, stderr working, exit code working, tester says we output 134 agian
+
+
+i tried a lot more and there must be smth wront with the tester, or idk.

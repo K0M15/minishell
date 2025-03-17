@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/01 16:48:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/09 18:11:32 by ckrasniqi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	apply_heredoc(t_command *cmd, t_redirection *r)
+{
+	if (r->type == REDIR_HEREDOC)
+	{
+		cmd->heredoc = ms_heredoc(r->file);
+		if (!cmd->heredoc)
+		{
+			ft_putstr_fd("minishell: heredoc failed\n", STDERR_FILENO);
+			cmd->canceled = true;
+			return (0); 
+		}
+	}
+	return (1);
+}
+
 void	ms_doc_free(t_doc *document)
 {
 	t_doc	*next;
