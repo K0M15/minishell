@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/17 14:53:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/18 15:27:16 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,7 @@ void    process_variable_in_word(t_lexer *lexer, char *buffer, int *i);
 void    process_quotes_in_word(t_lexer *lexer, char *buffer, int *i);
 void    process_variable_in_quotes(t_lexer *lexer, char *buffer, int *i, char quote_char);
 char    *handle_quotes(char *str);
+char	*handle_quotes_redir(char *str);
 
 //============================================
 // DYNAMIC STRING AND VARIABLE EXPANSION

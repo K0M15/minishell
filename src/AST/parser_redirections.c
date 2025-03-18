@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:02:12 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/17 13:29:23 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/18 15:29:46 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_redirection	*parse_redirection(t_token **tokens)
 	current = current->next;
 	if (!current || current->type != TOKEN_WORD)
 		return (NULL);
-	processed_value = handle_quotes(current->value);
+	processed_value = handle_quotes_redir(current->value);
 	redir = create_redirection(type, processed_value);
 	free(processed_value);
 	*tokens = current->next;

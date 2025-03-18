@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:00:10 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 13:30:14 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/18 15:50:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ int	handle_word_token(t_token **current, t_command *cmd)
 	processed_arg = handle_quotes((*current)->value);
 	if (!processed_arg)
 		return (0);
-	add_argument(cmd, processed_arg);
+	if (ft_strlen(processed_arg) != 0)
+		add_argument(cmd, processed_arg);
 	free(processed_arg);
 	*current = (*current)->next;
 	return (1);

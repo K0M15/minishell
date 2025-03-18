@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:18:28 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 18:34:29 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/18 17:01:37 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	process_char(t_dyn_str *result, char *str, long *ctr, int *in_quotes)
 {
 	if (str[*ctr] == '$' && !in_quotes[0])
 	{
+		if (str[*ctr+1] == '"' || str[*ctr+1] == '\'')
+			return ;
 		if (add_variable(result, str, ctr) == 0)
 			perror("minishell: ");
 	}

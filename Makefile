@@ -20,6 +20,7 @@ FILES = minishell.c
 #	LEXER
 FILES += Lexer_Tokenizer/lexer_init.c Lexer_Tokenizer/lexer_operators.c Lexer_Tokenizer/lexer_tokens.c
 FILES += Lexer_Tokenizer/lexer_words.c Lexer_Tokenizer/lexer_quotes.c Lexer_Tokenizer/tokenizing.c
+FILES += Lexer_Tokenizer/redir_quotes.c
 #	AST
 # Add to FILES under #AST section:
 FILES += AST/variables_expanding.c AST/redirections.c AST/string_utils.c AST/var_utils.c 
