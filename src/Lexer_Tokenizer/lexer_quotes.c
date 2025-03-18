@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:37:22 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 18:20:04 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/18 18:10:21 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*handle_quotes(char *str)
 {
 	t_dyn_str	*result;
 	long		ctr;
-	int			in_quotes[2] = {0, 0};
+	int			in_quotes[2] = {0,0};
 	char		*tmp;
 
 	result = dyn_str_new();

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 15:48:32 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/18 18:07:26 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	execute_command(t_command *cmd, char **env, int fork)
 {
 	if (!cmd)
 		return (0);
-	// expand_variables(cmd, env);
 	if (cmd->type == CMD_SIMPLE)
  		return (execute_simple_command(cmd, env, fork));
 	else if (cmd->type == CMD_PIPE)
