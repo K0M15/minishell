@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 18:05:38 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/18 14:49:26 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_command(t_command *cmd, char **env, int fork)
 		return (0);
 	// expand_variables(cmd, env);
 	if (cmd->type == CMD_SIMPLE)
-		return (execute_simple_command(cmd, env, fork));
+ 		return (execute_simple_command(cmd, env, fork));
 	else if (cmd->type == CMD_PIPE)
 		return (execute_pipe_command(cmd, env));
 	else
@@ -35,7 +35,7 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 		return (perror("dup"), 1);
 	ret = handle_builtin_or_redirections(cmd, env, saved_fds);
 	if (ret != -1)
-		return (ret);
+		return (restore_fds(saved_fds), ret);
 	reppath = find_path(cmd->args[0]);
 	if (reppath != NULL)
 		cmd->args[0] = reppath;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/09 18:11:32 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/18 14:30:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,34 @@ int	heredoc_process(char *dellimter, t_doc **document)
 	iseof = heredoc_process(dellimter, &last);
 	if (iseof == -1 || get_appstate()->cancled_heredoc)
 		return (-1);
-	if (document != NULL)
+	if (*document != NULL)
 		return (iseof);
 	*document = last;
 	return (iseof);
+}
+
+static int split_writer(t_doc *document)
+{
+	int	pid;
+	int	pipedoc[2];
+
+	if (pipe(pipedoc) == -1)
+		return (-1);
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	if (pid == 0)
+	{
+		close(pipedoc[STDIN_FILENO]);
+		ms_doc_display_free(document, pipedoc[STDOUT_FILENO]);
+		close(pipedoc[STDOUT_FILENO]);
+		exit(0);
+	}
+	close(pipedoc[STDOUT_FILENO]);
+	dup2(pipedoc[STDIN_FILENO], STDIN_FILENO);
+	close(pipedoc[STDIN_FILENO]);
+
+	return (1);
 }
 
 t_doc	*ms_heredoc(char *delimiter)
@@ -74,6 +98,8 @@ t_doc	*ms_heredoc(char *delimiter)
 	document = NULL;
 	ms_set_state_mode(HEREDOC);
 	if (heredoc_process(delimiter, &document) <  0)
+		return (NULL);
+	if (split_writer(document) < 1)
 		return (NULL);
 	return (document);
 }
