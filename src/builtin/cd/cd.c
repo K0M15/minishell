@@ -6,12 +6,25 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 18:28:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/18 17:18:50 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "errno.h"
+
+static char	*handle_minus()
+{
+	char	*oldpwd;
+
+	oldpwd = ms_get_env("OLDPWD");
+	if (ft_strlen(oldpwd) == 0)
+	{
+		write(2, "minishell: cd: OLDPWD not set\n", 30);
+		return (NULL);
+	}
+	return (oldpwd);
+}
 
 static int	change_directory(const char *path)
 {
@@ -21,6 +34,12 @@ static int	change_directory(const char *path)
 	cwd = getcwd(NULL, 0);
 	if (path == NULL)
 		path = ms_get_env("HOME");
+	if (path == NULL)
+		return (write(2, "minishell: cd: HOME not set\n", 28),free(cwd), 1);
+	else if (ft_strlencmp("-", path) == 0)
+		path = handle_minus();
+	if (path == NULL)
+		return (free(cwd), 1);
 	chresult = chdir(path);
 	if (chresult == 0)
 	{
