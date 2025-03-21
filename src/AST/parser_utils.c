@@ -101,7 +101,7 @@ void	add_argument(t_command *cmd, const char *arg)
 		cmd->args = new_args;
 		cmd->args_cap = new_capacity;
 	}
-	cmd->args[i] = ft_strdup(arg);
+	cmd->args[i] = ft_mem_reg(ft_strdup(arg));
 	cmd->args[i + 1] = NULL;
 }
 

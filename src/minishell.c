@@ -74,7 +74,7 @@ int main (int argc, char **argv, char **envp)
 	else
 		state->appname = "bash";
 	using_history();
-	load_history(HISTORY_FILENAME);
+	// load_history(HISTORY_FILENAME);
 	ms_sig_init();
 	init_terminal();
 	ms_set_state_mode(INTERACTIVE);
@@ -114,7 +114,7 @@ int main (int argc, char **argv, char **envp)
 		if (ft_strncmp("change", str, 6) == 0)
 			ms_set_state_mode(RUNNING);
 	}
-	dump_history(HISTORY_FILENAME);
+	// dump_history(HISTORY_FILENAME);
 	cleanup(get_appstate()->last_return);
 }
 

@@ -58,9 +58,12 @@ void	ft_free(void *target)
 		last = mem;
 		mem = mem->next;
 	}
-	free(mem->content);
-	last->next = mem->next;
-	free(mem);
+	free(target);
+	if (mem != NULL)
+	{
+		last->next = mem->next;
+		free(mem);
+	}
 }
 
 void	cleanup(char reason)
