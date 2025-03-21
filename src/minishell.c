@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-void	handle_ctrl_d(void)
-{
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	cleanup(0);
-}
+// void	handle_ctrl_d(void)
+// {
+// 	ft_putstr_fd("exit\n", STDOUT_FILENO);
+// 	cleanup(0);
+// }
 
 // int	main(int argc, char **argv, char **envp)
 // {
@@ -79,7 +79,7 @@ int main (int argc, char **argv, char **envp)
 	init_terminal();
 	ms_set_state_mode(INTERACTIVE);
 	char *str;
-	while (1)
+	while (!state->stop)
 	{
 		if(isatty(STDIN_FILENO))
 			str = ft_mem_reg(readline(ms_get_prompt()));
@@ -97,7 +97,7 @@ int main (int argc, char **argv, char **envp)
 		{
 			if(isatty(STDIN_FILENO))
 				printf("exit");	//go back to last line and write "exit"
-			cleanup(state->last_return);
+			break ;
 		}
 		tokens = tokenize(str);
 		cmd = parse(tokens);

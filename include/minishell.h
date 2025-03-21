@@ -140,6 +140,7 @@ typedef struct s_appstate
 	int				rainbow;
 	volatile bool	cancled_heredoc;
 	int				last_return;
+	int				stop;
 }	t_appstate;
 
 t_appstate		*get_appstate(void);

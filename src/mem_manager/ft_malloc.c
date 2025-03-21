@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
+#include <stdio.h>
 
 t_list	**get_mem(void)
 {
@@ -26,7 +27,10 @@ void	*ft_malloc(size_t size)
 
 	mem = malloc(size);
 	if (mem == NULL)
+	{
+		perror("minishell: malloc:");
 		cleanup(EMEM_NOT_ALLOC);
+	}
 	ft_lstadd_back(get_mem(), ft_lstnew(mem));
 	return (mem);
 }
@@ -42,14 +46,15 @@ void	ft_free(void *target)
 	t_list *mem;
 	t_list *last;
 
+	last = *get_mem();
+	mem = last->next;
 	if ((size_t) target > (size_t) &mem)
 	{
 		ft_printf("tried to free non-freeable"); //target is inside of the stack and not freeable;
 		return ;
 	}
-	last = *get_mem();
-	mem = last->next;
-	while(mem != NULL && mem->content != NULL){
+	while(mem != NULL && mem->content != target)
+	{
 		last = mem;
 		mem = mem->next;
 	}
@@ -63,12 +68,12 @@ void	cleanup(char reason)
 	t_list	*mem;
 	t_list	*last;
 	
-	mem = (*get_mem())->next;
+	mem = (*get_mem());
 	while (mem != NULL)
 	{
 		last = mem;
 		mem = mem->next;
-		if (last->content != NULL && last->content > (void *) &last)
+		if (last->content != NULL && last->content < (void *) &last)
 			free(last->content);
 		free(last);
 	}

@@ -5,7 +5,8 @@ PATH_FT_DYN_STR = ft_dyn_str/ft_dyn_str.a
 
 # Compiler flags
 FLAGS = -Wall -Wextra -Werror
-FLAGS += -g -fsanitize=address
+FLAGS += -g
+# FLAGS += -fsanitize=address
 
 # Readline flags
 # READLINE_PATH := $(shell brew --prefix readline)

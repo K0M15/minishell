@@ -34,7 +34,7 @@ int	ms_env_append(char *str)
 	if (state->env_alloc == state->env_filled + 2)
 		if (ms_env_enhance() == NULL)
 			return (0);
-	state->enviroment[state->env_filled] = ft_strdup(str);
+	state->enviroment[state->env_filled] = ft_mem_reg(ft_strdup(str));
 	state->enviroment[state->env_filled + 1] = NULL;
 	state->env_filled++;
 	return (1);
@@ -63,7 +63,7 @@ int	ms_env_init(void)
 
 	c = 0;
 	state = get_appstate();
-	state->enviroment = malloc(ENV_ALLOC_SIZE);
+	state->enviroment = ft_malloc(ENV_ALLOC_SIZE);
 	if (state->enviroment == NULL)
 		return (0);
 	state->env_alloc = ENV_ALLOC_SIZE;

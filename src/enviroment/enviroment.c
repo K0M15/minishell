@@ -35,7 +35,7 @@ char	*ms_setvalue(char *key, char *value)
 	if (value != NULL)
 	{
 		buffer = ft_strjoin(key, "=");
-		new_entry = ft_strjoin(buffer, value);
+		new_entry = ft_mem_reg(ft_strjoin(buffer, value));
 		free(buffer);
 	}
 	else
@@ -45,7 +45,7 @@ char	*ms_setvalue(char *key, char *value)
 	{
 		if (ms_is_key(*enviroment, key))
 		{
-			free(*enviroment);
+			ft_free(*enviroment);
 			*enviroment = new_entry;
 			return (new_entry);
 		}	

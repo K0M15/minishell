@@ -31,4 +31,7 @@ void	ft_free(void *target);
 
 void	cleanup(char reason);
 
+t_list	*ms_lstnew(void *content);
+
+
 #endif // FT_MALLOC_H
