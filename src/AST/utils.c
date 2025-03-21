@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:18:28 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 17:43:07 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/21 15:43:42 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,8 @@ void	free_string_arr(char **arr)
 
 	i = -1;
 	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-}
-
-int	is_directory(const char *path)
-{
-	struct stat	path_stat;
-
-	if (stat(path, &path_stat) != 0)
-	{
-		perror("stat failed");
-		return (0); // Error, assume not a directory
-	}
-	return (S_ISDIR(path_stat.st_mode));
+		ft_free(arr[i]);
+	ft_free(arr);
 }
 
 void	process_char(t_dyn_str *result, char *str, long *ctr, int *in_quotes)

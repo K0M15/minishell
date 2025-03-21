@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 18:33:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 18:41:51 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:30:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ms_env_delete(int id)
 	if (id < 0)
 		return ;
 	ctr = (unsigned long) id;
-	free(state->enviroment[ctr]);
+	ft_free(state->enviroment[ctr]);
 	while (++ctr < state->env_filled)
 		state->enviroment[ctr - 1] = state->enviroment[ctr];
 	state->enviroment[ctr - 1] = NULL;

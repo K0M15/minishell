@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:32:30 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 18:31:51 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/21 12:54:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ int	builtin_exit(int argc, char **argv)
 		ctr++;
 	if (argv[1][ctr] == 0)
 		return (ft_atoi(argv[1]));
-	return (write(2, " numeric argument required\n", 26), cleanup(255), 255);
+	return (write(2, " numeric argument required\n", 26), 255);
 }

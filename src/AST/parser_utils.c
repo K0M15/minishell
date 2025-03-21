@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:00:10 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 15:50:00 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/21 15:22:58 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ t_command	*create_simple_command(void)
 {
 	t_command	*cmd;
 
-	cmd = malloc(sizeof(t_command));
+	cmd = ft_malloc(sizeof(t_command));
 	if (!cmd)
 		return (NULL);
 	cmd->type = CMD_SIMPLE;
-	cmd->args = malloc(sizeof(char *) * INITIAL_ARG_CAPACITY);
+	cmd->args = ft_malloc(sizeof(char *) * INITIAL_ARG_CAPACITY);
 	if (!cmd->args)
 	{
-		free(cmd);
+		ft_free(cmd);
 		return (NULL);
 	}
 	cmd->args[0] = NULL;
@@ -63,22 +63,22 @@ void	free_command(t_command *cmd)
 	if (cmd->args)
 	{
 		for (int i = 0; cmd->args[i]; i++)
-			free(cmd->args[i]);
-		free(cmd->args);
+			ft_free(cmd->args[i]);
+		ft_free(cmd->args);
 	}
 	r = cmd->redirections;
 	while (r)
 	{
 		next = r->next;
-		free(r->file);
-		free(r);
+		ft_free(r->file);
+		ft_free(r);
 		r = next;
 	}
 	if (cmd->left)
 		free_command(cmd->left);
 	if (cmd->right)
 		free_command(cmd->right);
-	free(cmd);
+	ft_free(cmd);
 }
 
 // Add an argument to a command

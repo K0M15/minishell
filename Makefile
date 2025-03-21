@@ -6,7 +6,7 @@ PATH_FT_DYN_STR = ft_dyn_str/ft_dyn_str.a
 # Compiler flags
 FLAGS = -Wall -Wextra -Werror
 FLAGS += -g
-# FLAGS += -fsanitize=address
+FLAGS += -fsanitize=address
 
 # Readline flags
 # READLINE_PATH := $(shell brew --prefix readline)
@@ -27,6 +27,7 @@ FILES += Lexer_Tokenizer/redir_quotes.c
 FILES += AST/variables_expanding.c AST/redirections.c AST/string_utils.c AST/var_utils.c 
 FILES += AST/parser_commands.c AST/parser_redirections.c AST/memory_utils.c AST/parser_utils.c
 FILES += AST/utils.c AST/executor_utils.c AST/executor.c AST/pipe_utils.c
+FILES += AST/execution_checkers.c
 #	RUNTIME
 FILES += enviroment/enviroment.c enviroment/env_strfunc.c enviroment/env_data.c
 FILES += state/appstate.c

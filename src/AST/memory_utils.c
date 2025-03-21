@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 16:56:43 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/09 18:22:25 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/21 15:33:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 		return (ft_malloc(new_size));
 	if (new_size == 0)
 	{
-		free(ptr);
+		ft_free(ptr);
 		return (NULL);
 	}
 	new_ptr = ft_malloc(new_size);
@@ -32,7 +32,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	else
 		copy_size = new_size;
 	ft_memcpy(new_ptr, ptr, copy_size);
-	free(ptr);
+	ft_free(ptr);
 	return (new_ptr);
 }
 

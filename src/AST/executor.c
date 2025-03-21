@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 18:07:26 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:24:15 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,24 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 {
 	int		saved_fds[3];
 	int		ret;
-	char	*reppath;
 
 	if (save_fds(saved_fds))
 		return (perror("dup"), 1);
 	ret = handle_builtin_or_redirections(cmd, env, saved_fds);
 	if (ret != -1)
 		return (restore_fds(saved_fds), ret);
-	reppath = find_path(cmd->args[0]);
-	if (reppath != NULL)
-		cmd->args[0] = reppath;
-	if (cmd->canceled)
-		return (restore_fds(saved_fds), 130);
-	if (fork)
-		return (execute_forked_command(cmd, saved_fds));
-	return (execute_child_process(cmd));
+	if (cmd->args[0] != NULL)
+	{	
+		cmd->args[0] = exists(cmd->args[0]);
+		if (cmd->args[0] == NULL)
+			return (127);
+		if (cmd->canceled)
+			return (restore_fds(saved_fds), 130);
+		if (fork)
+			return (execute_forked_command(cmd, saved_fds));
+		return (execute_child_process(cmd));
+	}
+	return (0);
 }
 
 int	execute_pipe_command(t_command *cmd, char **env)
@@ -97,10 +100,10 @@ int	execute_builtin(t_command *cmd, char **env)
 
 int	is_builtin(char *str)
 {
-	if (ft_strlencmp(str, "echo") == 0 || ft_strlencmp(str, "cd") == 0
-		|| ft_strlencmp(str, "env") == 0 || ft_strlencmp(str, "exit") == 0
-		|| ft_strlencmp(str, "export") == 0 || ft_strlencmp(str, "unset") == 0
-		|| ft_strlencmp(str, "pwd") == 0)
+	if (str != NULL && (ft_strlencmp(str, "echo") == 0
+		|| ft_strlencmp(str, "cd") == 0 || ft_strlencmp(str, "env") == 0
+		|| ft_strlencmp(str, "exit") == 0 || ft_strlencmp(str, "export") == 0
+		|| ft_strlencmp(str, "unset") == 0 || ft_strlencmp(str, "pwd") == 0))
 		return (1);
 	return (0);
 }
