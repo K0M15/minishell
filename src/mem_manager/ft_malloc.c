@@ -73,7 +73,8 @@ void	cleanup(char reason)
 	{
 		last = mem;
 		mem = mem->next;
-		if (last->content != NULL && last->content < (void *) &last)
+		if (last->content != NULL)
+		// if (last->content != NULL && last->content < (void *) &last)
 			free(last->content);
 		free(last);
 	}

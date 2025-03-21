@@ -45,11 +45,11 @@ t_redirection	*create_redirection(t_redirtype type, const char *file)
 {
 	t_redirection	*redir;
 
-	redir = malloc(sizeof(t_redirection));
+	redir = ft_mem_reg(malloc(sizeof(t_redirection)));
 	if (!redir)
 		return (NULL);
 	redir->type = type;
-	redir->file = ft_strdup(file);
+	redir->file = ft_mem_reg(ft_strdup(file));
 	if (!redir->file)
 	{
 		free(redir);

@@ -44,7 +44,7 @@ char	*ms_doc_construct(t_doc *document)
 	char	*str;
 
 	length = ms_doc_get_length(document) + 1;
-	str = malloc(length);
+	str = ft_malloc(length);
 	if (str == NULL)
 		return NULL;
 	str[0] = 0;
@@ -65,6 +65,7 @@ int	ms_doc_display_free(t_doc *document, int fd)
 	// write(2, str, ft_strlen(str));
 	written = write(fd, str, ft_strlen(str));
 	ms_doc_free(document);
+	ft_free(str);
 	return (written);
 }
 

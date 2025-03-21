@@ -33,9 +33,10 @@ pid_t	ft_fork(void)
 	else
 	{
 		if (get_appstate()->children == NULL)
-			get_appstate()->children = ft_lstnew((void *)pid);
+			get_appstate()->children = ft_mem_reg(ft_lstnew((void *)pid));
 		else
-			ft_lstadd_back(&get_appstate()->children, ft_lstnew((void *)pid));
+			ft_lstadd_back(&get_appstate()->children,
+				ft_mem_reg(ft_lstnew((void *)pid)));
 		return (pid);
 	}
 }

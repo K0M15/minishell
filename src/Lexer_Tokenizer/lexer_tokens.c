@@ -21,12 +21,12 @@ t_token	*create_token(t_tokentype type, char *value)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = ft_mem_reg(malloc(sizeof(t_token)));
 	if (!token)
 		return (NULL);
 	token->type = type;
 	if (value)
-		token->value = ft_strdup(value);
+		token->value = ft_mem_reg(ft_strdup(value));
 	else
 		token->value = NULL;
 	token->next = NULL;
@@ -65,7 +65,7 @@ void	free_tokens(t_token *head)
 	{
 		temp = head;
 		head = head->next;
-		free(temp->value);
-		free(temp);
+		ft_free(temp->value);
+		ft_free(temp);
 	}
 }
