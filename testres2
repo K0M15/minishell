@@ -130,7 +130,7 @@
 [1;33m  # **************************************************************************** #[m
 [1;33m  #                                  VARIABLES                                   #[m
 [1;33m  # **************************************************************************** #[m
-[1;35m  43:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:120[m  
+[1;35m  43:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:120[m  COMMAND NOT FOUND -> there is more then one token in variable
 [1;35m  45:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:130[m  
 [1;35m  46:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:133[m  
 [1;35m  47:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:136[m  

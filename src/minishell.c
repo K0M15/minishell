@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 17:41:20 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 19:11:40 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int main (int argc, char **argv, char **envp)
 				printf("exit");	//go back to last line and write "exit"
 			break ;
 		}
-		tokens = tokenize(str);
+		tokens = tokenize(str);	// Variable expansion must take place in tokenize to find tokens in variables... but then we got the problem with HEREDOCS in quotes
 		cmd = parse(tokens);
 		if (cmd)
 		{
