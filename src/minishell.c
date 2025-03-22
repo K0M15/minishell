@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/17 13:55:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 17:41:20 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,28 @@
 // 	return (0);
 // }
 
+int anakin()
+{
+	t_list *next;
+	t_list *current;
+	int status;
+
+	current = get_appstate()->children;
+	while (current != NULL)
+	{
+		next = current->next;
+		// if(kill((long) current->content, SIGKILL) != 0
+		kill((long) current->content, SIGKILL);
+			// perror("minishell: anakin: ");
+		waitpid((long) current->content, &status, 0);
+		ft_free (current);
+		current = next;
+	}
+	get_appstate()->children = NULL;
+	return (1);
+}
+
+
 int main (int argc, char **argv, char **envp)
 {
 	(void) argc;
@@ -64,7 +86,6 @@ int main (int argc, char **argv, char **envp)
 	int status;
 
 	state = get_appstate();
-
 	ms_env_init();
 	if(isatty(STDIN_FILENO))
 	{
@@ -106,6 +127,7 @@ int main (int argc, char **argv, char **envp)
 			status = execute_command(cmd, state->enviroment, 1);
 			state->last_return = status;
 			free_command(cmd);
+			anakin();
 			init_terminal();
 		}
 		free_tokens(tokens);

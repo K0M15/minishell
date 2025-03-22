@@ -6,25 +6,20 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/18 14:30:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 17:35:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	apply_heredoc(t_command *cmd, t_redirection *r)
+int	apply_heredoc(const char *dellimter)
 {
-	if (r->type == REDIR_HEREDOC)
-	{
-		cmd->heredoc = ms_heredoc(r->file);
-		if (!cmd->heredoc)
-		{
-			ft_putstr_fd("minishell: heredoc failed\n", STDERR_FILENO);
-			cmd->canceled = true;
-			return (0); 
-		}
-	}
-	return (1);
+	int fd;
+	
+	fd = ms_heredoc(dellimter);
+	if (fd < 0)
+		ft_putstr_fd("minishell: heredoc failed\n", STDERR_FILENO);
+	return (fd);
 }
 
 void	ms_doc_free(t_doc *document)
@@ -39,7 +34,7 @@ void	ms_doc_free(t_doc *document)
 		}
 }
 
-int	heredoc_process(char *dellimter, t_doc **document)
+static int	heredoc_process(const char *dellimter, t_doc **document)
 {
 	char	*str;
 	t_doc	*last;
@@ -67,6 +62,7 @@ int	heredoc_process(char *dellimter, t_doc **document)
 	return (iseof);
 }
 
+//this has to return the fd of the read pipe
 static int split_writer(t_doc *document)
 {
 	int	pid;
@@ -74,7 +70,7 @@ static int split_writer(t_doc *document)
 
 	if (pipe(pipedoc) == -1)
 		return (-1);
-	pid = fork();
+	pid = ft_fork();
 	if (pid < 0)
 		return (-1);
 	if (pid == 0)
@@ -85,23 +81,18 @@ static int split_writer(t_doc *document)
 		exit(0);
 	}
 	close(pipedoc[STDOUT_FILENO]);
-	dup2(pipedoc[STDIN_FILENO], STDIN_FILENO);
-	close(pipedoc[STDIN_FILENO]);
-
-	return (1);
+	return (pipedoc[STDIN_FILENO]);
 }
-
-t_doc	*ms_heredoc(char *delimiter)
+// this has to return the fd of the read pipe
+int	ms_heredoc(const char *delimiter)
 {
 	t_doc *document;
 
 	document = NULL;
 	ms_set_state_mode(HEREDOC);
 	if (heredoc_process(delimiter, &document) <  0)
-		return (NULL);
-	if (split_writer(document) < 1)
-		return (NULL);
-	return (document);
+		return (-1);
+	return (split_writer(document));
 }
 
 // int	ms_heredoc(char *delimiter, int fd, t_doc *document)

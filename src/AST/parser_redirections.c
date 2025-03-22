@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:02:12 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 15:29:46 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 12:55:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_redirection	*parse_redirection(t_token **tokens)
 	current = current->next;
 	if (!current || current->type != TOKEN_WORD)
 		return (NULL);
-	processed_value = handle_quotes_redir(current->value);
+	processed_value = handle_quotes_redir(current->value);	//If heredoc ARG has quotes, Variables arent replaced. Else, they are...
 	redir = create_redirection(type, processed_value);
 	free(processed_value);
 	*tokens = current->next;
@@ -44,7 +44,9 @@ t_redirection	*parse_redirection(t_token **tokens)
 t_redirection	*create_redirection(t_redirtype type, const char *file)
 {
 	t_redirection	*redir;
-
+	// insert Redir process here
+	// redirections currently have no sense of cmds
+	// so redirections cannot be handled good.
 	redir = ft_mem_reg(malloc(sizeof(t_redirection)));
 	if (!redir)
 		return (NULL);
@@ -55,6 +57,7 @@ t_redirection	*create_redirection(t_redirtype type, const char *file)
 		free(redir);
 		return (NULL);
 	}
+	redir->fd = handle_redirection_type(type, file);
 	redir->next = NULL;
 	return (redir);
 }

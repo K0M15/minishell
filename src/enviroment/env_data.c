@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 18:33:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/21 16:30:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 12:12:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	ms_env_init(void)
 		return (0);
 	state->env_alloc = ENV_ALLOC_SIZE;
 	state->env_filled = 0;
+	if (environ[0] == NULL)
+		ms_env_append("");
 	while (environ[c])
 	{
 		ms_env_append(environ[c]);

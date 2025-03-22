@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/18 15:27:16 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 16:22:10 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef enum e_tokentype
 }	t_tokentype;
 
 
-// Redirection types
 typedef struct s_token
 {
 	t_tokentype		type;
@@ -93,6 +92,7 @@ typedef struct s_redirection
 	t_redirtype				type;
 	char					*file; // Target file/delimiter
 	struct s_redirection	*next; // Next redirection
+	int						fd;
 }	t_redirection;
 
 // Command structure (node in the AST)
@@ -248,8 +248,8 @@ int				ms_sig_kill_all(t_list *processes, int signal);
 int				ms_sig_kill(t_command *process, int signal);
 
 //============================================	HEREDOC
-//	executes heredoc. dellimter = EOF, fd -> output pipe, document = NULL (is called recursive)
-t_doc			*ms_heredoc(char *delimiter);
+//	executes heredoc. dellimter = EOF
+int				ms_heredoc(const char *delimiter);
 t_doc			*ms_doc_app_or_new(struct s_doc **document);
 int				ms_doc_display_free(struct s_doc *document, int fd);
 char			*ms_doc_construct(struct s_doc *document);
@@ -354,14 +354,14 @@ int       handle_word_token(t_token **current, t_command *cmd);
 // COMMAND AND REDIRECTION CREATION
 //============================================
 
-t_command *create_simple_command(void);
-t_command *initialize_simple_command(void);
-t_command *create_pipe_command(t_command *left, t_command *right);
-void      add_argument(t_command *cmd, const char *arg);
-t_redirection *create_redirection(t_redirtype type, const char *file);
-void      add_redirection(t_command *cmd, t_redirection *redir);
-t_redirection *handle_redirection_token(t_token **current, t_command *cmd);
-void      free_command(t_command *cmd);
+t_command		*create_simple_command(void);
+t_command		*initialize_simple_command(void);
+t_command		*create_pipe_command(t_command *left, t_command *right);
+void			add_argument(t_command *cmd, const char *arg);
+t_redirection	*create_redirection(t_redirtype type, const char *file);
+void			add_redirection(t_command *cmd, t_redirection *redir);
+t_redirection	*handle_redirection_token(t_token **current, t_command *cmd);
+void			free_command(t_command *cmd);
 
 //============================================
 // COMMAND EXECUTION
@@ -370,52 +370,55 @@ void      free_command(t_command *cmd);
 /**
  * Executes a command node from the AST
  */
-int       execute_command(t_command *cmd, char **env, int fork);
-int       execute_simple_command(t_command *cmd, char **env, int fork);
-int       execute_pipe_command(t_command *cmd, char **env);
-int       execute_builtin(t_command *cmd, char **env);
-int       is_builtin(char *str);
-void      expand_variables(t_command *cmd, char **env);
+int			execute_command(t_command *cmd, char **env, int fork);
+int			execute_simple_command(t_command *cmd, char **env, int fork);
+int			execute_pipe_command(t_command *cmd, char **env);
+int			execute_builtin(t_command *cmd, char **env);
+int			is_builtin(char *str);
+void		expand_variables(t_command *cmd, char **env);
 
 //============================================
 // REDIRECTION HANDLING
 //============================================
 
-int       apply_redirections(t_command *cmd);
-int       redirection_in(t_redirection *redirection);
-int       redirection_out(t_redirection *redirection);
-int       redirection_append(t_redirection *redirection);
-int       handle_redirection_type(t_command *cmd, t_redirection *r);
-int       apply_heredoc(t_command *cmd, t_redirection *r);
-int       save_fds(int *saved_fds);
-void      restore_fds(int saved_fds[3]);
+int			apply_redirections(t_command *cmd);
+int			redirection_in(const char *file);
+int			redirection_out(const char *file);
+int			redirection_append(const char *file);
+int			handle_redirection_type(t_redirtype type, const char *file);
+int			apply_heredoc(const char *dellimiter);
+int			save_fds(int *saved_fds);
+void		restore_fds(int saved_fds[3]);
+int			redir_replace_fd(t_redirection *r);
 
 //============================================
 // PROCESS MANAGEMENT
 //============================================
 
-pid_t     ft_fork(void);
-int       create_pipe(int *pipefd);
-pid_t     fork_and_execute_left(t_command *cmd, char **env, int *pipefd);
-pid_t     fork_and_execute_right(t_command *cmd, char **env, int *pipefd);
-int       execute_child_process(t_command *cmd);
-int       execute_forked_command(t_command *cmd, int *saved_fds);
-int       handle_builtin_or_redirections(t_command *cmd, char **env, int *saved_fds);
-void      handle_execve_error(char *cmd);
+pid_t		ft_fork(void);
+int			create_pipe(int *pipefd);
+pid_t		fork_and_execute_left(t_command *cmd, char **env, int *pipefd);
+pid_t		fork_and_execute_right(t_command *cmd, char **env, int *pipefd);
+int			execute_child_process(t_command *cmd);
+int			execute_forked_command(t_command *cmd, int *saved_fds);
+int			handle_builtin_or_redirections(t_command *cmd, char **env, int *saved_fds);
+void		handle_execve_error(char *cmd);
 
 //============================================
 // UTILITY FUNCTIONS
 //============================================
 
-char      *find_path(char *cmd);
-void      free_string_arr(char **arr);
-char      *ft_strcpy(char *dst, const char *src);
-void      ft_strncat(char *target, const char *source, size_t amount, size_t max);
-char      *ft_strndup(char *dst, const char *src, size_t n);
-void      *ft_realloc(void *ptr, size_t old_size, size_t new_size);
-int       ft_strlencmp(const char *s1, const char *s2);
-void      toggle_quote(int *quote_flag);
-int       count_args(char **args);
-int       is_directory(const char *path);
+char		*find_path(char *cmd);
+void		free_string_arr(char **arr);
+char		*ft_strcpy(char *dst, const char *src);
+void		ft_strncat(char *target, const char *source, size_t amount, size_t max);
+char		*ft_strndup(char *dst, const char *src, size_t n);
+void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int			ft_strlencmp(const char *s1, const char *s2);
+void		toggle_quote(int *quote_flag);
+int			count_args(char **args);
+int			is_directory(const char *path);
+int			is_executable(const char *path);
+char		*exists(char *path);
 
 #endif // MINISHELL_H

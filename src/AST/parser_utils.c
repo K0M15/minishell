@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:00:10 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/21 15:22:58 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 16:26:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	free_command(t_command *cmd)
 	while (r)
 	{
 		next = r->next;
+		close(r->fd);
 		ft_free(r->file);
 		ft_free(r);
 		r = next;
