@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:58:31 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/22 17:56:06 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 18:47:14 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,13 @@ t_command	*parse_pipeline(t_token **tokens)
 	t_command	*pipe_cmd;
 
 	left = parse_simple_command(tokens);
-	if (!left)
+	if (!left && (*tokens) && (*tokens)->type == TOKEN_PIPE)
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+		// not correct, parsing left is done even if there is no PIPE
+		get_appstate()->last_return = 2;
 		return (NULL);
+	}
 	if ((*tokens)->type != TOKEN_PIPE)
 		return (left);
 	*tokens = (*tokens)->next;
@@ -37,15 +42,12 @@ t_command	*parse_pipeline(t_token **tokens)
 	if (!right)
 	{
 		free_command(left);
+		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+		get_appstate()->last_return = 2;
 		return (NULL);
 	}
 	pipe_cmd = create_pipe_command(left, right);
 	return (pipe_cmd);
-}
-
-t_command	*initialize_simple_command(void)
-{
-	return (create_simple_command());
 }
 
 t_command	*parse_simple_command(t_token **tokens)
@@ -54,7 +56,7 @@ t_command	*parse_simple_command(t_token **tokens)
 	int			arg_count;
 	t_token		*current;
 
-	cmd = initialize_simple_command();
+	cmd = create_simple_command();
 	current = *tokens;
 	arg_count = process_command_tokens(&current, cmd);
 	if (arg_count == -1 || arg_count == 0)
