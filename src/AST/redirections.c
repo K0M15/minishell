@@ -6,22 +6,25 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:07:11 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/22 17:50:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 18:16:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int handle_redirection_type(t_redirtype type, const char *file)
+int handle_redirection_type(t_redirtype type, const char *file, int has_quotes)
 {
+	char	*rplstr;
+
+	rplstr = expand_variables_in_string(file);
     if (type == REDIR_IN)
-        return redirection_in(file);
+        return redirection_in(rplstr);
     else if (type == REDIR_OUT)
-        return redirection_out(file);
+        return redirection_out(rplstr);
     else if (type == REDIR_APPEND)
-        return redirection_append(file);
+        return redirection_append(rplstr);
     else if (type == REDIR_HEREDOC)
-        return apply_heredoc(file);
+        return apply_heredoc(rplstr, has_quotes); // heredoc needs expand mode
     return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:17:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 17:35:52 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 18:09:38 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,20 @@ char	*ms_doc_construct(t_doc *document)
 	return (str);
 }
 
-int	ms_doc_display_free(t_doc *document, int fd)
+int	ms_doc_display_free(t_doc *document, int fd, int no_var_exp)
 {
 	char	*str;
+	char	*buffer;
 	int		written;
 
-	str = ms_doc_construct(document);
+	if (no_var_exp)
+		str = ms_doc_construct(document);
+	else
+	{
+		buffer = ms_doc_construct(document);
+		str = expand_variables_in_string(buffer);
+		ft_free(buffer);
+	}
 	// write(2, str, ft_strlen(str));
 	written = write(fd, str, ft_strlen(str));
 	ms_doc_free(document);

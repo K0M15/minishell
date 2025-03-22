@@ -6,17 +6,17 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 17:35:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 18:07:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	apply_heredoc(const char *dellimter)
+int	apply_heredoc(const char *dellimter, int no_variable_exp)
 {
 	int fd;
 	
-	fd = ms_heredoc(dellimter);
+	fd = ms_heredoc(dellimter, no_variable_exp);
 	if (fd < 0)
 		ft_putstr_fd("minishell: heredoc failed\n", STDERR_FILENO);
 	return (fd);
@@ -63,7 +63,7 @@ static int	heredoc_process(const char *dellimter, t_doc **document)
 }
 
 //this has to return the fd of the read pipe
-static int split_writer(t_doc *document)
+static int split_writer(t_doc *document, int no_var_exp)
 {
 	int	pid;
 	int	pipedoc[2];
@@ -76,7 +76,7 @@ static int split_writer(t_doc *document)
 	if (pid == 0)
 	{
 		close(pipedoc[STDIN_FILENO]);
-		ms_doc_display_free(document, pipedoc[STDOUT_FILENO]);
+		ms_doc_display_free(document, pipedoc[STDOUT_FILENO], no_var_exp);
 		close(pipedoc[STDOUT_FILENO]);
 		exit(0);
 	}
@@ -84,7 +84,7 @@ static int split_writer(t_doc *document)
 	return (pipedoc[STDIN_FILENO]);
 }
 // this has to return the fd of the read pipe
-int	ms_heredoc(const char *delimiter)
+int	ms_heredoc(const char *delimiter, int no_var_exp)
 {
 	t_doc *document;
 
@@ -92,7 +92,7 @@ int	ms_heredoc(const char *delimiter)
 	ms_set_state_mode(HEREDOC);
 	if (heredoc_process(delimiter, &document) <  0)
 		return (-1);
-	return (split_writer(document));
+	return (split_writer(document, no_var_exp));
 }
 
 // int	ms_heredoc(char *delimiter, int fd, t_doc *document)

@@ -6,11 +6,22 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:02:12 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/22 12:55:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 18:22:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int has_quotes(char *str)
+{
+	while(*str)
+	{
+		if (*str == '\'' || *str == '"')
+			return (1);
+		str++;
+	}
+	return (0);
+}
 
 // Parse a redirection
 t_redirection	*parse_redirection(t_token **tokens)
@@ -35,13 +46,13 @@ t_redirection	*parse_redirection(t_token **tokens)
 	if (!current || current->type != TOKEN_WORD)
 		return (NULL);
 	processed_value = handle_quotes_redir(current->value);	//If heredoc ARG has quotes, Variables arent replaced. Else, they are...
-	redir = create_redirection(type, processed_value);
+	redir = create_redirection(type, processed_value, has_quotes(current->value));
 	free(processed_value);
 	*tokens = current->next;
 	return (redir);
 }
 
-t_redirection	*create_redirection(t_redirtype type, const char *file)
+t_redirection	*create_redirection(t_redirtype type, const char *file, int has_quotes)
 {
 	t_redirection	*redir;
 	// insert Redir process here
@@ -57,7 +68,7 @@ t_redirection	*create_redirection(t_redirtype type, const char *file)
 		free(redir);
 		return (NULL);
 	}
-	redir->fd = handle_redirection_type(type, file);
+	redir->fd = handle_redirection_type(type, file, has_quotes);
 	redir->next = NULL;
 	return (redir);
 }

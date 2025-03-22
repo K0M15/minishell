@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 16:22:10 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/22 18:23:03 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_redirection
 	char					*file; // Target file/delimiter
 	struct s_redirection	*next; // Next redirection
 	int						fd;
+	int						has_quotes;
 }	t_redirection;
 
 // Command structure (node in the AST)
@@ -249,9 +250,9 @@ int				ms_sig_kill(t_command *process, int signal);
 
 //============================================	HEREDOC
 //	executes heredoc. dellimter = EOF
-int				ms_heredoc(const char *delimiter);
+int				ms_heredoc(const char *delimiter, int no_var_exp);
 t_doc			*ms_doc_app_or_new(struct s_doc **document);
-int				ms_doc_display_free(struct s_doc *document, int fd);
+int				ms_doc_display_free(struct s_doc *document, int fd, int no_var_exp);
 char			*ms_doc_construct(struct s_doc *document);
 int				ms_doc_get_length(struct s_doc *document);
 int				ms_doc_append(struct s_doc *document, struct s_doc **last);
@@ -358,7 +359,7 @@ t_command		*create_simple_command(void);
 t_command		*initialize_simple_command(void);
 t_command		*create_pipe_command(t_command *left, t_command *right);
 void			add_argument(t_command *cmd, const char *arg);
-t_redirection	*create_redirection(t_redirtype type, const char *file);
+t_redirection	*create_redirection(t_redirtype type, const char *file, int has_quotes);
 void			add_redirection(t_command *cmd, t_redirection *redir);
 t_redirection	*handle_redirection_token(t_token **current, t_command *cmd);
 void			free_command(t_command *cmd);
@@ -385,8 +386,8 @@ int			apply_redirections(t_command *cmd);
 int			redirection_in(const char *file);
 int			redirection_out(const char *file);
 int			redirection_append(const char *file);
-int			handle_redirection_type(t_redirtype type, const char *file);
-int			apply_heredoc(const char *dellimiter);
+int			handle_redirection_type(t_redirtype type, const char *file, int has_quotes);
+int			apply_heredoc(const char *dellimiter, int no_variable_exp);
 int			save_fds(int *saved_fds);
 void		restore_fds(int saved_fds[3]);
 int			redir_replace_fd(t_redirection *r);
