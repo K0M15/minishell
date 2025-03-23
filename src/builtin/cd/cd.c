@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/18 17:18:50 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 10:46:32 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static char	*handle_minus()
 		write(2, "minishell: cd: OLDPWD not set\n", 30);
 		return (NULL);
 	}
+	ft_putstr_fd(oldpwd, 1);
+	ft_putchar_fd('\n', 1);
 	return (oldpwd);
 }
 
