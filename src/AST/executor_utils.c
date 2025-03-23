@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:05:46 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/21 15:58:30 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 11:41:50 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	handle_builtin_or_redirections(t_command *cmd, char **env, int *saved_fds)
 void	handle_execve_error(char *cmd)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
+	if (cmd != NULL)
+		ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	perror("");
 	exit(127);
@@ -38,7 +39,7 @@ void	handle_execve_error(char *cmd)
 
 int	execute_child_process(t_command *cmd)
 {
-	if (!is_executable(cmd->args[0]) || is_directory(cmd->args[0]))
+	if (cmd->args[0] && (!is_executable(cmd->args[0]) || is_directory(cmd->args[0])))
 		return (126);
 	execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
 	handle_execve_error(cmd->args[0]);

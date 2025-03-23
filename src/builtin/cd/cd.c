@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 10:46:32 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 12:09:24 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,15 @@ static int	display_error(int errcode, char *target)
 {
 	char	*buff;
 
-	if (errcode)
+	if (errcode && errno)
 	{
 		buff = ft_strjoin("bash: cd: ", target);
 		perror(buff);
 		free(buff);
 		return (1);
 	}
+	else if (errcode)
+		return (1);
 	return (0);
 }
 

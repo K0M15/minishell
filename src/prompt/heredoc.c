@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 18:07:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 12:17:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,25 @@ static int	heredoc_process(const char *dellimter, t_doc **document)
 	str = readline("> ");
 	if (str == NULL)
 		return (0);
+	str = expand_variables_in_string(str);	//mem leak
 	iseof = (ft_strncmp(str, dellimter, ft_strlen(dellimter)) == 0
 			&& ft_strlen(str) == ft_strlen(dellimter));
 	if (iseof)
-		return (0);
+		return (free(str), 0);
 	last = ms_doc_app_or_new(document);
 	if (last == NULL || get_appstate()->cancled_heredoc)
-		return (-1);
+		return (free(str), -1);
 	last->content = ft_strjoin(str, "\n");
-	free(str);
 	last->length = ft_strlen(last->content);
 	iseof = heredoc_process(dellimter, &last);
 	if (iseof == -1 || get_appstate()->cancled_heredoc)
-		return (-1);
+		return (free(str), -1);
 	if (*document != NULL)
-		return (iseof);
+		return (free(str), iseof);
 	*document = last;
-	return (iseof);
+	return (free(str), iseof);
 }
 
-//this has to return the fd of the read pipe
 static int split_writer(t_doc *document, int no_var_exp)
 {
 	int	pid;
@@ -83,7 +82,6 @@ static int split_writer(t_doc *document, int no_var_exp)
 	close(pipedoc[STDOUT_FILENO]);
 	return (pipedoc[STDIN_FILENO]);
 }
-// this has to return the fd of the read pipe
 int	ms_heredoc(const char *delimiter, int no_var_exp)
 {
 	t_doc *document;

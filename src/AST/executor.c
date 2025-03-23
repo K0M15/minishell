@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/21 16:24:15 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 12:19:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ int	execute_command(t_command *cmd, char **env, int fork)
 		return (1);
 }
 
+static int handle_dots(t_command *cmd)
+{
+	if (ft_strlencmp(cmd->args[0], ".") == 0)
+	{
+		ft_putstr_fd("bash: .: filename argument required\n", 2);
+		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
+		return (2);
+	}
+	else if (ft_strlencmp(cmd->args[0], "..") == 0)
+	{
+		ft_putstr_fd("bash: ..: command not found\n", 2);
+		return (127);
+	}
+	return (0);
+}
+
 int	execute_simple_command(t_command *cmd, char **env, int fork)
 {
 	int		saved_fds[3];
@@ -36,6 +52,9 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 		return (restore_fds(saved_fds), ret);
 	if (cmd->args[0] != NULL)
 	{	
+		ret = handle_dots(cmd);
+		if (ret)
+			return (ret);
 		cmd->args[0] = exists(cmd->args[0]);
 		if (cmd->args[0] == NULL)
 			return (127);
@@ -45,6 +64,8 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 			return (execute_forked_command(cmd, saved_fds));
 		return (execute_child_process(cmd));
 	}
+	else if (cmd->args[0] == NULL)
+		return (127);
 	return (0);
 }
 
@@ -99,7 +120,7 @@ int	execute_builtin(t_command *cmd, char **env)
 }
 
 int	is_builtin(char *str)
-{
+{	// Create cmp without cases 
 	if (str != NULL && (ft_strlencmp(str, "echo") == 0
 		|| ft_strlencmp(str, "cd") == 0 || ft_strlencmp(str, "env") == 0
 		|| ft_strlencmp(str, "exit") == 0 || ft_strlencmp(str, "export") == 0
