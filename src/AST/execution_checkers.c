@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:43:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/21 16:24:34 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 12:24:57 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	is_directory(const char *path)
 		write(2, "minishell: ", 11);
 		write(2, path, ft_strlen(path));
 		write(2, ": is a directory\n", 17);
-		return (1);
+		return (126);
 	}
 	return (0);
 }

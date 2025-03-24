@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:02:12 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/22 18:50:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/24 15:30:02 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ int has_quotes(char *str)
 		str++;
 	}
 	return (0);
+}
+
+static void *handle_newline_error(void)
+{
+	get_appstate()->last_return = 2;
+	ft_putstr_fd("bash: syntax error near unexpected token `newline'\n" ,2);
+	return (NULL);
 }
 
 // Parse a redirection
@@ -44,7 +51,7 @@ t_redirection	*parse_redirection(t_token **tokens)
 		return (NULL);
 	current = current->next;
 	if (!current || current->type != TOKEN_WORD)
-		return (ft_putstr_fd("bash: syntax error near unexpected token `newline'\n" ,2), NULL);
+		return (handle_newline_error());
 	processed_value = handle_quotes_redir(current->value);	//If heredoc ARG has quotes, Variables arent replaced. Else, they are...
 	redir = create_redirection(type, processed_value, has_quotes(current->value));
 	free(processed_value);

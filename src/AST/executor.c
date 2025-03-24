@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/23 12:19:30 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/24 14:58:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 		ret = handle_dots(cmd);
 		if (ret)
 			return (ret);
+		if (ft_strlencmp(cmd->args[0], "") == 0)
+			return (0);
 		cmd->args[0] = exists(cmd->args[0]);
+		if (is_directory(cmd->args[0]))
+			return (126);
 		if (cmd->args[0] == NULL)
 			return (127);
 		if (cmd->canceled)

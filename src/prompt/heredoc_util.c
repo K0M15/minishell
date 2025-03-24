@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:17:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 12:20:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/23 12:28:52 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	ms_doc_display_free(t_doc *document, int fd, int no_var_exp)
 	else
 	{
 		buffer = ms_doc_construct(document);
-		// str = expand_variables_in_string(buffer);
+		str = expand_variables_in_string(buffer);
 		ft_free(buffer);
 	}
 	written = write(fd, str, ft_strlen(str));

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:58:31 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/22 18:47:14 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/24 15:32:13 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,13 @@ t_command	*parse_simple_command(t_token **tokens)
 	cmd = create_simple_command();
 	current = *tokens;
 	arg_count = process_command_tokens(&current, cmd);
-	if (arg_count == -1 || arg_count == 0)
+	if (arg_count == 0)
 	{
-		// write(2, "bash: syntax error near unexpected token ", 41);
-		// if(current->next != NULL)
-		// 	write(2, look_token_rep(current->next), ft_strlen(look_token_rep(current->next)));
-		// else
-		// 	write(2, look_token_rep(current), ft_strlen(look_token_rep(current)));
-		// write(2, "\n", 1);
-		// get_appstate()->last_return = 2;
+		get_appstate()->last_return = 1;
 		return (free_command(cmd), NULL);
 	}
+	else if (arg_count == -1)
+		return (free_command(cmd), NULL);
 	*tokens = current;
 	return (cmd);
 }

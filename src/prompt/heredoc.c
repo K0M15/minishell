@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 12:17:07 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/24 14:22:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ms_doc_free(t_doc *document)
 		}
 }
 
-static int	heredoc_process(const char *dellimter, t_doc **document)
+static int	heredoc_process(const char *dellimter, t_doc **document, int no_var_exp)
 {
 	char	*str;
 	t_doc	*last;
@@ -43,7 +43,8 @@ static int	heredoc_process(const char *dellimter, t_doc **document)
 	str = readline("> ");
 	if (str == NULL)
 		return (0);
-	str = expand_variables_in_string(str);	//mem leak
+	if (!no_var_exp)
+		str = expand_variables_in_string(str);	//mem leak
 	iseof = (ft_strncmp(str, dellimter, ft_strlen(dellimter)) == 0
 			&& ft_strlen(str) == ft_strlen(dellimter));
 	if (iseof)
@@ -53,7 +54,7 @@ static int	heredoc_process(const char *dellimter, t_doc **document)
 		return (free(str), -1);
 	last->content = ft_strjoin(str, "\n");
 	last->length = ft_strlen(last->content);
-	iseof = heredoc_process(dellimter, &last);
+	iseof = heredoc_process(dellimter, &last, no_var_exp);
 	if (iseof == -1 || get_appstate()->cancled_heredoc)
 		return (free(str), -1);
 	if (*document != NULL)
@@ -88,7 +89,7 @@ int	ms_heredoc(const char *delimiter, int no_var_exp)
 
 	document = NULL;
 	ms_set_state_mode(HEREDOC);
-	if (heredoc_process(delimiter, &document) <  0)
+	if (heredoc_process(delimiter, &document, no_var_exp) <  0)
 		return (-1);
 	return (split_writer(document, no_var_exp));
 }
