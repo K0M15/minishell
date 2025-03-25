@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 12:09:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/25 17:06:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,19 @@ static int	display_error(int errcode, char *target)
 
 int	builtin_cd(int argc, char **argv)
 {
-	if (argc > 1)
-		return (display_error(change_directory(argv[1]), argv[1]));
-	return (display_error(change_directory(NULL), ms_get_env("HOME")));
+	int errcode;
+
+	if (argc < 2)
+		return (display_error(change_directory(NULL), ms_get_env("HOME")));
+	if (ft_strlencmp(argv[1], "--") == 0)
+	{
+		errcode = change_directory("..");
+		if (errcode != 0)
+			display_error(errcode, argv[1]);
+		if (ft_strlencmp(ms_get_env("PWD"), "/") == 0)		
+			return (display_error(change_directory(NULL), argv[0]));
+		else
+			return (display_error(change_directory(".."), argv[0]));
+	}
+	return (display_error(change_directory(argv[1]), argv[1]));
 }
