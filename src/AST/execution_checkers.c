@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:43:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/25 15:25:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/25 17:46:30 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ char *exists(char *path)
 	{
 		if (access(path, X_OK) == 0)
 			return (path);
+	}
+	if(path[0] == '.')
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (NULL);
 	}
 	res = find_path(path);
 	if (res != NULL)
