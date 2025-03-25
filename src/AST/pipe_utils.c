@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:11:41 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 18:38:12 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:12:03 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ pid_t	fork_and_execute_left(t_command *cmd, char **env, int *pipefd)
 {
 	pid_t	pid;
 
-	pid = fork();
+	pid = ft_fork();
 	if (pid < 0)
 		return (perror("minishell: fork"), -1);
 	if (pid == 0)

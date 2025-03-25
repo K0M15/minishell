@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/24 14:58:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/25 15:08:14 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int handle_dots(t_command *cmd)
 	{
 		ft_putstr_fd("bash: .: filename argument required\n", 2);
 		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);
-		return (2);
+		return (127);
 	}
 	else if (ft_strlencmp(cmd->args[0], "..") == 0)
 	{
@@ -124,7 +124,7 @@ int	execute_builtin(t_command *cmd, char **env)
 }
 
 int	is_builtin(char *str)
-{	// Create cmp without cases 
+{
 	if (str != NULL && (ft_strlencmp(str, "echo") == 0
 		|| ft_strlencmp(str, "cd") == 0 || ft_strlencmp(str, "env") == 0
 		|| ft_strlencmp(str, "exit") == 0 || ft_strlencmp(str, "export") == 0

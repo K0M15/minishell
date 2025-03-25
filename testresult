@@ -1,539 +1,144 @@
-Test   1: ✅ echo hello world
-Test   2: ✅ echo "hello world"
-Test   3: ✅ echo 'hello world'
-Test   4: ✅ echo hello'world'
-Test   5: ✅ echo hello""world
-Test   6: ✅ echo ''
-Test   7: ❌ echo "$PWD"
-mini output = ()
-bash output = (/Users/ckrasniq/Desktop/42 Projects/minishell/minishell/minishell_tester)
-mini exit code = 134
-bash exit code = 0
-mini error = (================================================================= 0x607000000094 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x607000000094 is located 4 bytes inside of 77-byte region [0x607000000090,0x6070000000dd) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==34364==ABORTING)
-bash error = ()
-Test   8: ❌ echo '$PWD'
-mini output = ()
-bash output = ($PWD)
-mini exit code = 134
-bash exit code = 0
-mini error = (================================================================= 0x607000000094 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x607000000094 is located 4 bytes inside of 77-byte region [0x607000000090,0x6070000000dd) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==34406==ABORTING)
-bash error = ()
-Test   9: ✅ echo "aspas ->'"
-Test  10: ✅ echo "aspas -> ' "
-Test  11: ✅ echo 'aspas ->"'
-Test  12: ✅ echo 'aspas -> " '
-Test  13: ✅ echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<"
-Test  14: ✅ echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<'
-Test  15: ❌ echo "exit_code ->$? user ->$USER home -> $HOME"
-mini output = ()
-bash output = (exit_code ->0 user ->ckrasniq home -> /Users/ckrasniq)
-mini exit code = 134
-bash exit code = 0
-mini error = (================================================================= 0x602000000115 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x602000000115 is located 5 bytes inside of 14-byte region [0x602000000110,0x60200000011e) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==34666==ABORTING)
-bash error = ()
-Test  16: ❌ echo 'exit_code ->$? user ->$USER home -> $HOME'
-mini output = ()
-bash output = (exit_code ->$? user ->$USER home -> $HOME)
-mini exit code = 134
-bash exit code = 0
-mini error = (================================================================= 0x602000000115 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x602000000115 is located 5 bytes inside of 14-byte region [0x602000000110,0x60200000011e) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==34708==ABORTING)
-bash error = ()
-Test  17: ✅ echo "$"
-Test  18: ✅ echo '$'
-Test  19: ✅ echo $
-Test  20: ✅ echo $?
-Test  21: ✅ echo $?HELLO
-Test  22: ✅ pwd
-Test  23: ✅ pwd oi
-Test  24: ✅ export hello
-Test  25: ✅ export HELLO=123
-Test  26: ❌ export A-
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( not a valid identifier)
-Test  27: ✅ export HELLO=123 A
-Test  28: ✅ export HELLO="123 A-"
-Test  29: ✅ export hello world
-Test  30: ❌ export HELLO-=123
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( not a valid identifier)
-Test  31: ❌ export =
-mini exit code = 134
-bash exit code = 1
-mini error = (DEADLYSIGNAL ================================================================= SEGV on unknown address 0x000000000000 (pc 0x00010e98abf8 bp 0x7ffee12852a0 sp 0x7ffee12852a0 T0) ==35258==The signal is caused by a READ memory access. address points to the zero page. x86_64+0x100010bf8) x86_64+0x100010db4) 96 40 62 533 433 87 x86_64+0x1acc8) rax = 0x0000000000000000 rbx = 0x00007ffee1285540 rcx = 0x0000000000000000 rdx = 0x0000602000002af0 rdi = 0x0000000000000000 rsi = 0x0000000000000000 rbp = 0x00007ffee12852a0 rsp = 0x00007ffee12852a0 r8 = 0x00000fffffffffff r9 = 0x00000000a0db2cab r10 = 0x0000000000000048 r11 = 0x0000000000000000 r12 = 0x0000000000000000 r13 = 0x0000000000000000 r14 = 0x0000000000000000 r15 = 0x0000000000000000 AddressSanitizer can not provide additional info. x86_64+0x100010bf8) in ft_strlen+0x18 ==35258==ABORTING)
-bash error = ( not a valid identifier)
-Test  32: ❌ export 123
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( not a valid identifier)
-Test  33: ❌ unset
-mini output = (unset: not enough arguments)
-bash output = ()
-mini exit code = 1
-bash exit code = 0
-Test  34: ✅ unset HELLO
-Test  35: ✅ unset HELLO1 HELLO2
-Test  36: ✅ unset HOME
-Test  37: ✅ unset PATH
-Test  38: ✅ unset SHELL
-Test  39: ❌ cd $PWD
-mini exit code = 134
-bash exit code = 1
-mini error = (================================================================= 0x607000000094 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x607000000094 is located 4 bytes inside of 77-byte region [0x607000000090,0x6070000000dd) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==35553==ABORTING)
-bash error = ( No such file or directory)
-Test  40: ❌ cd $PWD hi
-mini exit code = 134
-bash exit code = 1
-mini error = (================================================================= 0x607000000094 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x607000000094 is located 4 bytes inside of 77-byte region [0x607000000090,0x6070000000dd) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==35597==ABORTING)
-bash error = ( No such file or directory)
-Test  41: ❌ cd 123123
-mini output = (cd: Too many symbolic links: 123123)
-bash output = ()
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( No such file or directory)
-Test  42: ✅ exit 123
-Test  43: ✅ exit 298
-Test  44: ✅ exit +100
-Test  45: ✅ exit "+100"
-Test  46: ✅ exit +"100"
-Test  47: ✅ exit -100
-Test  48: ✅ exit "-100"
-Test  49: ✅ exit -"100"
-Test  50: ❌ exit hello
-mini exit code = 0
-bash exit code = 255
-mini error = ()
-bash error = ( numeric argument required)
-Test  51: ❌ exit 42 world
-mini output = (exit: too many arguments)
-bash output = ()
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( too many arguments)
-Test  52: ✅
-———————————— pipes
-Test  53: ❌ env | sort | grep -v SHLVL | grep -v ^_
-mini output = ()
-bash output = (COLORTERM=truecolor COMMAND_MODE=unix2003 GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh HOME=/Users/ckrasniq HOMEBREW_CACHE=/tmp/ckrasniq/Homebrew/Caches HOMEBREW_TEMP=/tmp/ckrasniq/Homebrew/Temp LANG=en_US.UTF-8 LOGNAME=ckrasniq LaunchInstanceID=D79950F6-C7A5-48EE-B6E8-9FDCD62FCCCD MallocNanoZone=0 ORIGINAL_XDG_CURRENT_DESKTOP=undefined PATH=/Users/ckrasniq/.brew/bin:/Users/ckrasniq/goinfre/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin PWD=/Users/ckrasniq/Desktop/42 Projects/minishell/minishell/minishell_tester SECURITYSESSIONID=187b3 SHELL=/bin/zsh SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.R5gu2qzWDE/Listeners TERM=xterm-256color TERM_PROGRAM=vscode TERM_PROGRAM_VERSION=1.96.2 TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000ckw80034q2/T/ USER=ckrasniq USER_ZDOTDIR=/Users/ckrasniq VSCODE_GIT_ASKPASS_EXTRA_ARGS= VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin) VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n000ckw80034q2/T/vscode-git-0ff7fe4d0e.sock VSCODE_INJECTION=1 XPC_FLAGS=0x0 XPC_SERVICE_NAME=0 ZDOTDIR=/Users/ckrasniq)
-mini exit code = eh ?exit
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000650 is located 0 bytes inside of 48-byte region [0x604000000650,0x604000000680) x86_64h+0x492c6) 339 338 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==36097==ABORTING x86_64+0x1acc8) 0x604000000650 is located 0 bytes inside of 48-byte region [0x604000000650,0x604000000680) x86_64h+0x492c6) 339 338 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36096==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000650 is located 0 bytes inside of 48-byte region [0x604000000650,0x604000000680) x86_64h+0x492c6) 339 338 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36095==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000650 is located 0 bytes inside of 48-byte region [0x604000000650,0x604000000680) x86_64h+0x492c6) 339 338 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36093==ABORTING)
-bash error = ()
-Test  54: ❌ cat ./test_files/infile_big | grep oi
-mini output = ()
-bash output = (was going to happen next. First, she tried to look down and make out disappointment it was empty: she did not like to drop the jar for fear not going to do _that_ in a hurry. “No, I’ll look first,” she said, “and see whether it’s marked ‘_poison_’ or not”; for she had read bottle marked “poison,” it is almost certain to disagree with you, However, this bottle was _not_ marked “poison,” so Alice ventured to brightened up at the thought that she was now the right size for going waited for a few minutes to see if she was going to shrink any further: said Alice to herself, “in my going out altogether, like a candle. I After a while, finding that nothing more happened, she decided on going Rabbit came near her, she began, in a low, timid voice, “If you please, to repeat it, but her voice sounded hoarse and strange, and the words now about two feet high, and was going on shrinking rapidly: she soon dropped it hastily, just in time to avoid shrinking away altogether. “Not like cats!” cried the Mouse, in a shrill, passionate voice. “Would trembling voice, “Let us get to the shore, and then I’ll tell you my “What I was going to say,” said the Dodo in an offended tone, “was, “But who is to give the prizes?” quite a chorus of voices asked. “Why, _she_, of course,” said the Dodo, pointing to Alice with one The next thing was to eat the comfits: this caused some noise and the others all joined in chorus, “Yes, please do!” but the Mouse only doesn’t suit my throat!” and a Canary called out in a trembling voice doing out here? Run home this moment, and fetch me a pair of gloves and at once in the direction it pointed to, without trying to explain the “How queer it seems,” Alice said to herself, “to be going messages for gloves, and was just going to leave the room, when her eye fell upon a she heard a voice outside, and stopped to listen. “Mary Ann! Mary Ann!” said the voice. “Fetch me my gloves this moment!” Next came an angry voice—the Rabbit’s—“Pat! Pat! Where are you?” And then a voice she had never heard before, “Sure then I’m here! Digging rumbling of little cartwheels, and the sound of a good many voices all then the Rabbit’s voice along—“Catch him, you by the hedge!” then silence, and then another confusion of voices—“Hold up his head—Brandy Last came a little feeble, squeaking voice, (“That’s Bill,” thought “We must burn the house down!” said the Rabbit’s voice; and Alice addressed her in a languid, sleepy voice. came different!” Alice replied in a very melancholy voice. By the use of this ointment—one shilling the box— going to dive in among the leaves, which she found to be nothing but Pigeon, raising its voice to a shriek, “and just as I was thinking I going to be, from one minute to another! However, I’ve got back to my are; secondly, because they’re making such a noise inside, no one could noise going on within—a constant howling and sneezing, and every now “Oh, _please_ mind what you’re doing!” cried Alice, jumping up and down (In which the cook and the baby joined): ear and left foot, so as to prevent its undoing itself,) she carried it No, there were no tears. “If you’re going to turn into a pig, my dear,” eyes, “Of course, of course; just what I was going to remark myself.” quarrelled last March—just before _he_ went mad, you know—” (pointing hoarse, feeble voice: “I heard every word you fellows were saying.” The Dormouse had closed its eyes by this time, and was going off into a neither of the others took the least notice of her going, though she voice, “Why the fact is, you see, Miss, this here ought to have been a you see, Miss, we’re doing our best, afore she comes, to—” At this “And who are _these?_” said the Queen, pointing to the three gardeners “Get up!” said the Queen, in a shrill, loud voice, and the three turning to the rose-tree, she went on, “What _have_ you been doing “May it please your Majesty,” said Two, in a very humble tone, going “Come on, then!” roared the Queen, and Alice joined the procession, “It’s—it’s a very fine day!” said a timid voice at her side. She was “Get to your places!” shouted the Queen in a voice of thunder, and had got its neck nicely straightened out, and was going to give the going to begin again, it was very provoking to find that the hedgehog “How do you like the Queen?” said the Cat in a low voice. “Who _are_ you talking to?” said the King, going up to Alice, and Alice thought she might as well go back, and see how the game was going on, as she heard the Queen’s voice in the distance, screaming with a large crowd collected round it: there was a dispute going on between thing before, and he wasn’t going to begin at _his_ time of life. startled when she heard her voice close to her ear. “You’re thinking “The game’s going on rather better now,” she said, by way of keeping up But here, to Alice’s great surprise, the Duchess’s voice died away, “A fine day, your Majesty!” the Duchess began in a low, weak voice. about half no time! Take your choice!” The Duchess took her choice, and was gone in a moment. As they walked off together, Alice heard the King say in a low voice, sea. The master was an old Turtle—we used to call him Tortoise—” “Why did you call him Tortoise, if he wasn’t one?” Alice asked. “We called him Tortoise because he taught us,” said the Mock Turtle Fainting in Coils.” two sobs choked his voice. “Same as if he had a bone in his throat,” the back. At last the Mock Turtle recovered his voice, and, with tears “Change lobsters again!” yelled the Gryphon at the top of its voice. Turtle, suddenly dropping his voice; and the two creatures, who had “There’s a porpoise close behind us, and he’s treading on my tail. They are waiting on the shingle—will you come and join the dance? Will you, won’t you, will you, won’t you, will you join the dance? Will you, won’t you, will you, won’t you, won’t you join the dance? Said he thanked the whiting kindly, but he would not join the dance. Would not, could not, would not, could not, would not join the dance. Would not, could not, would not, could not, could not join the dance. Then turn not pale, beloved snail, but come and join the dance. Will you, won’t you, will you, won’t you, will you join the dance? Will you, won’t you, will you, won’t you, won’t you join the dance?” “Boots and shoes under the sea,” the Gryphon went on in a deep voice, running on the song, “I’d have said to the porpoise, ‘Keep back, wise fish would go anywhere without a porpoise.” and told me he was going a journey, I should say ‘With what porpoise?’” Alice a little timidly: “but it’s no use going back to yesterday, “Stand up and repeat ‘’_Tis the voice of the sluggard_,’” said the “’Tis the voice of the Lobster; I heard him declare, His voice has a timid and tremulous sound.] wrong, and she went on in a trembling voice:— The Mock Turtle sighed deeply, and began, in a voice sometimes choked they doing?” Alice whispered to the Gryphon. “They can’t have anything “Stupid things!” Alice began in a loud, indignant voice, but she “I’m a poor man, your Majesty,” the Hatter began, in a trembling voice, The King looked anxiously at the White Rabbit, who said in a low voice, nearly out of sight, he said in a deep voice, “What are tarts made of?” “Treacle,” said a sleepy voice behind her. little voice, the name “Alice!” “The trial cannot proceed,” said the King in a very grave voice, “until verdict,” he said to the jury, in a low, trembling voice. “Why, there they are!” said the King triumphantly, pointing to the “Off with her head!” the Queen shouted at the top of her voice. Nobody looking up into hers—she could hear the very tones of her voice, and shared their never-ending meal, and the shrill voice of the Queen cries to the voice of the shepherd boy—and the sneeze of the baby, the shriek of the Gryphon, and all the other queer noises, would change unenforceability of any provision of this agreement shall not void the)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==36176==ABORTING x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36177==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36175==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36173==ABORTING)
-bash error = ()
-Test  55: ❌ cat minishell.h | grep ");"$
-mini exit code = i
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36252==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36251==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36250==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36248==ABORTING)
-bash error = ( No such file or directory)
-Test  56: ❌ export GHOST=123 | env | grep GHOST
-mini exit code = 6
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000610 is located 0 bytes inside of 48-byte region [0x604000000610,0x604000000640) x86_64h+0x492c6) 339 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36327==ABORTING 71 81 x86_64+0x1acc8) 0x604000000610 is located 0 bytes inside of 48-byte region [0x604000000610,0x604000000640) x86_64h+0x492c6) 339 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36328==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000610 is located 0 bytes inside of 48-byte region [0x604000000610,0x604000000640) x86_64h+0x492c6) 339 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36326==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000610 is located 0 bytes inside of 48-byte region [0x604000000610,0x604000000640) x86_64h+0x492c6) 339 338 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 109 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36324==ABORTING)
-bash error = ()
-———————————— redirects
-Test  57: ✅ grep hi <./test_files/infile
-Test  58: ✅ grep hi "<infile" <         ./test_files/infile
-Test  59: ✅ echo hi < ./test_files/infile bye bye
-Test  60: ✅ grep hi <./test_files/infile_big <./test_files/infile
-Test  61: ✅ echo <"./test_files/infile" "bonjour       42"
-Test  62: ✅ cat <"./test_files/file name with spaces"
-Test  63: ✅ cat <./test_files/infile_big ./test_files/infile
-Test  64: ✅ cat <"1""2""3""4""5"
-Test  65: ✅ echo <"./test_files/infile" <missing <"./test_files/infile"
-Test  66: ✅ echo <missing <"./test_files/infile" <missing
-Test  67: ✅ cat <"./test_files/infile"
-Test  68: ❌ echo <"./test_files/infile_big" | cat <"./test_files/infile"
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==36837==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36836==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36835==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36833==ABORTING)
-bash error = ()
-Test  69: ❌ echo <"./test_files/infile_big" | cat "./test_files/infile"
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = eh ?exit
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36912==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36913==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36911==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36909==ABORTING)
-bash error = ()
-Test  70: ❌ echo <"./test_files/infile_big" | echo <"./test_files/infile"
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==36987==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36988==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36986==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==36984==ABORTING)
-bash error = ()
-Test  71: ❌ echo hi | cat <"./test_files/infile"
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==37062==ABORTING x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37063==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37061==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37059==ABORTING)
-bash error = ()
-Test  72: ❌ echo hi | cat "./test_files/infile"
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37138==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37139==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37137==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37135==ABORTING)
-bash error = ()
-Test  73: ❌ cat <"./test_files/infile" | echo hi
-mini output = ()
-bash output = (hi)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==37211==ABORTING x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37212==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37210==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37208==ABORTING)
-bash error = ( Broken pipe)
-Test  74: ❌ cat <"./test_files/infile" | grep hello
-mini output = ()
-bash output = (hello)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37288==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37287==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37286==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37284==ABORTING)
-bash error = ()
-Test  75: ❌ cat <"./test_files/infile_big" | echo hi
-mini output = ()
-bash output = (hi)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37362==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37363==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37361==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37359==ABORTING)
-bash error = ( Broken pipe)
-Test  76: ✅ cat <missing
-Test  77: ❌ cat <missing | cat
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 ==37477==ABORTING 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37478==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37476==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37474==ABORTING)
-bash error = ( No such file or directory)
-Test  78: ❌ cat <missing | echo oi
-mini output = ()
-bash output = (oi)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==37554==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37553==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37552==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37550==ABORTING)
-bash error = ( No such file or directory)
-Test  79: ❌ cat <missing | cat <"./test_files/infile"
-mini output = ()
-bash output = (hi hello world 42)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37627==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37626==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37625==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37623==ABORTING)
-bash error = ( No such file or directory)
-Test  80: ❌ echo <123 <456 hi | echo 42
-mini output = ()
-bash output = (42)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==37702==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37701==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37700==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==37698==ABORTING)
-bash error = ( No such file or directory)
-Test  81: ✅ ls >./outfiles/outfile01
-Test  82: ✅ ls >         ./outfiles/outfile01
-Test  83: ❌ echo hi >         ./outfiles/outfile01 bye
-Files ./mini_outfiles/outfile01 and ./bash_outfiles/outfile01 differ
-mini outfiles:
-bash outfiles:
-hi bye
-mini output = (hi bye)
-bash output = ()
-Test  84: ✅ ls >./outfiles/outfile01 >./outfiles/outfile02
-Test  85: ✅ ls >./outfiles/outfile01 >./test_files/invalid_permission
-Test  86: ✅ ls >"./outfiles/outfile with spaces"
-Test  87: ✅ ls >"./outfiles/outfile""1""2""3""4""5"
-Test  88: ✅ ls >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02"
-Test  89: ✅ ls >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission
-Test  90: ✅ cat <"./test_files/infile" >"./outfiles/outfile01"
-Test  91: ❌ echo hi >./outfiles/outfile01 | echo bye
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-hi
-mini output = ()
-bash output = (bye)
-mini exit code = eh ?exit
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38184==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38183==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38182==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38180==ABORTING)
-bash error = ()
-Test  92: ❌ echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-hi
-mini output = ()
-bash output = (bye)
-mini exit code =
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==38263==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38264==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38262==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38260==ABORTING)
-bash error = ()
-Test  93: ❌ echo hi | echo >./outfiles/outfile01 bye
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-bye
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38340==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38341==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38339==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38337==ABORTING)
-bash error = ()
-Test  94: ❌ echo hi | echo bye >./outfiles/outfile01 >./outfiles/outfile02
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-bye
-mini exit code = eho ?exit
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==38426==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38425==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38424==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38422==ABORTING)
-bash error = ()
-Test  95: ❌ echo hi >./outfiles/outfile01 | echo bye >./outfiles/outfile02
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-hi
-bye
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==38508==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38507==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38506==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38504==ABORTING)
-bash error = ()
-Test  96: ❌ echo hi >./outfiles/outfile01 >./test_files/invalid_permission | echo bye
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-mini output = ()
-bash output = (bye)
-mini exit code = et
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==38589==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38588==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38587==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38585==ABORTING)
-bash error = ( Permission denied)
-Test  97: ❌ echo hi >./test_files/invalid_permission | echo bye
-mini output = ()
-bash output = (bye)
-mini exit code = c?exit
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==38669==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38668==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38667==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38665==ABORTING)
-bash error = ( Permission denied)
-Test  98: ❌ echo hi >./test_files/invalid_permission >./outfiles/outfile01 | echo bye
-mini output = ()
-bash output = (bye)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==38748==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38747==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38746==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38744==ABORTING)
-bash error = ( Permission denied)
-Test  99: ❌ echo hi | echo bye >./test_files/invalid_permission
-mini exit code = 5
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38826==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38827==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38825==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38823==ABORTING)
-bash error = ( Permission denied)
-Test 100: ❌ echo hi | >./outfiles/outfile01 echo bye >./test_files/invalid_permission
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-mini exit code = t
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38904==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38905==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38903==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38901==ABORTING)
-bash error = ( Permission denied)
-Test 101: ❌ echo hi | echo bye >./test_files/invalid_permission >./outfiles/outfile01
-mini exit code = e
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38985==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38986==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38984==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==38982==ABORTING)
-bash error = ( Permission denied)
-Test 102: ✅ cat <"./test_files/infile" >./test_files/invalid_permission
-Test 103: ✅ cat >./test_files/invalid_permission <"./test_files/infile"
-Test 104: ✅ cat <missing >./outfiles/outfile01
-Test 105: ✅ cat >./outfiles/outfile01 <missing
-Test 106: ✅ cat <missing >./test_files/invalid_permission
-Test 107: ✅ cat >./test_files/invalid_permission <missing
-Test 108: ✅ cat >./outfiles/outfile01 <missing >./test_files/invalid_permission
-Test 109: ✅ ls >>./outfiles/outfile01
-Test 110: ✅ ls >>      ./outfiles/outfile01
-Test 111: ✅ ls >>./outfiles/outfile01 >./outfiles/outfile01
-Test 112: ✅ ls >./outfiles/outfile01 >>./outfiles/outfile01
-Test 113: ✅ ls >./outfiles/outfile01 >>./outfiles/outfile01 >./outfiles/outfile02
-Test 114: ✅ ls >>./outfiles/outfile01 >>./outfiles/outfile02
-Test 115: ✅ ls >>./test_files/invalid_permission
-Test 116: ✅ ls >>./test_files/invalid_permission >>./outfiles/outfile01
-Test 117: ✅ ls >>./outfiles/outfile01 >>./test_files/invalid_permission
-Test 118: ✅ ls >./outfiles/outfile01 >>./test_files/invalid_permission >>./outfiles/outfile02
-Test 119: ✅ ls <missing >>./test_files/invalid_permission >>./outfiles/outfile02
-Test 120: ✅ ls >>./test_files/invalid_permission >>./outfiles/outfile02 <missing
-Test 121: ❌ echo hi >>./outfiles/outfile01 | echo bye
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-hi
-mini output = ()
-bash output = (bye)
-mini exit code =
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39810==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39811==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39809==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39807==ABORTING)
-bash error = ()
-Test 122: ❌ echo hi >>./outfiles/outfile01 >>./outfiles/outfile02 | echo bye
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-hi
-mini output = ()
-bash output = (bye)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==39891==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39892==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39890==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39888==ABORTING)
-bash error = ()
-Test 123: ❌ echo hi | echo >>./outfiles/outfile01 bye
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-bye
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39969==ABORTING 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39970==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39968==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x6040000005d0 is located 0 bytes inside of 48-byte region [0x6040000005d0,0x604000000600) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==39966==ABORTING)
-bash error = ()
-Test 124: ❌ echo hi | echo bye >>./outfiles/outfile01 >>./outfiles/outfile02
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-bye
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==40051==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40050==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40049==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40045==ABORTING)
-bash error = ()
-Test 125: ❌ echo hi >>./outfiles/outfile01 | echo bye >>./outfiles/outfile02
-Only in ./bash_outfiles: outfile01
-Only in ./bash_outfiles: outfile02
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-hi
-bye
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==40145==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40146==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40144==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40142==ABORTING)
-bash error = ()
-Test 126: ❌ echo hi >>./test_files/invalid_permission | echo bye
-mini output = ()
-bash output = (bye)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40226==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40227==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40225==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40223==ABORTING)
-bash error = ( Permission denied)
-Test 127: ❌ echo hi >>./test_files/invalid_permission >./outfiles/outfile01 | echo bye
-mini output = ()
-bash output = (bye)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40308==ABORTING 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40305==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40302==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40300==ABORTING)
-bash error = ( Permission denied)
-Test 128: ❌ echo hi | echo bye >>./test_files/invalid_permission
-mini exit code = 5
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==40385==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40384==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40383==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40381==ABORTING)
-bash error = ( Permission denied)
-Test 129: ❌ echo hi | echo >>./outfiles/outfile01 bye >./test_files/invalid_permission
-Only in ./bash_outfiles: outfile01
-mini outfiles:
-cat: ./mini_outfiles/*: No such file or directory
-bash outfiles:
-mini exit code = 5
-bash exit code = 1
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==40457==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40458==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40456==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40454==ABORTING)
-bash error = ( Permission denied)
-Test 130: ✅ cat <minishell.h>./outfiles/outfile
-Test 131: ❌ cat <minishell.h|ls
-mini output = ()
-bash output = (README.md bash.supp bash_outfiles bonus bonus_bonus builtins extras local.supp loop.out manual_tests mini_outfiles os_specific outfiles pipes redirects syntax test_files tester wildcards)
-mini exit code = 5
-bash exit code = 0
-mini error = (================================================================= ================================================================= x86_64h+0x492c6) x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 71 81 ==40577==ABORTING x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40578==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40576==ABORTING ================================================================= x86_64h+0x492c6) 71 81 x86_64+0x1acc8) 0x604000000590 is located 0 bytes inside of 48-byte region [0x604000000590,0x6040000005c0) x86_64h+0x492c6) 339 88 x86_64+0x1acc8) x86_64h+0x4917d) 27 242 117 91 84 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40574==ABORTING)
-bash error = ( No such file or directory)
-———————————— extras
-Test 132: ✅
-Test 133: ❌ $PWD
-mini exit code = 134
-bash exit code = 127
-mini error = (================================================================= 0x607000000094 in thread T0 x86_64h+0x492c6) 418 351 431 87 x86_64+0x1acc8) 0x607000000094 is located 4 bytes inside of 77-byte region [0x607000000090,0x6070000000dd) x86_64h+0x4917d) x86_64+0x100010d47) 151 187 67 x86_64+0x1acc8) x86_64h+0x492c6) in wrap_free+0xa6 ==40667==ABORTING)
-bash error = ( No such file or directory)
-Test 134: ❌ $EMPTY
-mini exit code = 134
-bash exit code = 0
-mini error = (DEADLYSIGNAL ================================================================= SEGV on unknown address 0x000000000000 (pc 0x000108f28a75 bp 0x7ffee6ce72d0 sp 0x7ffee6ce7290 T0) ==40711==The signal is caused by a READ memory access. address points to the zero page. x86_64+0x100010a75) 417 351 431 87 x86_64+0x1acc8) rax = 0x0000000000000000 rbx = 0x00007ffee6ce7440 rcx = 0x0000000000000000 rdx = 0x0000000000000000 rdi = 0x0000621000039900 rsi = 0x0000000000000000 rbp = 0x00007ffee6ce72d0 rsp = 0x00007ffee6ce7290 r8 = 0x0000200000000000 r9 = 0x0000000000000000 r10 = 0xffffffffffffffff r11 = 0x00000fffffffffff r12 = 0x0000000000000000 r13 = 0x0000000000000000 r14 = 0x0000000000000000 r15 = 0x0000000000000000 AddressSanitizer can not provide additional info. x86_64+0x100010a75) in ft_strlcat+0x75 ==40711==ABORTING)
-bash error = ()
-Test 135: ❌ $EMPTY echo hi
-mini output = ()
-bash output = (hi)
-mini exit code = 134
-bash exit code = 0
-mini error = (DEADLYSIGNAL ================================================================= SEGV on unknown address 0x000000000000 (pc 0x00010cf30a75 bp 0x7ffee2cdf2d0 sp 0x7ffee2cdf290 T0) ==40753==The signal is caused by a READ memory access. address points to the zero page. x86_64+0x100010a75) 417 351 431 87 x86_64+0x1acc8) rax = 0x0000000000000000 rbx = 0x00007ffee2cdf440 rcx = 0x0000000000000000 rdx = 0x0000000000000000 rdi = 0x0000621000039900 rsi = 0x0000000000000000 rbp = 0x00007ffee2cdf2d0 rsp = 0x00007ffee2cdf290 r8 = 0x0000200000000000 r9 = 0x0000000000000000 r10 = 0xffffffffffffffff r11 = 0x00000fffffffffff r12 = 0x0000000000000000 r13 = 0x0000000000000000 r14 = 0x0000000000000000 r15 = 0x0000000000000000 AddressSanitizer can not provide additional info. x86_64+0x100010a75) in ft_strlcat+0x75 ==40753==ABORTING)
-bash error = ()
-Test 136: ❌ ./test_files/invalid_permission
-mini exit code = 1
-bash exit code = 126
-Test 137: ❌ ./missing.out
-mini exit code = 1
-bash exit code = 127
-Test 138: ❌ missing.out
-mini exit code = 1
-bash exit code = 127
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 139: ❌ "aaa"
-mini exit code = 1
-bash exit code = 127
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 140: ❌ test_files
-mini exit code = 1
-bash exit code = 127
-mini error = ( Permission denied)
-bash error = ( command not found)
-Test 141: ❌ ./test_files
-mini exit code = 1
-bash exit code = 126
-mini error = ( Permission denied)
-bash error = ( is a directory)
-Test 142: ❌ /test_files
-mini exit code = 1
-bash exit code = 127
-Test 143: ❌ minishell.h
-mini exit code = 1
-bash exit code = 127
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 144: ❌ $
-mini exit code = 1
-bash exit code = 127
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 145: ❌ $?
-mini exit code = 1
-bash exit code = 127
-mini error = ( No such file or directory)
-bash error = ( command not found)
-Test 146: ❌ README.md
-mini exit code = 1
-bash exit code = 127
-mini error = ( Permission denied)
-bash error = ( command not found)
-80/146
-😭 😭 😭
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                COMPARE PARSING                               #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  24:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:52[m  
+[1;35m  25:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:54[m  
+[1;35m  26:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:56[m  
+[1;35m  27:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:58[m  
+[1;35m  28:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:60[m  
+[1;35m  29:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:62[m  
+[1;35m  30:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/0_compare_parsing.sh:64[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                PARSING HELL                                  #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  12:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:32[m  
+[1;35m  14:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:40[m  
+[1;35m  15:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:45[m  
+[1;35m  17:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:54[m  
+[1;35m  18:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:58[m  
+[1;35m  19:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:62[m  
+[1;35m  30:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:96[m  
+[1;35m  41:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:120[m  
+[1;35m  58:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:170[m  
+[1;35m  67:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:189[m  
+[1;35m  77:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(127)  bash(0) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:216[m  
+[1;35m  78:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:219[m  
+[1;35m  79:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:222[m  
+[1;35m  101:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:272[m  
+[1;35m  123:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(2)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:319[m  
+[1;35m  124:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(0) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:321[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                   BUILTINS                                   #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  1:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:7[m  
+[1;35m  27:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:59[m  
+[1;35m  28:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:61[m  
+[1;35m  29:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:63[m  
+[1;35m  30:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:65[m  
+[1;35m  31:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:67[m  
+[1;35m  32:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:69[m  
+[1;35m  33:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:71[m  
+[1;35m  105:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:239[m  
+[1;35m  107:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:243[m  
+[1;35m  128:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:314[m  
+[1;35m  130:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:324[m  
+[1;35m  131:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:328[m  
+[1;35m  133:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:337[m  
+[1;35m  140:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:360[m  
+[1;35m  150:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:390[m  
+[1;35m  165:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:420[m  
+[1;35m  170:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:430[m  
+[1;35m  177:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(1) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:444[m  
+[1;35m  180:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(1) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:450[m  
+[1;35m  185:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:460[m  
+[1;35m  224:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:552[m  
+[1;35m  231:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:566[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                  PIPELINES                                   #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  1:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(137)  bash(0) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:4[m  
+[1;35m  2:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(137)  bash(0) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:6[m  
+[1;35m  25:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:55[m  
+[1;35m  26:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:59[m  
+[1;35m  27:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:68[m  
+[1;35m  28:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:84[m  
+[1;35m  29:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:96[m  
+[1;35m  30:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:110[m  
+[1;35m  36:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:144[m  
+[1;35m  37:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:147[m  
+[1;35m  38:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:151[m  
+[1;35m  39:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:156[m  
+[1;35m  40:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:161[m  
+[1;35m  41:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:166[m  
+[1;35m  42:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:171[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                    REDIRS                                    #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  80:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:186[m  
+[1;35m  81:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:195[m  
+[1;35m  82:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:204[m  
+[1;35m  83:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:208[m  
+[1;35m  84:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:217[m  
+[1;35m  85:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:223[m  
+[1;35m  86:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:229[m  
+[1;35m  87:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:235[m  
+[1;35m  88:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_redirs.sh:241[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                     SCMD                                     #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  4:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:11[m  
+[1;35m  7:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:19[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                  BROKEN SCMD                                 #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  28:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:88[m  
+[1;35m  29:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:90[m  
+[1;35m  30:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:92[m  
+[1;35m  31:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:94[m  
+[1;35m  34:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:100[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                  VARIABLES                                   #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  43:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:120[m  
+[1;35m  45:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:130[m  
+[1;35m  46:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:133[m  
+[1;35m  47:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:136[m  
+[1;35m  48:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:139[m  
+[1;35m  49:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:142[m  
+[1;35m  50:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:145[m  
+[1;35m  51:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:148[m  
+[1;35m  52:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:151[m  
+[1;35m  53:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:154[m  
+[1;35m  56:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:163[m  
+[1;35m  57:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:166[m  
+[1;35m  58:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:169[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                  CORRECTION                                  #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  2:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(127) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/2_correction.sh:9[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                  PATH FAILS                                  #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  1:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/2_path_check.sh:5[m  
+[1;35m  7:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(1)  bash(0) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/2_path_check.sh:30[m  
+[1;35m  8:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/2_path_check.sh:32[m  
+[1;35m  11:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/2_path_check.sh:43[m  
+[1;35m  12:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/2_path_check.sh:47[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                SYNTAX ERRORS                                 #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  8:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(127)  bash(126) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:19[m  
+[1;35m  20:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43[m  
+[1;35m  21:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46[m  
+[1;35m  22:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(0)  bash(2) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49[m  
+[1;33m  # **************************************************************************** #[m
+[1;33m  #                                     WILD                                     #[m
+[1;33m  # **************************************************************************** #[m
+[1;35m  2:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ❌[1;31m [ minishell(141)  bash(0) ][m  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:7[m  
+[1;35m  6:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:18[m  
+[1;35m  7:	[m[1;34mSTD_OUT:[m ✅  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:22[m  
+[1;35m  10:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:30[m  
+[1;35m  13:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:46[m  
+[1;35m  14:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ❌  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:49[m  
+[1;35m  15:	[m[1;34mSTD_OUT:[m ❌  [1;33mSTD_ERR:[m ✅  [1;36mEXIT_CODE:[m ✅  [0;90m/Users/afelger/42_minishell_tester/cmds/mand/9_go_wild.sh:52[m  
+[1;31m                                     ❌ 137 [m  

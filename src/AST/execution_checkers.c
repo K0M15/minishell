@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:43:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 12:24:57 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/25 15:25:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ char *exists(char *path)
 	char *res;
 
 	if (access(path, F_OK) == 0)
-		return (path);
+	{
+		if (access(path, X_OK) == 0)
+			return (path);
+	}
 	res = find_path(path);
 	if (res != NULL)
 		return (res);

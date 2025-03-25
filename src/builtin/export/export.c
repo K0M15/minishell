@@ -6,11 +6,31 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/06 18:31:33 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/25 15:43:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*export_getkey(char *str)
+{
+	int		c;
+	char	*result;
+
+	c = 0;
+	while (str[c] && str[c] != '=' && str[c] != '+')
+		c++;
+	result = malloc(++c);
+	if (result == NULL)
+		return (NULL);
+	result[--c] = '\0';
+	while (c > 0)
+	{
+		c--;
+		result[c] = str[c];
+	}
+	return (result);
+}
 
 static void	export_displayx(void)
 {
@@ -37,6 +57,24 @@ static int	contains_illegal(char *str)
 	return (0);
 }
 
+static char *handle_addition(char *key, char *value, char *arg)
+{
+	char *copy;
+
+	copy = arg;
+	while (*copy && (*copy != '+' && *copy != '='))
+		copy++;
+	if (*copy == '+')
+	{
+		copy = ms_get_env(key);
+		arg = ft_strjoin(copy, value);
+		copy = ms_setvalue(key, arg);
+		return (ft_free(arg), copy);
+	}
+	else
+		return (ms_setvalue(key, value));
+}
+
 int	builtin_export(int argc, char **argv)
 {
 	char	*key;
@@ -48,7 +86,7 @@ int	builtin_export(int argc, char **argv)
 	c = 1;
 	while (c < argc)
 	{
-		key = ms_getkey(argv[c]);
+		key = export_getkey(argv[c]);
 		if (key[0] == 0 || contains_illegal(key))
 		{
 			write(2, "bash: export: `", 15);
@@ -58,7 +96,7 @@ int	builtin_export(int argc, char **argv)
 			return (1);
 		}
 		value = ms_getvalue(argv[c]);
-		if (ms_setvalue(key, value) == NULL)
+		if (handle_addition(key, value, argv[c]) == NULL)
 			perror("bash: export: ");
 		free(key);
 		c++;
