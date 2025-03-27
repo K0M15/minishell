@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:37:22 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/18 18:10:21 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 14:02:12 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,16 @@ void	process_quote_content(t_lexer *lexer, char *buffer, int *i, char quote_char
 void process_variable_in_quotes(t_lexer *lexer, char *buffer, int *i, char quote_char)
 {
     char *var_name;
+	char *var_val;
 
     if (quote_char == '"' && current_char(lexer) == '$')
     {
         var_name = handle_variable(lexer);
-        if (var_name)
-        {
-            ft_strcpy(buffer + *i, var_name);
-            *i += ft_strlen(var_name);
-            free(var_name);
-            return;
-        }
+		var_val = process_variable(var_name, 0);
+        ft_strcpy(buffer + *i, var_val);
+        *i += ft_strlen(var_val);
+        free(var_val);
+        return ;
     }
     buffer[(*i)++] = current_char(lexer);
     advance(lexer);
@@ -76,11 +75,12 @@ char	*handle_quotes(char *str)
 {
 	t_dyn_str	*result;
 	long		ctr;
-	int			in_quotes[2] = {0,0};
+	int			in_quotes[2];
 	char		*tmp;
 
 	result = dyn_str_new();
 	ctr = 0;
+	ft_memset(in_quotes, 0, 8);
 	while (str[ctr])
 	{
 		handle_quote_state(str[ctr], in_quotes);

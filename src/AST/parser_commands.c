@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:58:31 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/24 15:32:13 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/26 15:43:10 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_command	*parse_pipeline(t_token **tokens)
 	if (!left && (*tokens) && (*tokens)->type == TOKEN_PIPE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
-		// not correct, parsing left is done even if there is no PIPE
 		get_appstate()->last_return = 2;
 		return (NULL);
 	}

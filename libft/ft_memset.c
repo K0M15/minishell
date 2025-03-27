@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:20:44 by afelger           #+#    #+#             */
-/*   Updated: 2024/10/15 14:21:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/26 17:50:01 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	*ft_memset(void *s, int c, unsigned long n)
 {
-	while (--n + 1)
+	unsigned char	*ptr;
+
+	ptr = s;
+	while (n--)
 	{
-		((char *)s)[n] = (char) c;
+		*ptr++ = (unsigned char) c;
 	}
 	return (s);
 }

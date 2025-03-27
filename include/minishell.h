@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 18:23:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 13:54:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,9 +320,10 @@ char    *handle_variable(t_lexer *lexer);
 char    *expand_variables_in_string(const char *str);
 void    process_quote_content(t_lexer *lexer, char *buffer, int *i, char quote_char);
 void    process_variable_name(t_lexer *lexer, char *buffer, int *i, bool has_braces);
-void    process_variable_in_word(t_lexer *lexer, char *buffer, int *i);
+void    process_variable_in_word(t_lexer *lexer, char *buffer, int *i, int *in_quotes);
 void    process_quotes_in_word(t_lexer *lexer, char *buffer, int *i);
 void    process_variable_in_quotes(t_lexer *lexer, char *buffer, int *i, char quote_char);
+char	*process_variable(char *var_name, int in_quotes);
 char    *handle_quotes(char *str);
 char	*handle_quotes_redir(char *str);
 

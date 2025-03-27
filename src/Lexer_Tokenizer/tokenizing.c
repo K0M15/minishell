@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:32:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/09 17:48:25 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/26 13:30:18 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_token	*build_token_list(t_lexer *lexer)
 	{
 		token = get_next_token(lexer);
 		if (!token)
-			break ;
+			continue ;
 		add_token_to_list(&head, &current, token);
 		if (token->type == TOKEN_EOF)
 			break ;

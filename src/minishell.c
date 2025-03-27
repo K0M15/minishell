@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/22 19:57:56 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/26 16:32:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 int anakin()
 {
 	t_list *next;
-	t_list *current;
+	t_list *children;
 	int status;
 
-	current = get_appstate()->children;
-	while (current != NULL)
+	children = get_appstate()->children;
+	while (children != NULL)
 	{
-		next = current->next;
-		kill((long) current->content, SIGKILL);
-		waitpid((long) current->content, &status, 0);
-		ft_free (current);
-		current = next;
+		next = children->next;
+		kill((long) children->content, SIGKILL);
+		waitpid((long) children->content, &status, 0);
+		ft_free (children);
+		children = next;
 	}
 	get_appstate()->children = NULL;
 	return (1);
