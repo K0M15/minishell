@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:35:15 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 14:14:28 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:07:17 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char *process_variable(char *var_name, int in_quotes)
 		value = var_name;
 	else if (var_name && *(var_name + 1) != '?')
 	{
-		value = ft_strdup(ms_get_env(var_name + 1));
+		value = ft_strtrim(ms_get_env(var_name + 1), " ");
 		free(var_name);
 	}
 	else if (var_name && *(var_name + 1) == '?')

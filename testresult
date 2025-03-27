@@ -25,25 +25,21 @@
 4:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:❌  minishell(0)  bash(127) ] /Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:11 => command not found for "" input
 7:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:19 => Have to test more
   # **************************************************************************** #[m
-  #                                  BROKEN SCMD                                 #[m
-  # **************************************************************************** #[m
-34:	STD_OUT: ❌  STD_ERR:❌  EXIT_CODE:❌  minishell(0)  bash(127) ] /Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:100 => fix /ls
-  # **************************************************************************** #[m
   #                                  VARIABLES                                   #[m
   # **************************************************************************** #[m
-43:	STD_OUT: ❌  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:120 => wont execute but should
-45:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:130 => less spaces
-46:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:133 => less spaces
-47:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:136 => less spaces
-48:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:139 => less spaces
-49:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:142 => less spaces
-50:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:145 => less spaces
-51:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:148 => less spaces
-52:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:151 => less spaces
-53:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:154 => less spaces
-56:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:163 => less spaces
-57:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:166 => less spaces
-58:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:169 => less spaces
+43:	STD_OUT: ❌  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:120 => var does not get expanded before tokenizing
+45:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:130 => Vars with space get expanded to seperate tokens
+46:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:133 => Vars with space get expanded to seperate tokens
+47:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:136 => Vars with space get expanded to seperate tokens
+48:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:139 => Vars with space get expanded to seperate tokens
+49:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:142 => Vars with space get expanded to seperate tokens
+50:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:145 => Vars with space get expanded to seperate tokens
+51:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:148 => Vars with space get expanded to seperate tokens
+52:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:151 => Vars with space get expanded to seperate tokens
+53:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:154 => Vars with space get expanded to seperate tokens
+56:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:163 => Vars with space get expanded to seperate tokens
+57:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:166 => Vars with space get expanded to seperate tokens
+58:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:169 => Vars with space get expanded to seperate tokens
   # **************************************************************************** #[m
   #                                  CORRECTION                                  #[m
   # **************************************************************************** #[m
