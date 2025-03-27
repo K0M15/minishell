@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 15:57:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 17:05:31 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ int	execute_command(t_command *cmd, char **env, int fork)
 
 static int	handle_dots(t_command *cmd)
 {
-	if (ft_strlencmp(cmd->args[0], ".") == 0)
+	if (ft_strlencmp(cmd->args[0], "") == 0)
+	{
+		ft_putstr_fd("bash: : command not found\n", 2);
+		return (127);
+	}		
+	else if (ft_strlencmp(cmd->args[0], ".") == 0)
 	{
 		ft_putstr_fd("bash: .: filename argument required\n", 2);
 		ft_putstr_fd(".: usage: . filename [arguments]\n", 2);

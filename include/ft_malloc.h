@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 11:12:26 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/19 15:24:19 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 18:17:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ void	ft_free(void *target);
 void	cleanup(char reason);
 
 t_list	*ms_lstnew(void *content);
-
 
 #endif // FT_MALLOC_H
