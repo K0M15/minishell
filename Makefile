@@ -35,6 +35,7 @@ FILES += signals/signals.c signals/sig_init.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c builtin/builtin.c
+FILES += builtin/export/sort_env.c
 #	PROMPT
 FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c prompt/heredoc_util.c prompt/token2string.c
 #	MEMORY

@@ -1,32 +1,29 @@
-  # **************************************************************************** #[m
-  #                                PARSING HELL                                  #[m
-  # **************************************************************************** #[m
+  # **************************************************************************** #
+  #                                PARSING HELL                                  #
+  # **************************************************************************** #
   look into echo -nnn -nnn
 30:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:96		Maybe handle
 41:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:120		Maybe handle
 77:	STD_OUT: ❌  STD_ERR:❌  EXIT_CODE:❌  minishell(127)  bash(0) ] /Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:216	DONT KNOW
-78:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:219	should display nothing
-79:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:222	should display nothing
 123: STD_OUT: ✅  STD_ERR:✅  EXIT_CODE:❌  minishell(2)  bash(127) ] /Users/afelger/42_minishell_tester/cmds/mand/10_parsing_hell.sh:319	LOOK INTO (IF NOTHING ELSE COMES UP)
-  # **************************************************************************** #[m
-  #                                   BUILTINS                                   #[m
-  # **************************************************************************** #[m
+  # **************************************************************************** #
+  #                                   BUILTINS                                   #
+  # **************************************************************************** #
 150: STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_builtins.sh:390 => Sorted output
-  # **************************************************************************** #[m
-  #                                  PIPELINES                                   #[m
-  # **************************************************************************** #[m
+  # **************************************************************************** #
+  #                                  PIPELINES                                   #
+  # **************************************************************************** #
 1:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:❌  minishell(137)  bash(0) ] /Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:4 slow and output after end
 2:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:❌  minishell(137)  bash(0) ] /Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:6 slow and output after end
 41:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:166 => double error
 42:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_pipelines.sh:171 => double error
-  # **************************************************************************** #[m
-  #                                     SCMD                                     #[m
-  # **************************************************************************** #[m
-4:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:❌  minishell(0)  bash(127) ] /Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:11 => command not found for "" input
+  # **************************************************************************** #
+  #                                     SCMD                                     #
+  # **************************************************************************** #
 7:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_scmds.sh:19 => Have to test more
-  # **************************************************************************** #[m
-  #                                  VARIABLES                                   #[m
-  # **************************************************************************** #[m
+  # **************************************************************************** #
+  #                                  VARIABLES                                   #
+  # **************************************************************************** #
 43:	STD_OUT: ❌  STD_ERR:❌  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:120 => var does not get expanded before tokenizing
 45:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:130 => Vars with space get expanded to seperate tokens
 46:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:133 => Vars with space get expanded to seperate tokens
@@ -40,21 +37,16 @@
 56:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:163 => Vars with space get expanded to seperate tokens
 57:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:166 => Vars with space get expanded to seperate tokens
 58:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/1_variables.sh:169 => Vars with space get expanded to seperate tokens
-  # **************************************************************************** #[m
-  #                                  CORRECTION                                  #[m
-  # **************************************************************************** #[m
-2:	STD_OUT: ✅  STD_ERR:❌  EXIT_CODE:❌  minishell(0)  bash(127) ] /Users/afelger/42_minishell_tester/cmds/mand/2_correction.sh:9 fix ""
-114:	STD_OUT: ❌  STD_ERR:❌  EXIT_CODE:❌  minishell(137)  bash(0) ] /Users/afelger/42_minishell_tester/cmds/mand/2_correction.sh:277 dunno, retest
-  # **************************************************************************** #[m
-  #                                  PATH FAILS                                  #[m
-  # **************************************************************************** #[m
+  # **************************************************************************** #
+  #                                  PATH FAILS                                  #
+  # **************************************************************************** #
 12:	STD_OUT: ❌  STD_ERR:✅  EXIT_CODE:✅ /Users/afelger/42_minishell_tester/cmds/mand/2_path_check.sh:47 fix error messages
-  # **************************************************************************** #[m
-  #                                SYNTAX ERRORS                                 #[m
-  # **************************************************************************** #[m
+  # **************************************************************************** #
+  #                                SYNTAX ERRORS                                 #
+  # **************************************************************************** #
 8:	STD_OUT: ✅  STD_ERR:✅  EXIT_CODE:❌  minishell(127)  bash(126) ] /Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:19 exit code
 20:	STD_OUT: ✅  STD_ERR:✅  EXIT_CODE:❌  minishell(0)  bash(2) ] /Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43 exit code
 21:	STD_OUT: ✅  STD_ERR:✅  EXIT_CODE:❌  minishell(0)  bash(2) ] /Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46 exit code
 22:	STD_OUT: ✅  STD_ERR:✅  EXIT_CODE:❌  minishell(0)  bash(2) ] /Users/afelger/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49 exit code
 
-                                ❌ 117
+                                ❌ 106
