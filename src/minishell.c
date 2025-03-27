@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/26 16:32:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 16:58:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int main (int argc, char **argv, char **envp)
 		}
 		free_tokens(tokens);
 		// free(str);
-		add_history(str); // check beforehand if string is emptys
+		add_history(str); // check beforeh	and if string is emptys
 		if (ft_strncmp("change", str, 6) == 0)
 			ms_set_state_mode(RUNNING);
 	}
