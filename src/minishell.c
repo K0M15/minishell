@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 18:16:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 18:36:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*get_line(void)
 		if (isatty(STDIN_FILENO))
 			printf("exit\n");
 	}
+	return (str);
 }
 
 void	execute_input(char *str, t_appstate *state)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 17:09:03 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/27 19:21:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,40 +32,24 @@ static char	*export_getkey(char *str)
 	return (result);
 }
 
+
 static void	export_displayx(void)
 {
 	char	**env;
+	char	*key;
 
 	env = get_appstate()->enviroment;
-	sort_env(**env);
+	sort_env(env);
 
 	while (*env)
 	{
-		printf("declare -x %s\n", *env);
-		env++;
-	}
-}
-
-void sort_env(char **env)
-{
-	int	i;
-	int j;
-	char *s1;
-
-	i = -1;
-	while (env[i++])
-	{
-		j = -1;
-		while (env[i][j++])
+		if (ms_getvalue(*env))
 		{
-			if (env[i][j] > env[i + 1][j])
-			{
-				s1 = env[i];
-				env[i] = env[i + 1];
-				env[i + 1] = s1;
-			}
-
+			key = ms_getkey(*env);
+			printf("declare -x %s=\"%s\"\n", key, ms_getvalue(*env));
+			free(key);
 		}
+		env++;
 	}
 }
 

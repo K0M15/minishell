@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 13:54:51 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 19:07:37 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef enum e_tokentype
 	// TOKEN_PARATESES_OPEN,	// (
 	// TOKEN_PARATESES_CLOSE,	// )
 }	t_tokentype;
-
 
 typedef struct s_token
 {
@@ -156,6 +155,7 @@ void			ms_set_state_mode(t_appmode mode);
 int				builtin_pwd(int argc, char **argv);
 int				builtin_env(int argc, char **argv);
 int				builtin_echo(int argc, char **argv);
+void			sort_env(char **env);
 int				builtin_env(int argc, char **argv);
 int				builtin_exit(int argc, char **argv);
 int				builtin_export(int argc, char **argv);
