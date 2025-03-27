@@ -3,32 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 19:24:55 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 19:30:46 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
+# include <stddef.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <ctype.h>
+# include <stdbool.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <fcntl.h>
 # include "ft_dyn_str.h"
 # include "ft_malloc.h"
 # include "ft_printf.h"
 # include "get_next_line.h"
 # include "libft.h"
-# include <ctype.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stddef.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
 
 typedef struct s_doc
 {
@@ -299,7 +299,7 @@ void			skip_whitespace(t_lexer *lexer);
 /**
  * Creates a token of type and with a copy of value
  */
-// t_token					*create_token(t_tokentype type, char *value);
+t_token			*create_token(t_tokentype type, char *value);
 t_token			*get_next_token(t_lexer *lexer);
 void			free_tokens(t_token *head);
 void			add_token_to_list(t_token **head, t_token **current,
