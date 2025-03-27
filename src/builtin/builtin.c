@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:36:14 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 13:29:09 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:48:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,3 @@ int	ft_strlencmp(const char *s1, const char *s2)
 		return (-1);
 	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }
-

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:58:31 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/26 15:43:10 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 16:12:27 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_command	*parse(t_token *tokens)
 	}
 	return (parse_pipeline(&tokens));
 }
+
 t_command	*parse_pipeline(t_token **tokens)
 {
 	t_command	*left;

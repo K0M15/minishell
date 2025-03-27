@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/24 14:22:47 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:44:41 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	apply_heredoc(const char *dellimter, int no_variable_exp)
 {
-	int fd;
-	
+	int	fd;
+
 	fd = ms_heredoc(dellimter, no_variable_exp);
 	if (fd < 0)
 		ft_putstr_fd("minishell: heredoc failed\n", STDERR_FILENO);
@@ -25,16 +25,18 @@ int	apply_heredoc(const char *dellimter, int no_variable_exp)
 void	ms_doc_free(t_doc *document)
 {
 	t_doc	*next;
+
 	while (document != NULL)
-		{
-			next = document->next;
-			free(document->content);
-			free(document);
-			document = next;
-		}
+	{
+		next = document->next;
+		free(document->content);
+		free(document);
+		document = next;
+	}
 }
 
-static int	heredoc_process(const char *dellimter, t_doc **document, int no_var_exp)
+static int	heredoc_process(const char *dellimter,
+	t_doc **document, int no_var_exp)
 {
 	char	*str;
 	t_doc	*last;
@@ -44,7 +46,7 @@ static int	heredoc_process(const char *dellimter, t_doc **document, int no_var_e
 	if (str == NULL)
 		return (0);
 	if (!no_var_exp)
-		str = expand_variables_in_string(str);	//mem leak
+		str = expand_variables_in_string(str);
 	iseof = (ft_strncmp(str, dellimter, ft_strlen(dellimter)) == 0
 			&& ft_strlen(str) == ft_strlen(dellimter));
 	if (iseof)
@@ -63,7 +65,7 @@ static int	heredoc_process(const char *dellimter, t_doc **document, int no_var_e
 	return (free(str), iseof);
 }
 
-static int split_writer(t_doc *document, int no_var_exp)
+static int	split_writer(t_doc *document, int no_var_exp)
 {
 	int	pid;
 	int	pipedoc[2];
@@ -83,36 +85,14 @@ static int split_writer(t_doc *document, int no_var_exp)
 	close(pipedoc[STDOUT_FILENO]);
 	return (pipedoc[STDIN_FILENO]);
 }
+
 int	ms_heredoc(const char *delimiter, int no_var_exp)
 {
-	t_doc *document;
+	t_doc	*document;
 
 	document = NULL;
 	ms_set_state_mode(HEREDOC);
-	if (heredoc_process(delimiter, &document, no_var_exp) <  0)
+	if (heredoc_process(delimiter, &document, no_var_exp) < 0)
 		return (-1);
 	return (split_writer(document, no_var_exp));
 }
-
-// int	ms_heredoc(char *delimiter, int fd, t_doc *document)
-// {
-// 	char	*line;
-// 	int		is_eof;
-
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 			break ;
-// 		is_eof = (ft_strcmp(line, delimiter) == 0);
-// 		if (is_eof)
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		write(fd, line, ft_strlen(line));
-// 		write(fd, "\n", 1);
-// 		free(line);
-// 	}
-// 	return (0);
-// }

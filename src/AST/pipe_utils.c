@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:11:41 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/25 14:12:03 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 16:16:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ pid_t	fork_and_execute_right(t_command *cmd, char **env, int *pipefd)
 	return (pid);
 }
 
-void restore_fds(int saved_fds[3])
+void	restore_fds(int saved_fds[3])
 {
-    dup2(saved_fds[0], STDIN_FILENO);
-    dup2(saved_fds[1], STDOUT_FILENO);
-    dup2(saved_fds[2], STDERR_FILENO);
-    close(saved_fds[0]);
-    close(saved_fds[1]);
-    close(saved_fds[2]);
+	dup2(saved_fds[0], STDIN_FILENO);
+	dup2(saved_fds[1], STDOUT_FILENO);
+	dup2(saved_fds[2], STDERR_FILENO);
+	close(saved_fds[0]);
+	close(saved_fds[1]);
+	close(saved_fds[2]);
 }

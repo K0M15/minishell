@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/25 15:08:14 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:57:11 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	execute_command(t_command *cmd, char **env, int fork)
 	if (!cmd)
 		return (0);
 	if (cmd->type == CMD_SIMPLE)
- 		return (execute_simple_command(cmd, env, fork));
+		return (execute_simple_command(cmd, env, fork));
 	else if (cmd->type == CMD_PIPE)
 		return (execute_pipe_command(cmd, env));
 	else
 		return (1);
 }
 
-static int handle_dots(t_command *cmd)
+static int	handle_dots(t_command *cmd)
 {
 	if (ft_strlencmp(cmd->args[0], ".") == 0)
 	{
@@ -51,7 +51,7 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 	if (ret != -1)
 		return (restore_fds(saved_fds), ret);
 	if (cmd->args[0] != NULL)
-	{	
+	{
 		ret = handle_dots(cmd);
 		if (ret)
 			return (ret);
@@ -98,37 +98,4 @@ int	execute_pipe_command(t_command *cmd, char **env)
 	if (WIFSIGNALED(status2))
 		return (128 + WTERMSIG(status2));
 	return (WEXITSTATUS(status2));
-}
-
-int	execute_builtin(t_command *cmd, char **env)
-{
-	int	argc;
-
-	argc = count_args(cmd->args);
-	(void)env;
-	if (ft_strlencmp(cmd->args[0], "echo") == 0)
-		return (builtin_echo(argc, cmd->args));
-	else if (ft_strlencmp(cmd->args[0], "cd") == 0)
-		return (builtin_cd(argc, cmd->args));
-	else if (ft_strlencmp(cmd->args[0], "env") == 0)
-		return (builtin_env(argc, cmd->args));
-	else if (ft_strlencmp(cmd->args[0], "exit") == 0)
-		return (builtin_exit(argc, cmd->args));
-	else if (ft_strlencmp(cmd->args[0], "export") == 0)
-		return (builtin_export(argc, cmd->args));
-	else if (ft_strlencmp(cmd->args[0], "unset") == 0)
-		return (builtin_unset(argc, cmd->args));
-	else if (ft_strlencmp(cmd->args[0], "pwd") == 0)
-		return (builtin_pwd(argc, cmd->args));
-	return (0xFF);
-}
-
-int	is_builtin(char *str)
-{
-	if (str != NULL && (ft_strlencmp(str, "echo") == 0
-		|| ft_strlencmp(str, "cd") == 0 || ft_strlencmp(str, "env") == 0
-		|| ft_strlencmp(str, "exit") == 0 || ft_strlencmp(str, "export") == 0
-		|| ft_strlencmp(str, "unset") == 0 || ft_strlencmp(str, "pwd") == 0))
-		return (1);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:17:17 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 12:28:52 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:42:05 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	ms_doc_append(t_doc *document, t_doc **last)
 
 int	ms_doc_get_length(t_doc *document)
 {
-	int result;
-	
+	int	result;
+
 	result = 0;
 	while (document != NULL)
 	{
@@ -46,7 +46,7 @@ char	*ms_doc_construct(t_doc *document)
 	length = ms_doc_get_length(document) + 1;
 	str = ft_malloc(length);
 	if (str == NULL)
-		return NULL;
+		return (NULL);
 	str[0] = 0;
 	while (document != NULL)
 	{
@@ -78,16 +78,16 @@ int	ms_doc_display_free(t_doc *document, int fd, int no_var_exp)
 
 t_doc	*ms_doc_app_or_new(t_doc **document)
 {
-	t_doc *new;
+	t_doc	*new;
 
 	if (*document == NULL)
 	{
 		new = malloc(sizeof(t_doc));
 		if (new == NULL)
-			return NULL;
+			return (NULL);
 		new->next = NULL;
 	}
-	else if(ms_doc_append(*document, &new) == -1)
-		return NULL;
+	else if (ms_doc_append(*document, &new) == -1)
+		return (NULL);
 	return (new);
 }

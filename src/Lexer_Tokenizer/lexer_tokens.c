@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:24:21 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/17 13:28:32 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 16:43:59 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	skip_whitespace(t_lexer *lexer)
 
 void	free_tokens(t_token *head)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	while (head != NULL)
 	{

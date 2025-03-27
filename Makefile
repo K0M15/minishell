@@ -27,11 +27,11 @@ FILES += Lexer_Tokenizer/redir_quotes.c
 FILES += AST/variables_expanding.c AST/redirections.c AST/string_utils.c AST/var_utils.c 
 FILES += AST/parser_commands.c AST/parser_redirections.c AST/memory_utils.c AST/parser_utils.c
 FILES += AST/utils.c AST/executor_utils.c AST/executor.c AST/pipe_utils.c
-FILES += AST/execution_checkers.c
+FILES += AST/execution_checkers.c AST/parser_redirections_2.c AST/free_cmd.c
 #	RUNTIME
 FILES += enviroment/enviroment.c enviroment/env_strfunc.c enviroment/env_data.c
 FILES += state/appstate.c
-FILES += signals/signals.c
+FILES += signals/signals.c signals/sig_init.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c builtin/builtin.c

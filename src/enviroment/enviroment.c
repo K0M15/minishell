@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:46 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/07 17:19:05 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:48:07 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ char	*ms_setvalue(char *key, char *value)
 		if (ms_is_key(*enviroment, key))
 		{
 			ft_free(*enviroment);
-			*enviroment = new_entry;
-			return (new_entry);
-		}	
+			return (*enviroment = new_entry, new_entry);
+		}
 		enviroment++;
 	}
 	if (ms_env_append(new_entry))

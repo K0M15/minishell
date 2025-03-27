@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:05:49 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/20 11:12:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:32:47 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_appstate	*get_appstate(void)
 
 void	ms_set_state_mode(t_appmode mode)
 {
-
 	if (mode == INTERACTIVE)
 		ms_get_sig_action()->sa_sigaction = &ms_sig_handler_interactive;
 	else if (mode == HEREDOC)

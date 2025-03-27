@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 14:47:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/07 14:44:19 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:47:09 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 t_list	**get_mem(void)
 {
 	static t_list	*mem;
+
 	if (mem == NULL)
 		mem = ft_lstnew(NULL);
 	return (&mem);
@@ -43,17 +44,14 @@ void	*ft_mem_reg(void *mem)
 
 void	ft_free(void *target)
 {
-	t_list *mem;
-	t_list *last;
+	t_list	*mem;
+	t_list	*last;
 
 	last = *get_mem();
 	mem = last->next;
-	if ((size_t) target > (size_t) &mem)
-	{
-		ft_printf("tried to free non-freeable"); //target is inside of the stack and not freeable;
+	if ((size_t)target > (size_t)(&mem))
 		return ;
-	}
-	while(mem != NULL && mem->content != target)
+	while (mem != NULL && mem->content != target)
 	{
 		last = mem;
 		mem = mem->next;
@@ -70,14 +68,13 @@ void	cleanup(char reason)
 {
 	t_list	*mem;
 	t_list	*last;
-	
+
 	mem = (*get_mem());
 	while (mem != NULL)
 	{
 		last = mem;
 		mem = mem->next;
 		if (last->content != NULL)
-		// if (last->content != NULL && last->content < (void *) &last)
 			free(last->content);
 		free(last);
 	}

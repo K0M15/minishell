@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:32:30 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/23 11:32:00 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:50:55 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	only_accepted(char *str)
 	return (255);
 }
 
-static int handle_exit(int code, char *err_reson)
+static int	handle_exit(int code, char *err_reson)
 {
 	get_appstate()->stop = 1;
 	if (isatty(STDIN_FILENO))
@@ -41,7 +41,7 @@ static int handle_exit(int code, char *err_reson)
 	return (code & 0xFF);
 }
 
-static void print_err_numeric(char *arg)
+static void	print_err_numeric(char *arg)
 {
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);

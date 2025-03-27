@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:30:45 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/25 15:01:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:49:44 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ int	builtin_echo(int argc, char **argv)
 			argv++;
 		if (argc < 3 && mode & 0b1)
 			return (0);
-		// if ((mode & 0b1) != 0b1)
-		// 	ctr--;
 		while (argv[ctr] && argv[ctr + 1])
-		// while (argv[++ctr] && argv[ctr + 1])
 		{
 			printf("%s ", argv[ctr]);
 			ctr++;

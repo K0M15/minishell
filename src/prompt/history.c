@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:00:55 by afelger           #+#    #+#             */
-/*   Updated: 2025/02/24 15:54:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:41:15 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	load_history(char *filename)
 {
 	char	*content;
 	int		fd;
-	
+
 	fd = open(filename, O_RDONLY, NULL);
 	if (fd == -1)
 		return ;
@@ -58,7 +58,7 @@ void	load_history(char *filename)
 	}
 }
 
-int	dump_history(char * filename)
+int	dump_history(char *filename)
 {
 	HISTORY_STATE	*state;
 	int				fd;
@@ -71,11 +71,11 @@ int	dump_history(char * filename)
 	i = 0;
 	while (++i <= state->offset)
 	{
-		if(write_hist_entry(fd, state->entries[i]) == -1)
+		if (write_hist_entry(fd, state->entries[i]) == -1)
 			return (-1);
 		free(state->entries[i]);
 	}
-	if(close(fd) == -1)
+	if (close(fd) == -1)
 		return (-1);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_expanding.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:03:12 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/09 18:16:54 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/27 16:30:49 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	expand_variables(t_command *cmd, char **env)
 
 	if (!cmd)
 		return ;
-	if (cmd->type == CMD_SIMPLE)
-		for (int i = 0; cmd->args[i]; i++)
-			cmd->args[i] = expand_variables_in_string(cmd->args[i]);
 	r = cmd->redirections;
 	while (r)
 	{
@@ -43,7 +40,7 @@ int	add_variable(t_dyn_str *result, char *str, long *pos)
 	if (str[*pos] == '$' && str[*pos + 1] == '?')
 		return (handle_exit_status(result, pos));
 	if (str[*pos + 1] == '\0' || (!ft_isalpha(str[*pos + 1]) && str[*pos
-			+ 1] != '_' && str[*pos + 1] != '?'))
+				+ 1] != '_' && str[*pos + 1] != '?'))
 	{
 		dyn_str_addchar(result, '$');
 		return (1);
@@ -87,7 +84,8 @@ char	*expand_variables_in_string(const char *str)
 	if (!result)
 		return (NULL);
 	result[0] = '\0';
-	for (i = 0; str[i]; ++i)
+	i = 0;
+	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] && str[i + 1] == '?')
 			handle_exit_status_var(result, &i);
@@ -96,6 +94,7 @@ char	*expand_variables_in_string(const char *str)
 			handle_env_var(str, result, &i);
 		else
 			ft_strncat(result, &str[i], 2, 4 * 1024);
+		i++;
 	}
 	return (result);
 }

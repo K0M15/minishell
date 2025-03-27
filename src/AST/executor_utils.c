@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:05:46 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/23 11:41:50 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:57:51 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	handle_execve_error(char *cmd)
 
 int	execute_child_process(t_command *cmd)
 {
-	if (cmd->args[0] && (!is_executable(cmd->args[0]) || is_directory(cmd->args[0])))
+	if (cmd->args[0] && (!is_executable(cmd->args[0])
+			|| is_directory(cmd->args[0])))
 		return (126);
 	execve(cmd->args[0], cmd->args, get_appstate()->enviroment);
 	handle_execve_error(cmd->args[0]);

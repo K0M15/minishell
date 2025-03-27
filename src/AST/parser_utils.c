@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:00:10 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/22 20:11:59 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 16:30:14 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,35 +51,6 @@ t_command	*create_pipe_command(t_command *left, t_command *right)
 	cmd->right = right;
 	cmd->redirections = NULL;
 	return (cmd);
-}
-
-void	free_command(t_command *cmd)
-{
-	t_redirection	*r;
-	t_redirection	*next;
-
-	if (!cmd)
-		return ;
-	if (cmd->args)
-	{
-		for (int i = 0; cmd->args[i]; i++)
-			ft_free(cmd->args[i]);
-		ft_free(cmd->args);
-	}
-	r = cmd->redirections;
-	while (r)
-	{
-		next = r->next;
-		close(r->fd);
-		ft_free(r->file);
-		ft_free(r);
-		r = next;
-	}
-	if (cmd->left)
-		free_command(cmd->left);
-	if (cmd->right)
-		free_command(cmd->right);
-	ft_free(cmd);
 }
 
 // Add an argument to a command

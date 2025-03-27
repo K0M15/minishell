@@ -6,14 +6,14 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:08:43 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/25 17:06:33 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:49:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "errno.h"
 
-static char	*handle_minus()
+static char	*handle_minus(void)
 {
 	char	*oldpwd;
 
@@ -37,7 +37,7 @@ static int	change_directory(const char *path)
 	if (path == NULL)
 		path = ms_get_env("HOME");
 	if (path == NULL)
-		return (write(2, "minishell: cd: HOME not set\n", 28),free(cwd), 1);
+		return (write(2, "minishell: cd: HOME not set\n", 28), free(cwd), 1);
 	else if (ft_strlencmp("-", path) == 0)
 		path = handle_minus();
 	if (path == NULL)
@@ -73,7 +73,7 @@ static int	display_error(int errcode, char *target)
 
 int	builtin_cd(int argc, char **argv)
 {
-	int errcode;
+	int	errcode;
 
 	if (argc < 2)
 		return (display_error(change_directory(NULL), ms_get_env("HOME")));
@@ -82,7 +82,7 @@ int	builtin_cd(int argc, char **argv)
 		errcode = change_directory("..");
 		if (errcode != 0)
 			display_error(errcode, argv[1]);
-		if (ft_strlencmp(ms_get_env("PWD"), "/") == 0)		
+		if (ft_strlencmp(ms_get_env("PWD"), "/") == 0)
 			return (display_error(change_directory(NULL), argv[0]));
 		else
 			return (display_error(change_directory(".."), argv[0]));

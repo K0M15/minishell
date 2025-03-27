@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:32:08 by ckrasniq          #+#    #+#             */
-/*   Updated: 2025/03/26 13:30:18 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 16:33:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ t_token	*tokenize(char *input)
 	return (head);
 }
 
-void	process_variable_name(t_lexer *lexer, char *buffer, int *i, bool has_braces)
+void	process_variable_name(t_lexer *lexer,
+	char *buffer, int *i, bool has_braces)
 {
 	while (current_char(lexer) != '\0')
 	{
@@ -82,18 +83,16 @@ void	process_variable_name(t_lexer *lexer, char *buffer, int *i, bool has_braces
 
 char	*handle_variable(t_lexer *lexer)
 {
-	char	buffer[4096] = {0};
+	char	buffer[4096];
 	int		i;
 	bool	has_braces;
 	char	*result;
 
+	ft_memset(buffer, 0, 4104);
 	i = 0;
 	advance(lexer);
 	if (current_char(lexer) == '?')
-	{
-		advance(lexer);
-		return (ft_strdup("$?"));
-	}
+		return (advance(lexer), ft_strdup("$?"));
 	has_braces = false;
 	if (current_char(lexer) == '{')
 	{

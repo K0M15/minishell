@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniqi <ckrasniqi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:52:47 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/09 17:54:09 by ckrasniqi        ###   ########.fr       */
+/*   Updated: 2025/03/27 16:20:29 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,3 @@ char	*ft_strndup(char *dst, const char *src, size_t n)
 	dst[i] = '\0';
 	return (dst);
 }
-
