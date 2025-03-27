@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 15:51:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/27 17:09:03 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,35 @@ static void	export_displayx(void)
 	char	**env;
 
 	env = get_appstate()->enviroment;
+	sort_env(**env);
+
 	while (*env)
 	{
 		printf("declare -x %s\n", *env);
 		env++;
+	}
+}
+
+void sort_env(char **env)
+{
+	int	i;
+	int j;
+	char *s1;
+
+	i = -1;
+	while (env[i++])
+	{
+		j = -1;
+		while (env[i][j++])
+		{
+			if (env[i][j] > env[i + 1][j])
+			{
+				s1 = env[i];
+				env[i] = env[i + 1];
+				env[i + 1] = s1;
+			}
+
+		}
 	}
 }
 
@@ -101,6 +126,7 @@ int	builtin_export(int argc, char **argv)
 			write(2, "bash: export: `", 15);
 			write(2, argv[c], ft_strlen(argv[c]));
 			write(2, "': not a valid identifier\n", 26);
+
 			return (free(key), 1);
 		}
 		value = ms_getvalue(argv[c]);
