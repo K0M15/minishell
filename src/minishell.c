@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 18:36:11 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 14:56:10 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ char	*extract_vars(char *str)
 				offset++;
 			if (offset == 1)
 			{
-				if (str[1] = '"' || str[1] != '\'') // condition is the wrong way round
+				if (str[1] != '"' && str[1] != '\'') // condition is the wrong way round
+					dyn_str_addchar(res, *str);
+				else if (inquote[1] || inquote[1])
 					dyn_str_addchar(res, *str);
 				str++;
 				continue;
