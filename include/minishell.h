@@ -13,6 +13,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <sys/wait.h>
+# include <sys/fcntl.h>
+
 # include <stdio.h>
 # include <stddef.h>
 # include <readline/history.h>
