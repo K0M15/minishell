@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:59:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/28 14:56:10 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:33:26 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,65 +72,6 @@ char	*get_line(void)
 			printf("exit\n");
 	}
 	return (str);
-}
-
-char	*extract_vars(char *str)
-{
-	t_dyn_str *res;
-	int offset;
-	int inquote[2];
-	char *var_name;
-
-	res = dyn_str_new();
-	inquote[0] = 0;
-	inquote[1] = 0;
-	while (*str)
-	{
-		if (*str == '\'' || *str == '"')
-		{// this not working. FIX
-			if (!inquote[1] && (*str == '\''))
-				inquote[0] = !inquote[0];
-			if (!inquote[0] && (*str == '"') )
-				inquote[1] = !inquote[1];
-			dyn_str_addchar(res, *str);
-		}
-		else if (*str == '$' && !inquote[0])
-		{
-			//extract var
-			offset = 1;
-			while (str[offset] && !ft_isspace(str[offset]) && (ft_isalnum(str[offset]) || str[offset] == '_' || str[offset] == '?'))
-				offset++;
-			if (offset == 1)
-			{
-				if (str[1] != '"' && str[1] != '\'') // condition is the wrong way round
-					dyn_str_addchar(res, *str);
-				else if (inquote[1] || inquote[1])
-					dyn_str_addchar(res, *str);
-				str++;
-				continue;
-			}
-			var_name = malloc(offset);
-			ft_strndup(var_name, str + 1, offset - 1);
-			if (var_name[0] == '?')
-			{
-				free(var_name);
-				var_name = ft_itoa(get_appstate()->last_return);
-				dyn_str_addstr(res, var_name);
-				offset = 2;
-			}
-			else
-			{
-				dyn_str_addstr(res, ms_get_env(var_name));
-			}
-			free(var_name);
-			str += offset - 1;
-		}
-		else
-			dyn_str_addchar(res, *str);
-		str++;
-	}
-	var_name = res->str;
-	return (free(res), var_name);
 }
 
 void	execute_input(char *str, t_appstate *state)

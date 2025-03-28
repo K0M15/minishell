@@ -30,7 +30,7 @@ FILES += AST/utils.c AST/executor_utils.c AST/executor.c AST/pipe_utils.c
 FILES += AST/execution_checkers.c AST/parser_redirections_2.c AST/free_cmd.c
 #	RUNTIME
 FILES += enviroment/enviroment.c enviroment/env_strfunc.c enviroment/env_data.c
-FILES += state/appstate.c
+FILES += state/appstate.c state/preprocess.c
 FILES += signals/signals.c signals/sig_init.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c

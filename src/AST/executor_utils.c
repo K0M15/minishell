@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:05:46 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 15:57:51 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:08:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*find_path(char *cmd)
 	char	*path;
 
 	i = 0;
-	paths = ft_split(ms_get_env("PATH"), ':'); // MEm
+	paths = ft_split(ms_get_env("PATH"), ':');
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");

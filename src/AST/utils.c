@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:18:28 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 16:22:30 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:06:35 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,4 @@ void	free_string_arr(char **arr)
 	while (arr[++i])
 		ft_free(arr[i]);
 	ft_free(arr);
-}
-
-void	process_char(t_dyn_str *result, char *str, long *ctr, int *in_quotes)
-{
-	(void) in_quotes;
-	// if (str[*ctr] == '$' && !in_quotes[0])
-	// {
-	// 	if ((str[*ctr + 1] == '\'' && !in_quotes[0]) || (str[*ctr + 1] == '"'
-	// 			&& !in_quotes[1]))
-	// 		return ;
-	// 	if (add_variable(result, str, ctr) == 0)
-	// 		perror("minishell: ");
-	// }
-	// else
-		dyn_str_addchar(result, str[*ctr]);
 }

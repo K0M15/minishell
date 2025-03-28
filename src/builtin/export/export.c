@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:26:16 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 19:21:08 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:08:14 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static char	*export_getkey(char *str)
 	return (result);
 }
 
-
 static void	export_displayx(void)
 {
 	char	**env;
@@ -40,7 +39,6 @@ static void	export_displayx(void)
 
 	env = get_appstate()->enviroment;
 	sort_env(env);
-
 	while (*env)
 	{
 		if (ms_getvalue(*env))
@@ -110,7 +108,6 @@ int	builtin_export(int argc, char **argv)
 			write(2, "bash: export: `", 15);
 			write(2, argv[c], ft_strlen(argv[c]));
 			write(2, "': not a valid identifier\n", 26);
-
 			return (free(key), 1);
 		}
 		value = ms_getvalue(argv[c]);

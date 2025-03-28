@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:37:22 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 16:45:48 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:06:23 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*handle_quotes(char *str)
 			ctr++;
 			continue ;
 		}
-		process_char(result, str, &ctr, in_quotes);
+		dyn_str_addchar(result, str[ctr]);
 		ctr++;
 	}
 	tmp = result->str;

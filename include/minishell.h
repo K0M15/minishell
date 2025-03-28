@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 19:30:46 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:35:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,6 +276,15 @@ int				ms_doc_append(struct s_doc *document, struct s_doc **last);
 void			ms_doc_free(t_doc *document);
 
 //============================================	END HEREDOC
+
+//============================================
+// PREPROCESS
+//============================================
+int				handle_single(int *offset, char **str,
+					t_dyn_str *res, int *inquote);
+void			handle_dollars(t_dyn_str *res, char **str, int *inquote);
+void			handle_next_quote(int *inquote, t_dyn_str *res, char *str);
+char			*extract_vars(char *str);
 
 //============================================
 // LEXER INITIALIZATION AND UTILITY FUNCTIONS
