@@ -6,7 +6,7 @@
 /*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 19:30:46 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:08:04 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef enum e_tokentype
 	// TOKEN_PARATESES_OPEN,	// (
 	// TOKEN_PARATESES_CLOSE,	// )
 }	t_tokentype;
-
 
 typedef struct s_token
 {
@@ -445,6 +444,8 @@ void			toggle_quote(int *quote_flag);
 int				count_args(char **args);
 int				is_directory(const char *path);
 int				is_executable(const char *path);
+// this checks if the current path has the command we are runnin
+// or tries to find the path by using find_path
 char			*exists(char *path);
 
 #endif // MINISHELL_H
