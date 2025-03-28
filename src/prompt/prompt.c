@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:13:02 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 15:40:22 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:08:28 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ms_display_welcome(void)
 char	*ms_get_prompt(void)
 {
 	if (isatty(STDIN_FILENO))
-		return ("minishell >");
+		return ("minishell> ");
 	else
 		return ("");
 }

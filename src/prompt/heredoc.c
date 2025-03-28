@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 15:44:41 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:53:39 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,25 @@ void	ms_doc_free(t_doc *document)
 	}
 }
 
+char	*get_heredoc_line(void)
+{
+	char	*str;
+	char	*line;
+
+	if (isatty(STDIN_FILENO))
+		str = ft_mem_reg(readline("> "));
+	else
+	{
+		line = get_next_line(fileno(stdin));
+		if (line != NULL)
+			str = ft_strtrim(line, "\n");
+		else
+			str = NULL;
+		free(line);
+	}
+	return (str);
+}
+
 static int	heredoc_process(const char *dellimter,
 	t_doc **document, int no_var_exp)
 {
@@ -42,7 +61,7 @@ static int	heredoc_process(const char *dellimter,
 	t_doc	*last;
 	int		iseof;
 
-	str = readline("> ");
+	str = get_heredoc_line();
 	if (str == NULL)
 		return (0);
 	if (!no_var_exp)
@@ -50,19 +69,19 @@ static int	heredoc_process(const char *dellimter,
 	iseof = (ft_strncmp(str, dellimter, ft_strlen(dellimter)) == 0
 			&& ft_strlen(str) == ft_strlen(dellimter));
 	if (iseof)
-		return (free(str), 0);
+		return (ft_free(str), 0);
 	last = ms_doc_app_or_new(document);
 	if (last == NULL || get_appstate()->cancled_heredoc)
-		return (free(str), -1);
+		return (ft_free(str), -1);
 	last->content = ft_strjoin(str, "\n");
 	last->length = ft_strlen(last->content);
 	iseof = heredoc_process(dellimter, &last, no_var_exp);
 	if (iseof == -1 || get_appstate()->cancled_heredoc)
-		return (free(str), -1);
+		return (ft_free(str), -1);
 	if (*document != NULL)
-		return (free(str), iseof);
+		return (ft_free(str), iseof);
 	*document = last;
-	return (free(str), iseof);
+	return (ft_free(str), iseof);
 }
 
 static int	split_writer(t_doc *document, int no_var_exp)
