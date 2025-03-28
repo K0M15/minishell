@@ -71,7 +71,7 @@ char	*find_path(char *cmd)
 	char	*path;
 
 	i = 0;
-	paths = ft_split(ms_get_env("PATH"), ':');
+	paths = ft_split(ms_get_env("PATH"), ':'); // MEm
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");
@@ -80,6 +80,7 @@ char	*find_path(char *cmd)
 		if (access(path, X_OK) == 0)
 		{
 			ft_free(cmd);
+			free_string_arr(paths);
 			return (path);
 		}
 		ft_free(path);

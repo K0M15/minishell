@@ -57,14 +57,15 @@ void	free_string_arr(char **arr)
 
 void	process_char(t_dyn_str *result, char *str, long *ctr, int *in_quotes)
 {
-	if (str[*ctr] == '$' && !in_quotes[0])
-	{
-		if ((str[*ctr + 1] == '\'' && !in_quotes[0]) || (str[*ctr + 1] == '"'
-				&& !in_quotes[1]))
-			return ;
-		if (add_variable(result, str, ctr) == 0)
-			perror("minishell: ");
-	}
-	else
+	(void) in_quotes;
+	// if (str[*ctr] == '$' && !in_quotes[0])
+	// {
+	// 	if ((str[*ctr + 1] == '\'' && !in_quotes[0]) || (str[*ctr + 1] == '"'
+	// 			&& !in_quotes[1]))
+	// 		return ;
+	// 	if (add_variable(result, str, ctr) == 0)
+	// 		perror("minishell: ");
+	// }
+	// else
 		dyn_str_addchar(result, str[*ctr]);
 }
