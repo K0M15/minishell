@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 17:05:31 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/28 15:08:41 by ckrasniq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	handle_dots(t_command *cmd)
 	{
 		ft_putstr_fd("bash: : command not found\n", 2);
 		return (127);
-	}		
+	}
 	else if (ft_strlencmp(cmd->args[0], ".") == 0)
 	{
 		ft_putstr_fd("bash: .: filename argument required\n", 2);
@@ -82,8 +82,10 @@ int	execute_pipe_command(t_command *cmd, char **env)
 {
 	pid_t	pid1;
 	pid_t	pid2;
+	int		pipefd[2];
+	int		status1;
+	int		status2;
 
-	int pipefd[2], status1, status2;
 	if (!cmd || !cmd->left || !cmd->right)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n",
