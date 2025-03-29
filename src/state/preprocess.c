@@ -42,14 +42,14 @@ void	handle_dollars(t_dyn_str *res, char **str, int *inquote)
 	ft_strndup(var_name, (*str) + 1, offset - 1);
 	if (var_name[0] == '?')
 	{
-		free(var_name);
+		ft_free(var_name);
 		var_name = ft_itoa(get_appstate()->last_return);
 		dyn_str_addstr(res, var_name);
 		offset = 2;
 	}
 	else
 		dyn_str_addstr(res, ms_get_env(var_name));
-	free(var_name);
+	ft_free(var_name);
 	(*str) += offset;
 }
 
@@ -95,12 +95,12 @@ char	*extract_vars(char *str)
 	int			inquote[3];
 	char		*var_name;
 
-	res = dyn_str_new();
+	res = ft_mem_reg(dyn_str_new());
 	inquote[0] = 0;
 	inquote[1] = 0;
 	inquote[2] = 0;
 	while (*str)
 		handle_ex_var(&str, inquote, res);
 	var_name = res->str;
-	return (free(res), var_name);
+	return (ft_free(res), var_name);
 }

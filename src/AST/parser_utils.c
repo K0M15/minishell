@@ -42,7 +42,7 @@ t_command	*create_pipe_command(t_command *left, t_command *right)
 {
 	t_command	*cmd;
 
-	cmd = malloc(sizeof(t_command));
+	cmd = ft_malloc(sizeof(t_command));
 	if (!cmd)
 		return (NULL);
 	cmd->type = CMD_PIPE;

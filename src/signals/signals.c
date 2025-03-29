@@ -28,7 +28,7 @@ void	ms_sig_handler_interactive(int signal, siginfo_t *info, void *ctx)
 	(void) info;
 	(void) ctx;
 	g_ms_signal = signal;
-	write(STDERR_FILENO, "\n", 1);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

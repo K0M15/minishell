@@ -46,7 +46,7 @@ void	process_quote_content(t_lexer *lexer,
 			{
 				ft_strcpy(buffer + *i, var_name);
 				*i += ft_strlen(var_name);
-				free(var_name);
+				ft_free(var_name);
 				continue ;
 			}
 		}
@@ -78,7 +78,7 @@ char	*handle_quotes(char *str)
 		ctr++;
 	}
 	tmp = result->str;
-	free(result);
+	ft_free(result);
 	return (tmp);
 }
 

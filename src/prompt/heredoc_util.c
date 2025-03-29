@@ -82,7 +82,7 @@ t_doc	*ms_doc_app_or_new(t_doc **document)
 
 	if (*document == NULL)
 	{
-		new = malloc(sizeof(t_doc));
+		new = ft_malloc(sizeof(t_doc));
 		if (new == NULL)
 			return (NULL);
 		new->next = NULL;

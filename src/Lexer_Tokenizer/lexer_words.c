@@ -48,12 +48,12 @@ char	*process_variable(char *var_name, int in_quotes)
 	else if (var_name && *(var_name + 1) != '?')
 	{
 		value = ft_strtrim(ms_get_env(var_name + 1), " ");
-		free(var_name);
+		ft_free(var_name);
 	}
 	else if (var_name && *(var_name + 1) == '?')
 	{
 		value = ft_itoa(get_appstate()->last_return);
-		free(var_name);
+		ft_free(var_name);
 	}
 	else
 		value = ft_strdup("");
@@ -73,7 +73,7 @@ void	process_variable_in_word(t_lexer *lexer,
 		var_val = process_variable(var_name, 0);
 	ft_strcpy(buffer + *i, var_val);
 	*i += ft_strlen(var_val);
-	free(var_val);
+	ft_free(var_val);
 }
 
 void	process_quotes_in_word(t_lexer *lexer, char *buffer, int *i)

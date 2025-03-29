@@ -55,7 +55,7 @@ t_redirection	*parse_redirection(t_token **tokens)
 	processed_value = handle_quotes_redir(current->value);
 	redir = create_redirection(type, processed_value, \
 		has_quotes(current->value));
-	free(processed_value);
+	ft_free(processed_value);
 	*tokens = current->next;
 	return (redir);
 }

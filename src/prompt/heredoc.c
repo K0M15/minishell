@@ -29,8 +29,8 @@ void	ms_doc_free(t_doc *document)
 	while (document != NULL)
 	{
 		next = document->next;
-		free(document->content);
-		free(document);
+		ft_free(document->content);
+		ft_free(document);
 		document = next;
 	}
 }
@@ -80,7 +80,7 @@ static int	split_writer(t_doc *document, int no_var_exp)
 		close(pipedoc[STDIN_FILENO]);
 		ms_doc_display_free(document, pipedoc[STDOUT_FILENO], no_var_exp);
 		close(pipedoc[STDOUT_FILENO]);
-		exit(0);
+		cleanup(0);
 	}
 	close(pipedoc[STDOUT_FILENO]);
 	return (pipedoc[STDIN_FILENO]);

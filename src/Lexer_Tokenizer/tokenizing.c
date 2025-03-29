@@ -55,7 +55,7 @@ t_token	*tokenize(char *input)
 	if (!lexer)
 		return (NULL);
 	head = build_token_list(lexer);
-	free(lexer);
+	ft_free(lexer);
 	return (head);
 }
 

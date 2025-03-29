@@ -105,14 +105,14 @@ int	builtin_export(int argc, char **argv)
 		key = export_getkey(argv[c]);
 		if (key[0] == 0 || contains_illegal(key))
 		{
-			write(2, "bash: export: `", 15);
-			write(2, argv[c], ft_strlen(argv[c]));
-			write(2, "': not a valid identifier\n", 26);
-			return (free(key), 1);
+			ft_putstr_fd("bash: export: `", 2);
+			ft_putstr_fd(argv[c], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (ft_free(key), 1);
 		}
 		value = ms_getvalue(argv[c]);
 		retval |= handle_addition(key, value, argv[c]);
-		free(key);
+		ft_free(key);
 	}
 	return (retval);
 }

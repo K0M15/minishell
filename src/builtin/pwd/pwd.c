@@ -20,6 +20,6 @@ int	builtin_pwd(int argc, char **argv)
 	(void) argv;
 	cwd = getcwd(NULL, 0);
 	ft_printf("%s\n", cwd);
-	free(cwd);
+	ft_free(cwd);
 	return (0);
 }

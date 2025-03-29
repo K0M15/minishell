@@ -22,9 +22,9 @@ int	is_directory(const char *path)
 		return (0);
 	if (S_ISDIR(path_stat.st_mode))
 	{
-		write(2, "minishell: ", 11);
-		write(2, path, ft_strlen(path));
-		write(2, ": is a directory\n", 17);
+		ft_putstr_fd("minishell: ",2);
+		ft_putstr_fd((char *)path, 2);
+		ft_putstr_fd(": is a directory\n",2);
 		return (126);
 	}
 	return (0);
@@ -37,9 +37,9 @@ int	is_executable(const char *path)
 	result = access(path, X_OK);
 	if (result != 0)
 	{
-		write(2, "minishell: ", 11);
-		write(2, path, ft_strlen(path));
-		write(2, ": Permission denied\n", 20);
+		ft_putstr_fd("minishell: ",2);
+		ft_putstr_fd((char *)path, 2);
+		ft_putstr_fd(": Permission denied\n",2);
 		return (0);
 	}
 	return (1);

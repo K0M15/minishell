@@ -21,7 +21,7 @@ char	**ms_env_enhance(void)
 	new_env = malloc(state->env_alloc * 2);
 	state->env_alloc *= 2;
 	ft_memcpy(state->enviroment, new_env, state->env_filled);
-	free(state->enviroment);
+	ft_free(state->enviroment);
 	state->enviroment = new_env;
 	return (new_env);
 }

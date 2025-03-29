@@ -20,7 +20,7 @@ static char	*handle_minus(void)
 	oldpwd = ms_get_env("OLDPWD");
 	if (ft_strlen(oldpwd) == 0)
 	{
-		write(2, "minishell: cd: OLDPWD not set\n", 30);
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 		return (NULL);
 	}
 	ft_putstr_fd(oldpwd, 1);
@@ -37,7 +37,7 @@ static int	change_directory(const char *path)
 	if (path == NULL)
 		path = ms_get_env("HOME");
 	if (path == NULL)
-		return (write(2, "minishell: cd: HOME not set\n", 28), free(cwd), 1);
+		return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), free(cwd), 1);
 	else if (ft_strlencmp("-", path) == 0)
 		path = handle_minus();
 	if (path == NULL)

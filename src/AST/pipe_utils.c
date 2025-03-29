@@ -56,7 +56,7 @@ pid_t	fork_and_execute_right(t_command *cmd, char **env, int *pipefd)
 		close(pipefd[1]);
 		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
-		exit(execute_command(cmd->right, env, 0));
+		cleanup(execute_command(cmd->right, env, 0));
 	}
 	return (pid);
 }

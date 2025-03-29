@@ -37,6 +37,6 @@ char	*handle_quotes_redir(char *str)
 		ctr += check_for_var(result, &str[ctr], in_quotes);
 	}
 	tmp = result->str;
-	free(result);
+	ft_free(result);
 	return (tmp);
 }

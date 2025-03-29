@@ -34,7 +34,7 @@ void	handle_execve_error(char *cmd)
 		ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	perror("");
-	exit(127);
+	cleanup(127);
 }
 
 int	execute_child_process(t_command *cmd)
@@ -76,7 +76,7 @@ char	*find_path(char *cmd)
 	{
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd);
-		free(part_path);
+		ft_free(part_path);
 		if (access(path, X_OK) == 0)
 		{
 			ft_free(cmd);

@@ -39,9 +39,9 @@ int	builtin_unset(int argc, char **argv)
 	{
 		if (contains_illegal(argv[c]))
 		{
-			write(2, "bash: unset: `", 14);
-			write(2, argv[c], ft_strlen(argv[c]));
-			write(2, "': not a valid identifier\n", 26);
+			ft_putstr_fd("bash: unset: `", 2);
+			ft_putstr_fd(argv[c], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (1);
 		}
 		ms_delete_value(argv[c]);

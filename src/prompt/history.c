@@ -73,7 +73,7 @@ int	dump_history(char *filename)
 	{
 		if (write_hist_entry(fd, state->entries[i]) == -1)
 			return (-1);
-		free(state->entries[i]);
+		ft_free(state->entries[i]);
 	}
 	if (close(fd) == -1)
 		return (-1);
