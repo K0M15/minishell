@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:43:31 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/27 15:55:43 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/29 15:16:36 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	is_directory(const char *path)
 		return (0);
 	if (S_ISDIR(path_stat.st_mode))
 	{
-		ft_putstr_fd("minishell: ",2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd((char *)path, 2);
-		ft_putstr_fd(": is a directory\n",2);
+		ft_putstr_fd(": is a directory\n", 2);
 		return (126);
 	}
 	return (0);
@@ -37,9 +37,9 @@ int	is_executable(const char *path)
 	result = access(path, X_OK);
 	if (result != 0)
 	{
-		ft_putstr_fd("minishell: ",2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd((char *)path, 2);
-		ft_putstr_fd(": Permission denied\n",2);
+		ft_putstr_fd(": Permission denied\n", 2);
 		return (0);
 	}
 	return (1);
