@@ -6,26 +6,11 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:35:15 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/27 16:49:24 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/29 11:47:00 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	check_char(t_lexer *lexer, char *buffer, int *i)
-{
-	if (current_char(lexer) == '"' || current_char(lexer) == '\'')
-	{
-		process_quotes_in_word(lexer, buffer, i);
-		return (1);
-	}
-	if (current_char(lexer) == '$')
-	{
-		process_variable_in_word(lexer, buffer, i, 0);
-		return (1);
-	}
-	return (0);
-}
 
 t_token	*handle_word(t_lexer *lexer)
 {
@@ -40,8 +25,11 @@ t_token	*handle_word(t_lexer *lexer)
 			|| (is_operator_char(current_char(lexer))
 				&& current_char(lexer) != '$'))
 			break ;
-		if (check_char(lexer, buffer, &i))
+		if (current_char(lexer) == '"' || current_char(lexer) == '\'')
+		{
+			process_quotes_in_word(lexer, buffer, &i);
 			continue ;
+		}
 		buffer[i++] = current_char(lexer);
 		advance(lexer);
 	}
@@ -96,7 +84,10 @@ void	process_quotes_in_word(t_lexer *lexer, char *buffer, int *i)
 	buffer[(*i)++] = current_char(lexer);
 	advance(lexer);
 	while (current_char(lexer) != '\0' && current_char(lexer) != quote_char)
-		process_variable_in_quotes(lexer, buffer, i, quote_char);
+	{
+		buffer[(*i)++] = current_char(lexer);
+		advance(lexer);
+	}
 	if (current_char(lexer) == quote_char)
 	{
 		buffer[(*i)++] = current_char(lexer);

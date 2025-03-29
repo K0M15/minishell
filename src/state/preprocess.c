@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:31:48 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/28 16:52:42 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/29 11:41:38 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,33 @@ void	handle_next_quote(int *inquote, t_dyn_str *res, char *str)
 	dyn_str_addchar(res, *str);
 }
 
+void	handle_ex_var(char **str, int *inquote, t_dyn_str *res)
+{
+	if (**str == '<' && *(*str + 1) == '<')
+	{
+		inquote[2] = 1;
+		dyn_str_addchar(res, *(*str)++);
+		dyn_str_addchar(res, **str);
+		(*str)++;
+		return ;
+	}
+	if (**str == '$' && !inquote[0] && !(inquote[2] && inquote[1]))
+	{
+		handle_dollars(res, str, inquote);
+		return ;
+	}
+	if (**str == '\'' || **str == '"')
+		handle_next_quote(inquote, res, *str);
+	else
+		dyn_str_addchar(res, **str);
+	if (inquote[2] && !inquote[0] && !inquote[1]
+		&& (ft_isspace(**str) || is_controlchar(**str))
+		&& !last_redir(*str))
+		inquote[2] = 0;
+	(*str)++;
+	return ;
+}
+
 char	*extract_vars(char *str)
 {
 	t_dyn_str	*res;
@@ -73,31 +100,7 @@ char	*extract_vars(char *str)
 	inquote[1] = 0;
 	inquote[2] = 0;
 	while (*str)
-	{
-		if (*str == '<' && *(str + 1) == '<')
-		{
-			inquote[2] = 1;
-			dyn_str_addchar(res, *str++);
-			dyn_str_addchar(res, *str);
-			str++;
-			continue;
-		}
-		// if (*str == '\'' || *str == '"')
-		// 	handle_next_quote(inquote, res, str);
-		// else if (*str == '$' && !inquote[0] && !inquote[2])
-		if (*str == '$' && !inquote[0] && !inquote[2])
-		{
-			handle_dollars(res, &str, inquote);
-			continue ;
-		}
-		if (*str == '\'' || *str == '"')
-			handle_next_quote(inquote, res, str);
-		else
-			dyn_str_addchar(res, *str);
-		if (inquote[2] && !inquote[0] && !inquote[1])
-			inquote[2] = 0;
-		str++;
-	}
+		handle_ex_var(&str, inquote, res);
 	var_name = res->str;
 	return (free(res), var_name);
 }

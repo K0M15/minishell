@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:37:22 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/28 15:06:23 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/29 11:44:48 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,6 @@ void	process_quote_content(t_lexer *lexer,
 		buffer[(*i)++] = current_char(lexer);
 		advance(lexer);
 	}
-}
-
-void	process_variable_in_quotes(t_lexer *lexer,
-	char *buffer, int *i, char quote_char)
-{
-	char	*var_name;
-	char	*var_val;
-
-	if (quote_char == '"' && current_char(lexer) == '$')
-	{
-		var_name = handle_variable(lexer);
-		var_val = process_variable(var_name, 0);
-		ft_strcpy(buffer + *i, var_val);
-		*i += ft_strlen(var_val);
-		free(var_val);
-		return ;
-	}
-	buffer[(*i)++] = current_char(lexer);
-	advance(lexer);
 }
 
 char	*handle_quotes(char *str)

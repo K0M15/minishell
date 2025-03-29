@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ckrasniq <ckrasniq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 18:03:50 by ckrasniqi         #+#    #+#             */
-/*   Updated: 2025/03/28 15:08:41 by ckrasniq         ###   ########.fr       */
+/*   Updated: 2025/03/29 12:02:33 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,27 @@ static int	handle_dots(t_command *cmd)
 	return (0);
 }
 
-int	execute_simple_command(t_command *cmd, char **env, int fork)
+static int	check_exec_requirements(int *ret,
+		t_command *cmd, int *saved_fds, int do_fork)
+{
+	*ret = handle_dots(cmd);
+	if (*ret)
+		return (*ret);
+	if (ft_strlencmp(cmd->args[0], "") == 0)
+		return (0);
+	cmd->args[0] = exists(cmd->args[0]);
+	if (is_directory(cmd->args[0]))
+		return (126);
+	if (cmd->args[0] == NULL)
+		return (127);
+	if (cmd->canceled)
+		return (restore_fds(saved_fds), 130);
+	if (do_fork)
+		return (execute_forked_command(cmd, saved_fds));
+	return (execute_child_process(cmd));
+}
+
+int	execute_simple_command(t_command *cmd, char **env, int do_fork)
 {
 	int		saved_fds[3];
 	int		ret;
@@ -56,23 +76,7 @@ int	execute_simple_command(t_command *cmd, char **env, int fork)
 	if (ret != -1)
 		return (restore_fds(saved_fds), ret);
 	if (cmd->args[0] != NULL)
-	{
-		ret = handle_dots(cmd);
-		if (ret)
-			return (ret);
-		if (ft_strlencmp(cmd->args[0], "") == 0)
-			return (0);
-		cmd->args[0] = exists(cmd->args[0]);
-		if (is_directory(cmd->args[0]))
-			return (126);
-		if (cmd->args[0] == NULL)
-			return (127);
-		if (cmd->canceled)
-			return (restore_fds(saved_fds), 130);
-		if (fork)
-			return (execute_forked_command(cmd, saved_fds));
-		return (execute_child_process(cmd));
-	}
+		return (check_exec_requirements(&ret, cmd, saved_fds, do_fork));
 	else if (cmd->args[0] == NULL)
 		return (127);
 	return (0);

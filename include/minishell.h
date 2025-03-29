@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:00:44 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/28 15:37:16 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/29 11:57:16 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,7 @@ char			*ms_doc_construct(struct s_doc *document);
 int				ms_doc_get_length(struct s_doc *document);
 int				ms_doc_append(struct s_doc *document, struct s_doc **last);
 void			ms_doc_free(t_doc *document);
+char			*get_heredoc_line(void);
 
 //============================================	END HEREDOC
 
@@ -284,6 +285,8 @@ int				handle_single(int *offset, char **str,
 void			handle_dollars(t_dyn_str *res, char **str, int *inquote);
 void			handle_next_quote(int *inquote, t_dyn_str *res, char *str);
 char			*extract_vars(char *str);
+int				last_redir(char *str);
+int				is_controlchar(char c);
 
 //============================================
 // LEXER INITIALIZATION AND UTILITY FUNCTIONS
@@ -351,8 +354,6 @@ void			process_variable_in_word(t_lexer *lexer, char *buffer,
 					int *i, int *in_quotes);
 void			process_quotes_in_word(t_lexer *lexer, char *buffer,
 					int *i);
-void			process_variable_in_quotes(t_lexer *lexer, char *buffer,
-					int *i, char quote_char);
 char			*process_variable(char *var_name, int in_quotes);
 char			*handle_quotes(char *str);
 char			*handle_quotes_redir(char *str);

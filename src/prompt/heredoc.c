@@ -6,7 +6,7 @@
 /*   By: afelger <afelger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 17:38:08 by afelger           #+#    #+#             */
-/*   Updated: 2025/03/28 15:53:39 by afelger          ###   ########.fr       */
+/*   Updated: 2025/03/29 11:56:08 by afelger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,6 @@ void	ms_doc_free(t_doc *document)
 		free(document);
 		document = next;
 	}
-}
-
-char	*get_heredoc_line(void)
-{
-	char	*str;
-	char	*line;
-
-	if (isatty(STDIN_FILENO))
-		str = ft_mem_reg(readline("> "));
-	else
-	{
-		line = get_next_line(fileno(stdin));
-		if (line != NULL)
-			str = ft_strtrim(line, "\n");
-		else
-			str = NULL;
-		free(line);
-	}
-	return (str);
 }
 
 static int	heredoc_process(const char *dellimter,

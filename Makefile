@@ -30,14 +30,15 @@ FILES += AST/utils.c AST/executor_utils.c AST/executor.c AST/pipe_utils.c
 FILES += AST/execution_checkers.c AST/parser_redirections_2.c AST/free_cmd.c
 #	RUNTIME
 FILES += enviroment/enviroment.c enviroment/env_strfunc.c enviroment/env_data.c
-FILES += state/appstate.c state/preprocess.c
+FILES += state/appstate.c state/preprocess.c state/preprocess_checker.c
 FILES += signals/signals.c signals/sig_init.c
 #	BUILTINS
 FILES += builtin/pwd/pwd.c builtin/cd/cd.c builtin/export/export.c builtin/env/env.c
 FILES += builtin/echo/echo.c builtin/unset/unset.c builtin/exit/exit.c builtin/builtin.c
 FILES += builtin/export/sort_env.c
 #	PROMPT
-FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c prompt/heredoc_util.c prompt/token2string.c
+FILES += prompt/prompt.c prompt/history.c prompt/terminal.c prompt/heredoc.c
+FILES += prompt/heredoc_util.c prompt/token2string.c prompt/heredoc_getline.c
 #	MEMORY
 FILES += mem_manager/ft_malloc.c
 
